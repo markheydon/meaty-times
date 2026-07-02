@@ -1,0 +1,16 @@
+<Project Sdk="Aspire.AppHost.Sdk/13.4.6">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <UserSecretsId>f1269130-fcf3-4776-b5f6-f8feb95d68a3</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MeatyTimes.ApiService\MeatyTimes.ApiService.csproj" />
+    <ProjectReference Include="..\MeatyTimes.Web\MeatyTimes.Web.csproj" />
+  </ItemGroup>
+
+</Project>
