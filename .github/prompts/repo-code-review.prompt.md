@@ -16,7 +16,7 @@ Focus only on issues that would influence your decision to approve or reject the
 Context:
 - This project is being developed using Spec Kit.
 - The current task list provides useful context for understanding the intent of the changes being reviewed.
-- The solution is based on .NET 10, C# 14, ASP.NET Core, .NET Aspire and server-side Blazor using Fluent UI.
+- The solution is based on .NET 10, C# 14, ASP.NET Core, .NET Aspire, server-side Blazor using MudBlazor, and a shared `MeatyTimes.Core` domain library for cooking calculations.
 
 Focus on finding:
 

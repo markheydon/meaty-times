@@ -1,0 +1,53 @@
+version: 2
+updates:
+  - package-ecosystem: "nuget"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "04:00"
+      timezone: "Europe/London"
+    open-pull-requests-limit: 5
+    allow:
+      - dependency-type: "all"
+    groups:
+      aspire-packages:
+        patterns:
+          - "Aspire.*"
+          - "Microsoft.Extensions.ServiceDiscovery*"
+      microsoft-aspnetcore:
+        patterns:
+          - "Microsoft.AspNetCore.*"
+          - "Microsoft.Extensions.*"
+          - "Microsoft.OpenApi"
+      opentelemetry-packages:
+        patterns:
+          - "OpenTelemetry.*"
+      mudblazor-packages:
+        patterns:
+          - "MudBlazor*"
+      test-packages:
+        patterns:
+          - "coverlet.collector"
+          - "FluentAssertions"
+          - "Microsoft.NET.Test.Sdk"
+          - "Moq"
+          - "xunit"
+          - "xunit.*"
+    commit-message:
+      prefix: "[dependabot]"
+    assignees:
+      - "markheydon"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "04:00"
+      timezone: "Europe/London"
+    open-pull-requests-limit: 3
+    commit-message:
+      prefix: "[dependabot]"
+    assignees:
+      - "markheydon"
