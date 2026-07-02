@@ -2,6 +2,7 @@ using Microsoft.Extensions.Logging;
 
 namespace MeatyTimes.Tests;
 
+[Collection("AppHost")]
 public class WebTests
 {
     [Fact]

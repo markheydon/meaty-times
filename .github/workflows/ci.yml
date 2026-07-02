@@ -67,7 +67,7 @@ jobs:
         run: dotnet format MeatyTimes.slnx --no-restore --verify-no-changes --verbosity minimal
 
       - name: Build solution
-        run: dotnet build MeatyTimes.slnx --no-restore --configuration Release
+        run: dotnet build MeatyTimes.slnx --no-restore
 
       - name: Run tests
-        run: dotnet test MeatyTimes.slnx --no-build --configuration Release --verbosity normal
+        run: dotnet test MeatyTimes.slnx --no-build --verbosity normal
