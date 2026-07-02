@@ -1,0 +1,104 @@
+@using MeatyTimes.Web.Services
+
+<MudPaper Class="pa-4 roast-input-form" Elevation="2">
+    <MudText Typo="Typo.h6" GutterBottom="true">Roast details</MudText>
+
+    <MudSelect T="string"
+               Label="Meat type"
+               @bind-Value="_selectedMeatId"
+               Required="true"
+               Class="mb-3 roast-field-full-width"
+               aria-label="Meat type">
+        @foreach (var meat in Meats)
+        {
+            <MudSelectItem Value="@meat.Id">@meat.DisplayName</MudSelectItem>
+        }
+    </MudSelect>
+
+    <MudNumericField T="decimal?"
+                     Label="Weight (kg)"
+                     @bind-Value="_weightKg"
+                     Min="@MinWeight"
+                     Max="@MaxWeight"
+                     Step="0.1m"
+                     Required="true"
+                     Class="mb-3 roast-field-full-width"
+                     Error="@(!string.IsNullOrEmpty(WeightError))"
+                     ErrorText="@WeightError"
+                     aria-label="Weight in kilograms" />
+
+    @if (SelectedMeat?.SupportsDoneness == true)
+    {
+        <MudSelect T="string"
+                   Label="Doneness"
+                   @bind-Value="_selectedDoneness"
+                   Required="true"
+                   Class="mb-3 roast-field-full-width"
+                   Error="@(!string.IsNullOrEmpty(DonenessError))"
+                   ErrorText="@DonenessError"
+                   aria-label="Doneness">
+            @foreach (var option in SelectedMeat.DonenessOptions)
+            {
+                <MudSelectItem Value="@option">@FormatDoneness(option)</MudSelectItem>
+            }
+        </MudSelect>
+    }
+
+    <MudButton Variant="Variant.Filled"
+               Color="Color.Primary"
+               OnClick="OnCalculate"
+               Disabled="IsLoading"
+               FullWidth="true"
+               Class="roast-calculate-btn">
+        Calculate
+    </MudButton>
+</MudPaper>
+
+@code {
+    [Parameter] public IReadOnlyList<RoastApiClient.MeatTypeDto> Meats { get; set; } = [];
+
+    [Parameter] public bool IsLoading { get; set; }
+
+    [Parameter] public EventCallback<RoastInputModel> OnCalculateRequested { get; set; }
+
+    [Parameter] public string? WeightError { get; set; }
+
+    [Parameter] public string? DonenessError { get; set; }
+
+    private string? _selectedMeatId;
+    private decimal? _weightKg = 2.0m;
+    private string? _selectedDoneness = "Medium";
+
+    private RoastApiClient.MeatTypeDto? SelectedMeat =>
+        Meats.FirstOrDefault(m => m.Id == _selectedMeatId);
+
+    private decimal MinWeight => SelectedMeat?.MinWeightKg ?? 0.5m;
+
+    private decimal MaxWeight => SelectedMeat?.MaxWeightKg ?? 15m;
+
+    protected override void OnParametersSet()
+    {
+        _selectedMeatId ??= Meats.FirstOrDefault()?.Id;
+    }
+
+    private async Task OnCalculate()
+    {
+        if (_selectedMeatId is null || _weightKg is null)
+        {
+            return;
+        }
+
+        await OnCalculateRequested.InvokeAsync(new RoastInputModel(
+            _selectedMeatId,
+            _weightKg.Value,
+            SelectedMeat?.SupportsDoneness == true ? _selectedDoneness : null));
+    }
+
+    private static string FormatDoneness(string value) => value switch
+    {
+        "WellDone" => "Well Done",
+        _ => value,
+    };
+
+    public sealed record RoastInputModel(string MeatType, decimal WeightKg, string? Doneness);
+}

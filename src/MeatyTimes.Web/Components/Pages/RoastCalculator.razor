@@ -1,0 +1,144 @@
+@page "/"
+@using MeatyTimes.Web.Components.Roast
+@using MeatyTimes.Web.Services
+@inject RoastApiClient RoastApi
+
+<PageTitle>MeatyTimes — Roast Calculator</PageTitle>
+
+<MudText Typo="Typo.h4" Class="mb-2">MeatyTimes</MudText>
+<MudText Typo="Typo.body1" Class="mb-4">Calculate roasting temperatures and timings for your joint.</MudText>
+
+@if (_loadError is not null)
+{
+    <MudAlert Severity="Severity.Error">@_loadError</MudAlert>
+}
+else
+{
+    <MudGrid Spacing="3" Class="roast-calculator-grid">
+        <MudItem xs="12" md="5">
+            <RoastInputForm Meats="_meats"
+                            IsLoading="_isLoading"
+                            OnCalculateRequested="HandleCalculate"
+                            WeightError="@_weightError"
+                            DonenessError="@_donenessError" />
+        </MudItem>
+        <MudItem xs="12" md="7">
+            @if (_isLoading)
+            {
+                <MudProgressLinear Indeterminate="true" Class="mb-3" />
+            }
+
+            @if (!string.IsNullOrEmpty(_generalError))
+            {
+                <MudAlert Severity="Severity.Error" Class="mb-3">@_generalError</MudAlert>
+            }
+
+            <RoastResultsDisplay Result="_result" />
+
+            <ServeAtPlanner LastInput="_lastInput"
+                            Result="_result"
+                            IsLoading="_isPlanning"
+                            OnPlanRequested="HandlePlan"
+                            Schedule="_schedule"
+                            Error="@_scheduleError" />
+        </MudItem>
+    </MudGrid>
+}
+
+@code {
+    private IReadOnlyList<RoastApiClient.MeatTypeDto> _meats = [];
+    private RoastApiClient.CookingResultDto? _result;
+    private RoastApiClient.ScheduleDto? _schedule;
+    private RoastInputForm.RoastInputModel? _lastInput;
+    private bool _isLoading;
+    private bool _isPlanning;
+    private string? _loadError;
+    private string? _generalError;
+    private string? _weightError;
+    private string? _donenessError;
+    private string? _scheduleError;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            _meats = await RoastApi.GetMeatsAsync();
+        }
+        catch (Exception ex)
+        {
+            _loadError = $"Could not load meat types. {ex.Message}";
+        }
+    }
+
+    private async Task HandleCalculate(RoastInputForm.RoastInputModel input)
+    {
+        _isLoading = true;
+        _generalError = null;
+        _weightError = null;
+        _donenessError = null;
+        _schedule = null;
+        _scheduleError = null;
+        _lastInput = input;
+
+        try
+        {
+            _result = await RoastApi.CalculateAsync(input.MeatType, input.WeightKg, input.Doneness);
+        }
+        catch (RoastApiException ex)
+        {
+            _result = null;
+            _weightError = ex.Errors.GetValueOrDefault("weightKg")?.FirstOrDefault();
+            _donenessError = ex.Errors.GetValueOrDefault("doneness")?.FirstOrDefault();
+            _generalError = ex.FirstError;
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+
+    private async Task HandlePlan(DateTimeOffset servingTime)
+    {
+        if (_lastInput is null)
+        {
+            return;
+        }
+
+        _isPlanning = true;
+        _scheduleError = null;
+
+        try
+        {
+            _schedule = await RoastApi.PlanScheduleAsync(
+                _lastInput.MeatType,
+                _lastInput.WeightKg,
+                _lastInput.Doneness,
+                servingTime);
+        }
+        catch (RoastApiException ex)
+        {
+            _schedule = null;
+            _scheduleError = ex.FirstError;
+        }
+        finally
+        {
+            _isPlanning = false;
+        }
+    }
+}
+
+<style>
+    @@media (max-width: 600px) {
+        .roast-calculator-grid {
+            flex-direction: column;
+        }
+
+        .roast-field-full-width {
+            width: 100%;
+        }
+
+        .roast-schedule-inputs {
+            flex-direction: column !important;
+        }
+    }
+</style>
