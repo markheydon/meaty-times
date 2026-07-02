@@ -1,7 +1,9 @@
 <Solution>
+  <Project Path="src/MeatyTimes.Core/MeatyTimes.Core.csproj" />
   <Project Path="src/MeatyTimes.ApiService/MeatyTimes.ApiService.csproj" />
   <Project Path="src/MeatyTimes.AppHost/MeatyTimes.AppHost.csproj" />
   <Project Path="src/MeatyTimes.ServiceDefaults/MeatyTimes.ServiceDefaults.csproj" />
   <Project Path="src/MeatyTimes.Web/MeatyTimes.Web.csproj" />
+  <Project Path="tests/MeatyTimes.Core.Tests/MeatyTimes.Core.Tests.csproj" />
   <Project Path="tests/MeatyTimes.Tests/MeatyTimes.Tests.csproj" />
 </Solution>

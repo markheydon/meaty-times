@@ -1,0 +1,100 @@
+@using MeatyTimes.Web.Services
+
+@if (LastInput is not null && Result is not null)
+{
+    <MudPaper Class="pa-4 roast-schedule mt-4" Elevation="2">
+        <MudText Typo="Typo.h6" GutterBottom="true">Serve at</MudText>
+
+        <MudStack Row="true" Spacing="2" Class="mb-3 roast-schedule-inputs">
+            <MudDatePicker @bind-Date="_servingDate"
+                           Label="Date"
+                           MinDate="DateTime.Today"
+                           Class="roast-field-full-width"
+                           aria-label="Serving date" />
+            <MudTimePicker @bind-Time="_servingTime"
+                           Label="Time"
+                           Class="roast-field-full-width"
+                           aria-label="Serving time" />
+        </MudStack>
+
+        <MudButton Variant="Variant.Outlined"
+                   Color="Color.Primary"
+                   OnClick="OnPlan"
+                   Disabled="IsLoading"
+                   FullWidth="true">
+            Plan
+        </MudButton>
+
+        @if (Schedule is not null)
+        {
+            @if (!Schedule.IsAchievable)
+            {
+                <MudAlert Severity="Severity.Warning" Class="mt-3">
+                    This serving time is too soon.
+                    @if (Schedule.EarliestServingTime is { } earliest)
+                    {
+                        var localEarliest = earliest.ToLocalTime();
+                        <text> Earliest possible: @localEarliest.ToString("HH:mm") on @localEarliest.ToString("d MMMM").</text>
+                    }
+                </MudAlert>
+            }
+            else
+            {
+                <MudList T="string" Class="mt-3">
+                    <MudListItem Icon="@Icons.Material.Filled.PlayArrow">
+                        Start cooking: @FormatLocalTime(Schedule.StartCookingTime)
+                    </MudListItem>
+                    @if (Schedule.TemperatureChangeTime is { } changeTime)
+                    {
+                        <MudListItem Icon="@Icons.Material.Filled.Thermostat">
+                            Reduce temperature: @FormatLocalTime(changeTime)
+                        </MudListItem>
+                    }
+                    <MudListItem Icon="@Icons.Material.Filled.Kitchen">
+                        Remove from oven: @FormatLocalTime(Schedule.RemoveFromOvenTime)
+                    </MudListItem>
+                    <MudListItem Icon="@Icons.Material.Filled.HourglassEmpty">
+                        Resting begins: @FormatLocalTime(Schedule.RestingStartTime)
+                    </MudListItem>
+                </MudList>
+            }
+        }
+
+        @if (!string.IsNullOrEmpty(Error))
+        {
+            <MudAlert Severity="Severity.Error" Class="mt-3">@Error</MudAlert>
+        }
+    </MudPaper>
+}
+
+@code {
+    [Parameter] public RoastInputForm.RoastInputModel? LastInput { get; set; }
+
+    [Parameter] public RoastApiClient.CookingResultDto? Result { get; set; }
+
+    [Parameter] public bool IsLoading { get; set; }
+
+    [Parameter] public EventCallback<DateTimeOffset> OnPlanRequested { get; set; }
+
+    [Parameter] public RoastApiClient.ScheduleDto? Schedule { get; set; }
+
+    [Parameter] public string? Error { get; set; }
+
+    private DateTime? _servingDate = DateTime.Today.AddDays(1);
+    private TimeSpan? _servingTime = new(18, 0, 0);
+
+    private async Task OnPlan()
+    {
+        if (_servingDate is null || _servingTime is null)
+        {
+            return;
+        }
+
+        var servingDateTime = _servingDate.Value.Date.Add(_servingTime.Value);
+        var servingOffset = new DateTimeOffset(servingDateTime, TimeZoneInfo.Local.GetUtcOffset(servingDateTime));
+        await OnPlanRequested.InvokeAsync(servingOffset);
+    }
+
+    private static string FormatLocalTime(DateTimeOffset? value) =>
+        value?.ToLocalTime().ToString("HH:mm") ?? string.Empty;
+}

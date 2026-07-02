@@ -1,0 +1,43 @@
+@using MeatyTimes.Web.Services
+
+@if (Result is not null)
+{
+    <MudPaper Class="pa-4 roast-results" Elevation="2">
+        <MudText Typo="Typo.h6" GutterBottom="true">Roasting instructions</MudText>
+
+        <MudTimeline TimelinePosition="TimelinePosition.Start">
+            @foreach (var phase in Result.Phases.OrderBy(p => p.Order))
+            {
+                <MudTimelineItem Color="Color.Primary">
+                    <ItemContent>
+                        <MudText Typo="Typo.body1">
+                            <strong>Step @phase.Order:</strong> @phase.Description at @phase.TemperatureC°C for @FormatDuration(phase.DurationMinutes).
+                        </MudText>
+                    </ItemContent>
+                </MudTimelineItem>
+            }
+        </MudTimeline>
+
+        <MudDivider Class="my-3" />
+
+        <MudText Typo="Typo.body1"><strong>Total cooking:</strong> @FormatDuration(Result.TotalCookingMinutes)</MudText>
+        <MudText Typo="Typo.body1"><strong>Resting time:</strong> @FormatDuration(Result.RestingMinutes)</MudText>
+        <MudText Typo="Typo.h6" Class="mt-2"><strong>Total preparation:</strong> @FormatDuration(Result.TotalPreparationMinutes)</MudText>
+    </MudPaper>
+}
+
+@code {
+    [Parameter] public RoastApiClient.CookingResultDto? Result { get; set; }
+
+    private static string FormatDuration(int minutes)
+    {
+        if (minutes < 60)
+        {
+            return $"{minutes} minutes";
+        }
+
+        var hours = minutes / 60;
+        var remaining = minutes % 60;
+        return remaining == 0 ? $"{hours} hour{(hours == 1 ? "" : "s")}" : $"{hours} hour{(hours == 1 ? "" : "s")} {remaining} minutes";
+    }
+}

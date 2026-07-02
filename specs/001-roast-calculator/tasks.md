@@ -25,11 +25,11 @@
 
 **Purpose**: Create new projects and wire them into the solution
 
-- [ ] T001 Create MeatyTimes.Core class library at src/MeatyTimes.Core/MeatyTimes.Core.csproj targeting net10.0
-- [ ] T002 Create MeatyTimes.Core.Tests xUnit v3 project at tests/MeatyTimes.Core.Tests/MeatyTimes.Core.Tests.csproj with reference to src/MeatyTimes.Core/MeatyTimes.Core.csproj
-- [ ] T003 Add MeatyTimes.Core and MeatyTimes.Core.Tests to MeatyTimes.slnx
-- [ ] T004 [P] Add ProjectReference to MeatyTimes.Core in src/MeatyTimes.ApiService/MeatyTimes.ApiService.csproj
-- [ ] T005 [P] Configure src/MeatyTimes.Core/Rules/cooking-rules.json as embedded resource in src/MeatyTimes.Core/MeatyTimes.Core.csproj
+- [x] T001 Create MeatyTimes.Core class library at src/MeatyTimes.Core/MeatyTimes.Core.csproj targeting net10.0
+- [x] T002 Create MeatyTimes.Core.Tests xUnit v3 project at tests/MeatyTimes.Core.Tests/MeatyTimes.Core.Tests.csproj with reference to src/MeatyTimes.Core/MeatyTimes.Core.csproj
+- [x] T003 Add MeatyTimes.Core and MeatyTimes.Core.Tests to MeatyTimes.slnx
+- [x] T004 [P] Add ProjectReference to MeatyTimes.Core in src/MeatyTimes.ApiService/MeatyTimes.ApiService.csproj
+- [x] T005 [P] Configure src/MeatyTimes.Core/Rules/cooking-rules.json as embedded resource in src/MeatyTimes.Core/MeatyTimes.Core.csproj
 
 ---
 
@@ -39,13 +39,13 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T006 [P] Create domain enums (MeatTypeId, Doneness, CookingMethod) in src/MeatyTimes.Core/Domain/
-- [ ] T007 [P] Create domain records (RoastRequest, CookingPhase, CookingResult, CookingSchedule, MeatTypeInfo, CookingRule) in src/MeatyTimes.Core/Domain/
-- [ ] T008 [P] Create RoastValidationException and validation helpers in src/MeatyTimes.Core/Domain/RoastValidationException.cs
-- [ ] T009 Create cooking-rules.json with all 5 meats (beef, lamb, pork, chicken, gammon), documented source fields, and TraditionalRoast profiles in src/MeatyTimes.Core/Rules/cooking-rules.json
-- [ ] T010 Implement CookingRuleLoader to deserialize and validate rules at startup in src/MeatyTimes.Core/Rules/CookingRuleLoader.cs
-- [ ] T011 Register CookingRuleLoader as singleton and add ProblemDetails error handling in src/MeatyTimes.ApiService/Program.cs
-- [ ] T012 Create roast endpoint scaffold with route group prefix /api in src/MeatyTimes.ApiService/Endpoints/RoastEndpoints.cs
+- [x] T006 [P] Create domain enums (MeatTypeId, Doneness, CookingMethod) in src/MeatyTimes.Core/Domain/
+- [x] T007 [P] Create domain records (RoastRequest, CookingPhase, CookingResult, CookingSchedule, MeatTypeInfo, CookingRule) in src/MeatyTimes.Core/Domain/
+- [x] T008 [P] Create RoastValidationException and validation helpers in src/MeatyTimes.Core/Domain/RoastValidationException.cs
+- [x] T009 Create cooking-rules.json with all 5 meats (beef, lamb, pork, chicken, gammon), documented source fields, and TraditionalRoast profiles in src/MeatyTimes.Core/Rules/cooking-rules.json
+- [x] T010 Implement CookingRuleLoader to deserialize and validate rules at startup in src/MeatyTimes.Core/Rules/CookingRuleLoader.cs
+- [x] T011 Register CookingRuleLoader as singleton and add ProblemDetails error handling in src/MeatyTimes.ApiService/Program.cs
+- [x] T012 Create roast endpoint scaffold with route group prefix /api in src/MeatyTimes.ApiService/Endpoints/RoastEndpoints.cs
 
 **Checkpoint**: Foundation ready — domain types, rules, and API scaffold in place
 
@@ -61,22 +61,22 @@
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T013 [P] [US1] Add beef and lamb doneness unit tests (rare/medium/well-done, two-phase profiles) in tests/MeatyTimes.Core.Tests/RoastCalculatorBeefLambTests.cs
-- [ ] T014 [P] [US1] Add pork, chicken, and gammon unit tests (no doneness, safe-cook profiles) in tests/MeatyTimes.Core.Tests/RoastCalculatorOtherMeatsTests.cs
-- [ ] T015 [P] [US1] Add weight boundary and validation unit tests in tests/MeatyTimes.Core.Tests/RoastCalculatorValidationTests.cs
-- [ ] T016 [P] [US1] Add determinism unit test (same inputs → same outputs) in tests/MeatyTimes.Core.Tests/RoastCalculatorDeterminismTests.cs
+- [x] T013 [P] [US1] Add beef and lamb doneness unit tests (rare/medium/well-done, two-phase profiles) in tests/MeatyTimes.Core.Tests/RoastCalculatorBeefLambTests.cs
+- [x] T014 [P] [US1] Add pork, chicken, and gammon unit tests (no doneness, safe-cook profiles) in tests/MeatyTimes.Core.Tests/RoastCalculatorOtherMeatsTests.cs
+- [x] T015 [P] [US1] Add weight boundary and validation unit tests in tests/MeatyTimes.Core.Tests/RoastCalculatorValidationTests.cs
+- [x] T016 [P] [US1] Add determinism unit test (same inputs → same outputs) in tests/MeatyTimes.Core.Tests/RoastCalculatorDeterminismTests.cs
 
 ### Implementation for User Story 1
 
-- [ ] T017 [US1] Implement RoastCalculator with phased temperature logic, doneness adjustments, resting calculation, and required code comments in src/MeatyTimes.Core/Calculation/RoastCalculator.cs
-- [ ] T018 [US1] Implement GET /api/meats endpoint returning meat metadata and doneness options in src/MeatyTimes.ApiService/Endpoints/RoastEndpoints.cs
-- [ ] T019 [US1] Implement POST /api/roast/calculate endpoint with input validation and ProblemDetails errors in src/MeatyTimes.ApiService/Endpoints/RoastEndpoints.cs
-- [ ] T020 [P] [US1] Create RoastApiClient with GetMeatsAsync and CalculateAsync methods in src/MeatyTimes.Web/Services/RoastApiClient.cs
-- [ ] T021 [P] [US1] Create RoastInputForm component (meat select, weight field, conditional doneness) in src/MeatyTimes.Web/Components/Roast/RoastInputForm.razor
-- [ ] T022 [P] [US1] Create RoastResultsDisplay component (ordered steps, formatted durations) in src/MeatyTimes.Web/Components/Roast/RoastResultsDisplay.razor
-- [ ] T023 [US1] Create RoastCalculator page wiring form, calculate action, loading state, and error display in src/MeatyTimes.Web/Components/Pages/RoastCalculator.razor
-- [ ] T024 [US1] Register RoastApiClient HttpClient and map roast page as home route in src/MeatyTimes.Web/Program.cs
-- [ ] T025 [US1] Add API integration test for POST /api/roast/calculate in tests/MeatyTimes.Tests/RoastApiTests.cs
+- [x] T017 [US1] Implement RoastCalculator with phased temperature logic, doneness adjustments, resting calculation, and required code comments in src/MeatyTimes.Core/Calculation/RoastCalculator.cs
+- [x] T018 [US1] Implement GET /api/meats endpoint returning meat metadata and doneness options in src/MeatyTimes.ApiService/Endpoints/RoastEndpoints.cs
+- [x] T019 [US1] Implement POST /api/roast/calculate endpoint with input validation and ProblemDetails errors in src/MeatyTimes.ApiService/Endpoints/RoastEndpoints.cs
+- [x] T020 [P] [US1] Create RoastApiClient with GetMeatsAsync and CalculateAsync methods in src/MeatyTimes.Web/Services/RoastApiClient.cs
+- [x] T021 [P] [US1] Create RoastInputForm component (meat select, weight field, conditional doneness) in src/MeatyTimes.Web/Components/Roast/RoastInputForm.razor
+- [x] T022 [P] [US1] Create RoastResultsDisplay component (ordered steps, formatted durations) in src/MeatyTimes.Web/Components/Roast/RoastResultsDisplay.razor
+- [x] T023 [US1] Create RoastCalculator page wiring form, calculate action, loading state, and error display in src/MeatyTimes.Web/Components/Pages/RoastCalculator.razor
+- [x] T024 [US1] Register RoastApiClient HttpClient and map roast page as home route in src/MeatyTimes.Web/Program.cs
+- [x] T025 [US1] Add API integration test for POST /api/roast/calculate in tests/MeatyTimes.Tests/RoastApiTests.cs
 
 **Checkpoint**: User Story 1 fully functional — calculate flow works end-to-end via UI and API
 
@@ -92,16 +92,16 @@
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T026 [P] [US2] Add achievable schedule unit tests in tests/MeatyTimes.Core.Tests/ScheduleCalculatorTests.cs
-- [ ] T027 [P] [US2] Add unachievable schedule and earliest-serving-time unit tests in tests/MeatyTimes.Core.Tests/ScheduleCalculatorUnachievableTests.cs
+- [x] T026 [P] [US2] Add achievable schedule unit tests in tests/MeatyTimes.Core.Tests/ScheduleCalculatorTests.cs
+- [x] T027 [P] [US2] Add unachievable schedule and earliest-serving-time unit tests in tests/MeatyTimes.Core.Tests/ScheduleCalculatorUnachievableTests.cs
 
 ### Implementation for User Story 2
 
-- [ ] T028 [US2] Implement ScheduleCalculator with backwards time arithmetic from CookingResult in src/MeatyTimes.Core/Calculation/ScheduleCalculator.cs
-- [ ] T029 [US2] Implement POST /api/roast/schedule endpoint with future-time validation in src/MeatyTimes.ApiService/Endpoints/RoastEndpoints.cs
-- [ ] T030 [P] [US2] Add PlanScheduleAsync method to src/MeatyTimes.Web/Services/RoastApiClient.cs
-- [ ] T031 [US2] Create ServeAtPlanner component (datetime input, plan button, milestone display, unachievable warning) in src/MeatyTimes.Web/Components/Roast/ServeAtPlanner.razor
-- [ ] T032 [US2] Integrate ServeAtPlanner into src/MeatyTimes.Web/Components/Pages/RoastCalculator.razor below results section
+- [x] T028 [US2] Implement ScheduleCalculator with backwards time arithmetic from CookingResult in src/MeatyTimes.Core/Calculation/ScheduleCalculator.cs
+- [x] T029 [US2] Implement POST /api/roast/schedule endpoint with future-time validation in src/MeatyTimes.ApiService/Endpoints/RoastEndpoints.cs
+- [x] T030 [P] [US2] Add PlanScheduleAsync method to src/MeatyTimes.Web/Services/RoastApiClient.cs
+- [x] T031 [US2] Create ServeAtPlanner component (datetime input, plan button, milestone display, unachievable warning) in src/MeatyTimes.Web/Components/Roast/ServeAtPlanner.razor
+- [x] T032 [US2] Integrate ServeAtPlanner into src/MeatyTimes.Web/Components/Pages/RoastCalculator.razor below results section
 
 **Checkpoint**: User Stories 1 and 2 both work independently
 
@@ -115,10 +115,10 @@
 
 ### Implementation for User Story 3
 
-- [ ] T033 [P] [US3] Apply responsive MudGrid single-column layout for viewports under 600px in src/MeatyTimes.Web/Components/Pages/RoastCalculator.razor
-- [ ] T034 [P] [US3] Ensure full-width inputs and readable typography on small screens in src/MeatyTimes.Web/Components/Roast/RoastInputForm.razor
-- [ ] T035 [P] [US3] Ensure results and schedule sections wrap without overflow in src/MeatyTimes.Web/Components/Roast/RoastResultsDisplay.razor and src/MeatyTimes.Web/Components/Roast/ServeAtPlanner.razor
-- [ ] T036 [US3] Add accessibility labels and ErrorText on all form fields per contracts/ui-contract.md across src/MeatyTimes.Web/Components/Roast/
+- [x] T033 [P] [US3] Apply responsive MudGrid single-column layout for viewports under 600px in src/MeatyTimes.Web/Components/Pages/RoastCalculator.razor
+- [x] T034 [P] [US3] Ensure full-width inputs and readable typography on small screens in src/MeatyTimes.Web/Components/Roast/RoastInputForm.razor
+- [x] T035 [P] [US3] Ensure results and schedule sections wrap without overflow in src/MeatyTimes.Web/Components/Roast/RoastResultsDisplay.razor and src/MeatyTimes.Web/Components/Roast/ServeAtPlanner.razor
+- [x] T036 [US3] Add accessibility labels and ErrorText on all form fields per contracts/ui-contract.md across src/MeatyTimes.Web/Components/Roast/
 
 **Checkpoint**: All three user stories independently functional across device sizes
 
@@ -128,12 +128,12 @@
 
 **Purpose**: Cleanup, validation, and constitution compliance
 
-- [ ] T037 [P] Remove starter Counter and Weather pages and nav links from src/MeatyTimes.Web/Components/Layout/NavMenu.razor
-- [ ] T038 [P] Remove unused WeatherApiClient and sample API endpoints from src/MeatyTimes.Web/Program.cs and src/MeatyTimes.ApiService/Program.cs
-- [ ] T039 Update README.md with MeatyTimes purpose, run commands, and link to specs/001-roast-calculator/quickstart.md
-- [ ] T040 Run all quickstart.md validation scenarios and fix any failures
-- [ ] T041 Verify new abstractions satisfy Constitution Principle VI (no interfaces/factories beyond justified Core library split)
-- [ ] T042 Confirm every rule in src/MeatyTimes.Core/Rules/cooking-rules.json has a documented source reference per Principle V
+- [x] T037 [P] Remove starter Counter and Weather pages and nav links from src/MeatyTimes.Web/Components/Layout/NavMenu.razor
+- [x] T038 [P] Remove unused WeatherApiClient and sample API endpoints from src/MeatyTimes.Web/Program.cs and src/MeatyTimes.ApiService/Program.cs
+- [x] T039 Update README.md with MeatyTimes purpose, run commands, and link to specs/001-roast-calculator/quickstart.md
+- [x] T040 Run all quickstart.md validation scenarios and fix any failures
+- [x] T041 Verify new abstractions satisfy Constitution Principle VI (no interfaces/factories beyond justified Core library split)
+- [x] T042 Confirm every rule in src/MeatyTimes.Core/Rules/cooking-rules.json has a documented source reference per Principle V
 
 ---
 
