@@ -5,12 +5,11 @@ namespace MeatyTimes.Tests;
 
 public class RoastApiTests
 {
-    private static readonly TimeSpan DefaultTimeout = TimeSpan.FromSeconds(60);
-
     [Fact]
     public async Task Calculate_beef_returns_ok_with_phases()
     {
         var cancellationToken = TestContext.Current.CancellationToken;
+        var timeout = IntegrationTestDefaults.Timeout;
 
         var appHost = await DistributedApplicationTestingBuilder.CreateAsync<Projects.MeatyTimes_AppHost>(cancellationToken);
         appHost.Services.AddLogging(logging =>
@@ -19,16 +18,13 @@ public class RoastApiTests
             logging.AddFilter(appHost.Environment.ApplicationName, LogLevel.Debug);
             logging.AddFilter("Aspire.", LogLevel.Debug);
         });
-        appHost.Services.ConfigureHttpClientDefaults(clientBuilder =>
-        {
-            clientBuilder.AddStandardResilienceHandler();
-        });
+        IntegrationTestDefaults.ConfigureHttpClients(appHost.Services);
 
-        await using var app = await appHost.BuildAsync(cancellationToken).WaitAsync(DefaultTimeout, cancellationToken);
-        await app.StartAsync(cancellationToken).WaitAsync(DefaultTimeout, cancellationToken);
+        await using var app = await appHost.BuildAsync(cancellationToken).WaitAsync(timeout, cancellationToken);
+        await app.StartAsync(cancellationToken).WaitAsync(timeout, cancellationToken);
 
         var httpClient = app.CreateHttpClient("apiservice");
-        await app.ResourceNotifications.WaitForResourceHealthyAsync("apiservice", cancellationToken).WaitAsync(DefaultTimeout, cancellationToken);
+        await app.ResourceNotifications.WaitForResourceHealthyAsync("apiservice", cancellationToken).WaitAsync(timeout, cancellationToken);
 
         var response = await httpClient.PostAsJsonAsync(
             "/api/roast/calculate",
