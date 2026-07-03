@@ -32,8 +32,4 @@
     <PackageVersion Include="OpenTelemetry.Instrumentation.Runtime" Version="1.15.1" />
 
   </ItemGroup>
-
-  <ItemGroup>
-    <PackageVersion Include="Microsoft.OpenApi" Version="2.9.0" />
-  </ItemGroup>
 </Project>

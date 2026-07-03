@@ -19,7 +19,6 @@ updates:
         patterns:
           - "Microsoft.AspNetCore.*"
           - "Microsoft.Extensions.*"
-          - "Microsoft.OpenApi"
       opentelemetry-packages:
         patterns:
           - "OpenTelemetry.*"
