@@ -6,6 +6,7 @@
   <ItemGroup>
     <!-- Aspire -->
     <PackageVersion Include="Aspire.Hosting.Testing" Version="13.4.6" />
+    <PackageVersion Include="Microsoft.OpenApi" Version="2.7.5" />
 
     <!-- MudBlazor -->
     <PackageVersion Include="MudBlazor" Version="9.6.0" />
