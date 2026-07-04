@@ -39,7 +39,7 @@
                    aria-label="Doneness">
             @foreach (var option in SelectedMeat.DonenessOptions)
             {
-                <MudSelectItem Value="@option">@FormatDoneness(option)</MudSelectItem>
+                <MudSelectItem Value="@option">@RoastDisplayFormatting.FormatDoneness(option)</MudSelectItem>
             }
         </MudSelect>
     }
@@ -93,12 +93,6 @@
             _weightKg.Value,
             SelectedMeat?.SupportsDoneness == true ? _selectedDoneness : null));
     }
-
-    private static string FormatDoneness(string value) => value switch
-    {
-        "WellDone" => "Well Done",
-        _ => value,
-    };
 
     public sealed record RoastInputModel(string MeatType, decimal WeightKg, string? Doneness);
 }

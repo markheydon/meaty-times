@@ -25,9 +25,9 @@
 
 **Purpose**: Create the Blazor component test project and wire it into the solution
 
-- [ ] T001 Create MeatyTimes.Web.Tests xUnit v3 project at tests/MeatyTimes.Web.Tests/MeatyTimes.Web.Tests.csproj targeting net10.0 with ProjectReference to src/MeatyTimes.Web/MeatyTimes.Web.csproj
-- [ ] T002 Add bUnit, MudBlazor, and Microsoft.NET.Test.Sdk package references in tests/MeatyTimes.Web.Tests/MeatyTimes.Web.Tests.csproj
-- [ ] T003 Add tests/MeatyTimes.Web.Tests/MeatyTimes.Web.Tests.csproj to MeatyTimes.slnx
+- [x] T001 Create MeatyTimes.Web.Tests xUnit v3 project at tests/MeatyTimes.Web.Tests/MeatyTimes.Web.Tests.csproj targeting net10.0 with ProjectReference to src/MeatyTimes.Web/MeatyTimes.Web.csproj
+- [x] T002 Add bUnit, MudBlazor, and Microsoft.NET.Test.Sdk package references in tests/MeatyTimes.Web.Tests/MeatyTimes.Web.Tests.csproj
+- [x] T003 Add tests/MeatyTimes.Web.Tests/MeatyTimes.Web.Tests.csproj to MeatyTimes.slnx
 
 ---
 
@@ -37,8 +37,8 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T004 [P] Extract shared doneness and weight display formatting (e.g., `WellDone` → "Well Done", weight `0.0 kg`) into src/MeatyTimes.Web/Components/Roast/RoastDisplayFormatting.cs
-- [ ] T005 [P] Update src/MeatyTimes.Web/Components/Roast/RoastInputForm.razor to use RoastDisplayFormatting instead of inline FormatDoneness
+- [x] T004 [P] Extract shared doneness and weight display formatting (e.g., `WellDone` → "Well Done", weight `0.0 kg`) into src/MeatyTimes.Web/Components/Roast/RoastDisplayFormatting.cs
+- [x] T005 [P] Update src/MeatyTimes.Web/Components/Roast/RoastInputForm.razor to use RoastDisplayFormatting instead of inline FormatDoneness
 
 **Checkpoint**: Shared formatting ready — summary and form use consistent labels
 
@@ -54,16 +54,16 @@
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T006 [P] [US1] Add bUnit test fixture with MudBlazor services in tests/MeatyTimes.Web.Tests/RoastResultsDisplayTests.cs
-- [ ] T007 [P] [US1] Add test: summary renders meat type display name, weight, and doneness when result and input provided in tests/MeatyTimes.Web.Tests/RoastResultsDisplayTests.cs
-- [ ] T008 [P] [US1] Add test: doneness row hidden when meat SupportsDoneness is false in tests/MeatyTimes.Web.Tests/RoastResultsDisplayTests.cs
-- [ ] T009 [P] [US1] Add test: component renders nothing when Result is null in tests/MeatyTimes.Web.Tests/RoastResultsDisplayTests.cs
+- [x] T006 [P] [US1] Add bUnit test fixture with MudBlazor services in tests/MeatyTimes.Web.Tests/RoastResultsDisplayTests.cs
+- [x] T007 [P] [US1] Add test: summary renders meat type display name, weight, and doneness when result and input provided in tests/MeatyTimes.Web.Tests/RoastResultsDisplayTests.cs
+- [x] T008 [P] [US1] Add test: doneness row hidden when meat SupportsDoneness is false in tests/MeatyTimes.Web.Tests/RoastResultsDisplayTests.cs
+- [x] T009 [P] [US1] Add test: component renders nothing when Result is null in tests/MeatyTimes.Web.Tests/RoastResultsDisplayTests.cs
 
 ### Implementation for User Story 1
 
-- [ ] T010 [US1] Add `Input` and `Meats` parameters to src/MeatyTimes.Web/Components/Roast/RoastResultsDisplay.razor per data-model.md
-- [ ] T011 [US1] Render labelled input summary block (Meat type, Weight (kg), conditional Doneness) above "Roasting instructions" in src/MeatyTimes.Web/Components/Roast/RoastResultsDisplay.razor per contracts/ui-contract.md
-- [ ] T012 [US1] Pass `_lastInput` and `_meats` to RoastResultsDisplay in src/MeatyTimes.Web/Components/Pages/RoastCalculator.razor
+- [x] T010 [US1] Add `Input` and `Meats` parameters to src/MeatyTimes.Web/Components/Roast/RoastResultsDisplay.razor per data-model.md
+- [x] T011 [US1] Render labelled input summary block (Meat type, Weight (kg), conditional Doneness) above "Roasting instructions" in src/MeatyTimes.Web/Components/Roast/RoastResultsDisplay.razor per contracts/ui-contract.md
+- [x] T012 [US1] Pass `_lastInput` and `_meats` to RoastResultsDisplay in src/MeatyTimes.Web/Components/Pages/RoastCalculator.razor
 
 **Checkpoint**: User Story 1 complete — summary visible above instructions after successful calculate
 
@@ -79,14 +79,14 @@
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T013 [P] [US2] Add test: summary values derive from Input parameter not from mutable external state in tests/MeatyTimes.Web.Tests/RoastResultsDisplayTests.cs
-- [ ] T014 [P] [US2] Add test or page-level coverage: failed calculate preserves prior result display (document approach in test or manual quickstart Scenario 5) in tests/MeatyTimes.Web.Tests/RoastCalculatorPageTests.cs or tests/MeatyTimes.Web.Tests/RoastResultsDisplayTests.cs
+- [x] T013 [P] [US2] Add test: summary values derive from Input parameter not from mutable external state in tests/MeatyTimes.Web.Tests/RoastResultsDisplayTests.cs
+- [x] T014 [P] [US2] Add test or page-level coverage: failed calculate preserves prior result display (document approach in test or manual quickstart Scenario 5) in tests/MeatyTimes.Web.Tests/RoastCalculatorPageTests.cs or tests/MeatyTimes.Web.Tests/RoastResultsDisplayTests.cs
 
 ### Implementation for User Story 2
 
-- [ ] T015 [US2] Update HandleCalculate catch block to preserve `_result` and `_lastInput` when a prior successful calculation exists in src/MeatyTimes.Web/Components/Pages/RoastCalculator.razor per research.md decision 5
-- [ ] T016 [US2] Ensure `_lastInput` is only updated on successful calculate (not on failed attempts) in src/MeatyTimes.Web/Components/Pages/RoastCalculator.razor
-- [ ] T017 [US2] Keep existing results and summary visible during loading state (do not hide on recalculate) in src/MeatyTimes.Web/Components/Pages/RoastCalculator.razor per contracts/ui-contract.md States table
+- [x] T015 [US2] Update HandleCalculate catch block to preserve `_result` and `_lastInput` when a prior successful calculation exists in src/MeatyTimes.Web/Components/Pages/RoastCalculator.razor per research.md decision 5
+- [x] T016 [US2] Ensure `_lastInput` is only updated on successful calculate (not on failed attempts) in src/MeatyTimes.Web/Components/Pages/RoastCalculator.razor
+- [x] T017 [US2] Keep existing results and summary visible during loading state (do not hide on recalculate) in src/MeatyTimes.Web/Components/Pages/RoastCalculator.razor per contracts/ui-contract.md States table
 
 **Checkpoint**: User Stories 1 and 2 complete — stale-form confusion fixed end-to-end
 
@@ -100,8 +100,8 @@
 
 ### Implementation for User Story 3
 
-- [ ] T018 [P] [US3] Apply responsive summary layout (full-width stack, readable label/value spacing) in src/MeatyTimes.Web/Components/Roast/RoastResultsDisplay.razor
-- [ ] T019 [P] [US3] Verify summary does not overflow results column on narrow viewports in src/MeatyTimes.Web/Components/Pages/RoastCalculator.razor style block if needed
+- [x] T018 [P] [US3] Apply responsive summary layout (full-width stack, readable label/value spacing) in src/MeatyTimes.Web/Components/Roast/RoastResultsDisplay.razor
+- [x] T019 [P] [US3] Verify summary does not overflow results column on narrow viewports in src/MeatyTimes.Web/Components/Pages/RoastCalculator.razor style block if needed
 
 **Checkpoint**: All user stories independently functional across viewports
 
@@ -111,10 +111,10 @@
 
 **Purpose**: Validation, solution hygiene, and constitution compliance
 
-- [ ] T020 [P] Run `dotnet test MeatyTimes.slnx` and fix any failures across tests/MeatyTimes.Web.Tests/, tests/MeatyTimes.Core.Tests/, and tests/MeatyTimes.Tests/
-- [ ] T021 Run quickstart.md validation Scenarios 1–6 manually or document results in specs/002-result-input-summary/quickstart.md
-- [ ] T022 Verify no new abstractions beyond RoastDisplayFormatting satisfy Constitution Principle VI (Pragmatic Simplicity)
-- [ ] T023 Confirm ServeAtPlanner in src/MeatyTimes.Web/Components/Roast/ServeAtPlanner.razor requires no duplicate input summary per spec assumptions
+- [x] T020 [P] Run `dotnet test MeatyTimes.slnx` and fix any failures across tests/MeatyTimes.Web.Tests/, tests/MeatyTimes.Core.Tests/, and tests/MeatyTimes.Tests/
+- [x] T021 Run quickstart.md validation Scenarios 1–6 manually or document results in specs/002-result-input-summary/quickstart.md
+- [x] T022 Verify no new abstractions beyond RoastDisplayFormatting satisfy Constitution Principle VI (Pragmatic Simplicity)
+- [x] T023 Confirm ServeAtPlanner in src/MeatyTimes.Web/Components/Roast/ServeAtPlanner.razor requires no duplicate input summary per spec assumptions
 
 ---
 
