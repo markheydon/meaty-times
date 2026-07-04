@@ -12,6 +12,7 @@
     <PackageVersion Include="MudBlazor" Version="9.6.0" />
 
     <!-- Testing -->
+    <PackageVersion Include="bunit" Version="2.7.2" />
     <PackageVersion Include="coverlet.collector" Version="10.0.1" />
     <PackageVersion Include="FluentAssertions" Version="8.10.0" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.5" />

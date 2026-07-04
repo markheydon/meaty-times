@@ -33,7 +33,9 @@ else
                 <MudAlert Severity="Severity.Error" Class="mb-3">@_generalError</MudAlert>
             }
 
-            <RoastResultsDisplay Result="_result" />
+            <RoastResultsDisplay Result="_result"
+                                 Input="_lastInput"
+                                 Meats="_meats" />
 
             <ServeAtPlanner LastInput="_lastInput"
                             Result="_result"
@@ -78,15 +80,14 @@ else
         _donenessError = null;
         _schedule = null;
         _scheduleError = null;
-        _lastInput = input;
 
         try
         {
             _result = await RoastApi.CalculateAsync(input.MeatType, input.WeightKg, input.Doneness);
+            _lastInput = input;
         }
         catch (RoastApiException ex)
         {
-            _result = null;
             _weightError = ex.Errors.GetValueOrDefault("weightKg")?.FirstOrDefault();
             _donenessError = ex.Errors.GetValueOrDefault("doneness")?.FirstOrDefault();
             _generalError = ex.FirstError;
@@ -139,6 +140,11 @@ else
 
         .roast-schedule-inputs {
             flex-direction: column !important;
+        }
+
+        .roast-input-summary,
+        .roast-input-summary-row {
+            max-width: 100%;
         }
     }
 </style>

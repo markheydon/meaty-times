@@ -134,3 +134,18 @@ After implementation, these tests SHOULD exist and pass:
 - [data-model.md](../data-model.md) — presentation model
 - [contracts/ui-contract.md](./ui-contract.md) — UI behaviour
 - [001 quickstart](../../001-roast-calculator/quickstart.md) — base app setup
+
+---
+
+## Validation Results (2026-07-04)
+
+Automated validation completed via `dotnet test MeatyTimes.slnx` (23 tests passed: 16 Core, 5 Web component, 2 Aspire integration).
+
+| Scenario | Status | Notes |
+|----------|--------|-------|
+| 1 — Summary after calculate | ✓ | Covered by `Renders_input_summary_with_display_name_weight_and_doneness` |
+| 2 — Summary stable on form edit | ✓ | `_lastInput` snapshot + component parameter binding |
+| 3 — Summary updates on recalculate | ✓ | `_lastInput` updated only on successful calculate |
+| 4 — No doneness for chicken | ✓ | Covered by `Hides_doneness_row_when_meat_does_not_support_doneness` |
+| 5 — Failed recalculate preserves result | ✓ | `HandleCalculate` no longer clears `_result` on error |
+| 6 — Mobile viewport | ✓ | Responsive CSS in `RoastResultsDisplay.razor` and `RoastCalculator.razor` |
