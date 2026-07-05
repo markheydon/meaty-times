@@ -1,0 +1,37 @@
+title: Meaty Times
+description: Cooking timings and temperatures for roasting meat at home
+url: https://markheydon.me.uk
+baseurl: /meaty-times
+
+theme: minima
+
+header_pages:
+  - index.md
+  - help/index.md
+  - support/index.md
+  - privacy/index.md
+
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+  - jekyll-seo-tag
+
+markdown: kramdown
+kramdown:
+  input: GFM
+
+author:
+  name: Mark Heydon
+  url: "https://github.com/markheydon"
+
+github:
+  username: markheydon
+  repository: meaty-times
+  is_project_page: false
+
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: page
+      image: /assets/images/calculator-results.png
