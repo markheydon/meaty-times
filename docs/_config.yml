@@ -1,8 +1,12 @@
+# Site settings
 title: Meaty Times
 description: Cooking timings and temperatures for roasting meat at home
-url: https://markheydon.me.uk
-baseurl: /meaty-times
+url: https://meatytimes.markheydon.me.uk
 
+# Language (UK English)
+lang: en-GB
+
+# Theme
 theme: minima
 
 header_pages:
@@ -22,7 +26,7 @@ kramdown:
 
 author:
   name: Mark Heydon
-  url: "https://github.com/markheydon"
+  url: https://github.com/markheydon
 
 github:
   username: markheydon
