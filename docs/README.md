@@ -1,5 +1,5 @@
 # End-user docs
 
-Placeholder for end-user documentation. This will be the main entry point for users looking for information on how to use the project. No technical or implementation details will be included here, as this is intended for end-users only.
+This directory is reserved for end-user facing documentation only. It is the source for the GitHub Pages site at `https://markheydon.me.uk` and should contain friendly guidance for people using Meaty Times.
 
-Internal documentation is available in the `docs/internal` directory, which contains more technical information for developers and contributors.
+Please keep this folder focused on user help, privacy information, support guidance, and other end-user content. Technical or contributor documentation belongs in `docs-internal/` or the repository root.

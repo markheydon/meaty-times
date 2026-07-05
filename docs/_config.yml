@@ -1,0 +1,23 @@
+title: Meaty Times
+description: Friendly roast cooking guidance for home cooks, with timings, temperatures, and serve-at planning.
+url: https://markheydon.me.uk
+baseurl: ""
+
+theme: minima
+
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+
+header_pages:
+  - index.md
+  - help/index.md
+  - privacy/index.md
+  - support/index.md
+
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: default
+      image: /assets/images/meaty-times-preview.svg

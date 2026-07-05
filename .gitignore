@@ -193,6 +193,13 @@ AutoTest.Net/
 # Web workbench (sass)
 .sass-cache/
 
+# Jekyll site output
+_site/
+.jekyll-cache/
+.jekyll-metadata
+.bundle/
+vendor/
+
 # Installshield output folder
 [Ee]xpress/
 
