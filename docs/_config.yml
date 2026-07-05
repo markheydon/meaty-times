@@ -7,35 +7,22 @@ url: https://meatytimes.markheydon.me.uk
 lang: en-GB
 
 # Theme
-theme: minima
+theme: cayman
 
-header_pages:
-  - index.md
-  - help/index.md
-  - support/index.md
-  - privacy/index.md
-
+# Plugins
 plugins:
   - jekyll-feed
   - jekyll-sitemap
   - jekyll-seo-tag
 
+# Markdown settings
 markdown: kramdown
 kramdown:
   input: GFM
 
-author:
-  name: Mark Heydon
-  url: https://github.com/markheydon
-
-github:
-  username: markheydon
-  repository: meaty-times
-  is_project_page: false
-
+# Defaults for front matter
 defaults:
   - scope:
       path: ""
     values:
-      layout: page
       image: /assets/images/calculator-results.png

@@ -6,6 +6,8 @@ permalink: /
 
 Meaty Times is a free, simple cooking assistant for roasting joints of meat. Tell it what you are cooking, how much it weighs, and how you like it done — and it gives you clear oven temperatures, cooking times, resting guidance, and optional serve-at scheduling so your roast is ready when you want to eat.
 
+[Try Meaty Times](https://webfrontend.yellowcoast-79687552.ukwest.azurecontainerapps.io/)
+
 ## Why use Meaty Times?
 
 - **No accounts** — open the calculator and get answers straight away.
