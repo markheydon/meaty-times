@@ -1,6 +1,8 @@
 ---
 name: repo-readme-generator
 description: 'Intelligent README.md generation prompt that analyses MeatyTimes project documentation and creates comprehensive repository documentation. Scans Spec Kit artefacts, constitution, and source layout to extract project purpose, technology stack, architecture, development workflow, coding standards, and testing approaches.'
+model: MAI-Code-1-Flash
+tools: [execute, read, edit, search, web, agent, todo]
 ---
 
 # README Generator Prompt
