@@ -21,6 +21,8 @@ bug fixes, new features, documentation, tests, or cooking-rule improvements.
    dotnet test
    ```
 
+   Test projects: `MeatyTimes.Core.Tests` (domain logic), `MeatyTimes.Web.Tests` (Blazor components), `MeatyTimes.AppHost.Tests` (full-stack Aspire integration).
+
 CI on `main` also runs `dotnet format --verify-no-changes`, so formatting should pass locally.
 
 ## Pull Requests

@@ -6,7 +6,7 @@
 
 MeatyTimes is a simple cooking assistant for roasting joints of meat. It turns meat type, weight, and doneness into clear roasting instructions, and it can also calculate a backwards serve-at schedule so a roast fits around a meal.
 
-## Project name and description
+## Project Name and Description
 
 MeatyTimes is a lightweight web app for home cooks who want reliable roasting guidance without searching cookbooks or the web. The current scope is centred on the roast calculator experience described in [specs/001-roast-calculator/spec.md](specs/001-roast-calculator/spec.md): support for beef, lamb, pork, chicken, and gammon; weight-based calculations; doneness handling where appropriate; and a responsive experience for mobile, tablet, and desktop.
 
@@ -58,11 +58,13 @@ dotnet run --project src/MeatyTimes.AppHost
 
 Then open the webfrontend endpoint shown in the Aspire dashboard.
 
-## Project structure
+## Project Structure
 
 - [src](src) — application projects for the AppHost, API, web UI, core logic, and shared defaults
-- [tests](tests) — unit tests in [tests/MeatyTimes.Core.Tests](tests/MeatyTimes.Core.Tests) and Aspire integration tests in [tests/MeatyTimes.Tests](tests/MeatyTimes.Tests)
+- [tests](tests) — [MeatyTimes.Core.Tests](tests/MeatyTimes.Core.Tests) (domain unit tests), [MeatyTimes.Web.Tests](tests/MeatyTimes.Web.Tests) (Blazor component tests), and [MeatyTimes.AppHost.Tests](tests/MeatyTimes.AppHost.Tests) (Aspire integration tests)
 - [specs](specs) — feature specifications, implementation plans, and quickstarts
+- [docs](docs) — end-user documentation and guidance for how the project is presented
+- [docs-internal](docs-internal) — contributor and developer documentation for internal workflows
 - [.specify](.specify) — project constitution and Spec Kit configuration
 - [.github](.github) — CI workflow, prompts, and repository automation
 

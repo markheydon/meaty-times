@@ -68,3 +68,47 @@ jobs:
 
       - name: Build solution
         run: dotnet build MeatyTimes.slnx --no-restore
+
+      - name: Run unit and component tests
+        run: |
+          dotnet test tests/MeatyTimes.Core.Tests/MeatyTimes.Core.Tests.csproj --no-build --verbosity normal
+          dotnet test tests/MeatyTimes.Web.Tests/MeatyTimes.Web.Tests.csproj --no-build --verbosity normal
+
+      - name: Trust ASP.NET HTTPS development certificate
+        env:
+          WSL_INTEROP: ""
+        run: |
+          dotnet dev-certs https --clean
+          EXIT_CODE=0
+          dotnet dev-certs https --trust || EXIT_CODE=$?
+          if [ $EXIT_CODE -ne 0 ] && [ $EXIT_CODE -ne 4 ]; then
+            echo "dotnet dev-certs https --trust failed with exit code $EXIT_CODE"
+            exit $EXIT_CODE
+          fi
+          echo "SSL_CERT_DIR=$HOME/.aspnet/dev-certs/trust:/etc/ssl/certs" >> "$GITHUB_ENV"
+
+      - name: Run Aspire integration tests
+        id: integration-tests
+        run: dotnet test tests/MeatyTimes.AppHost.Tests/MeatyTimes.AppHost.Tests.csproj --no-build --verbosity normal
+        timeout-minutes: 15
+        env:
+          SSL_CERT_DIR: ${{ env.SSL_CERT_DIR }}
+          # Optional: enable when tests provision or call Azure resources
+          # AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          # AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          # AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+          # AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Collect DCP logs on integration test failure
+        if: failure() && steps.integration-tests.conclusion == 'failure'
+        run: |
+          mkdir -p TestResults/DCPLogs
+          cp -r "${TMPDIR:-/tmp}/dcp/logs/"* TestResults/DCPLogs/ 2>/dev/null || true
+
+      - name: Upload DCP logs
+        if: failure() && steps.integration-tests.conclusion == 'failure'
+        uses: actions/upload-artifact@v4
+        with:
+          name: dcp-logs
+          path: TestResults/DCPLogs
+          if-no-files-found: ignore
