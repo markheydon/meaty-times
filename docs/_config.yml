@@ -1,8 +1,7 @@
 title: Meaty Times
 description: Cooking timings and temperatures for roasting meat at home
-url: "https://markheydon.me.uk"
-baseurl: ""
-repository: markheydon/meaty-times
+url: https://markheydon.me.uk
+baseurl: /meaty-times
 
 theme: minima
 

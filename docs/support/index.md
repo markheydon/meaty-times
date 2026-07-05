@@ -59,7 +59,7 @@ Cooking-rule changes should include a documented source and unit tests. See `CON
 
 | Site | Audience |
 |------|----------|
-| **This site** ([markheydon.me.uk](https://markheydon.me.uk)) | End users — help, privacy, support |
+| **This site** | End users — help, privacy, support |
 | [Repository README](https://github.com/markheydon/meaty-times#readme) | Developers — stack, architecture, local run |
 | [`docs-internal/`](https://github.com/markheydon/meaty-times/tree/main/docs-internal) | Contributors — internal technical notes |
 

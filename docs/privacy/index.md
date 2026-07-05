@@ -15,7 +15,7 @@ Meaty Times is a free, open-source hobby project maintained by [Mark Heydon](htt
 - **No tracking cookies** are used on this documentation site.
 - **No analytics** are collected unless explicitly added in a future release (this page will be updated if that changes).
 
-## Documentation site (markheydon.me.uk)
+## Documentation site
 
 This website is a static site generated with Jekyll and hosted on GitHub Pages. When you visit:
 
