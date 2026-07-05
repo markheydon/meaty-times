@@ -5,7 +5,8 @@ namespace MeatyTimes.Tests;
 
 public class RoastApiTests
 {
-    private static readonly TimeSpan DefaultTimeout = TimeSpan.FromSeconds(60);
+    private static readonly bool IsRunningInCi = !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("CI"));
+    private static readonly TimeSpan DefaultTimeout = IsRunningInCi ? TimeSpan.FromMinutes(5) : TimeSpan.FromSeconds(60);
 
     [Fact]
     public async Task Calculate_beef_returns_ok_with_phases()
@@ -41,4 +42,5 @@ public class RoastApiTests
         Assert.Contains("phases", json, StringComparison.OrdinalIgnoreCase);
         Assert.Contains("totalCookingMinutes", json, StringComparison.OrdinalIgnoreCase);
     }
+
 }

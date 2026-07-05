@@ -68,3 +68,7 @@ jobs:
 
       - name: Build solution
         run: dotnet build MeatyTimes.slnx --no-restore
+
+      - name: Run tests
+        run: dotnet test MeatyTimes.slnx --no-build --verbosity normal
+        timeout-minutes: 10

@@ -4,7 +4,8 @@ namespace MeatyTimes.Tests;
 
 public class WebTests
 {
-    private static readonly TimeSpan DefaultTimeout = TimeSpan.FromSeconds(30);
+    private static readonly bool IsRunningInCi = !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("CI"));
+    private static readonly TimeSpan DefaultTimeout = IsRunningInCi ? TimeSpan.FromMinutes(5) : TimeSpan.FromSeconds(30);
 
     [Fact]
     public async Task GetWebResourceRootReturnsOkStatusCode()
@@ -37,4 +38,5 @@ public class WebTests
         // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
+
 }
