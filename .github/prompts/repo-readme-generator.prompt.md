@@ -23,6 +23,8 @@ Generate a comprehensive README.md for the **MeatyTimes** repository by analysin
    - `.github/copilot-instructions.md` (if present)
    - `AGENTS.md` (if present)
    - `CONTRIBUTING.md` (if present)
+   - `docs/README.md` and relevant files under `docs/` for user-facing context when present
+   - `docs-internal/README.md` and relevant files under `docs-internal/` for contributor/developer context when present
 
 3. Create a README.md with the following sections, grounding each section in the sources above (and broader repository files where relevant).
 
@@ -59,8 +61,10 @@ Generate a comprehensive README.md for the **MeatyTimes** repository by analysin
 ## Project Structure
 - Brief overview of repository layout:
   - `src/` — application projects
-  - `tests/` — `MeatyTimes.Core.Tests` (unit) and `MeatyTimes.Tests` (Aspire integration)
+  - `tests/` — `MeatyTimes.Core.Tests` (unit), `MeatyTimes.Web.Tests` (Blazor), and `MeatyTimes.AppHost.Tests` (Aspire integration)
   - `specs/` — Spec Kit feature specifications and plans
+  - `docs/` — end-user documentation that can inform how the project is presented
+  - `docs-internal/` — internal contributor documentation that can inform development guidance
   - `.specify/` — project constitution and Spec Kit configuration
   - `.github/` — CI, Dependabot, and prompts
 
