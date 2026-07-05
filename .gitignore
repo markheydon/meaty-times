@@ -421,9 +421,18 @@ FodyWeavers.xsd
 # Built Visual Studio Code Extensions
 *.vsix
 
+# Jekyll (GitHub Pages local preview in docs/)
+docs/_site/
+docs/.jekyll-cache/
+docs/.sass-cache/
+docs/vendor/
+
 # Windows Installer files from build outputs
 *.cab
 *.msi
 *.msix
 *.msm
 *.msp
+
+# Playwright files
+.playwright-cli/*.yml
