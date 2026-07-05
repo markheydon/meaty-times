@@ -4,21 +4,21 @@
 [![.NET](https://img.shields.io/badge/.NET-10.0.301-512BD4?logo=dotnet)](https://dotnet.microsoft.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-MeatyTimes is a simple cooking assistant for roasting joints of meat. It helps home cooks turn meat type, weight, and doneness into clear roasting instructions, and it can also calculate a backwards serve-at schedule so cooking can be timed around a meal.
+MeatyTimes is a simple cooking assistant for roasting joints of meat. It turns meat type, weight, and doneness into clear roasting instructions, and it can also calculate a backwards serve-at schedule so a roast fits around a meal.
 
-## Project overview
+## Project name and description
 
-The current feature set is focused on the roast calculator experience described in [specs/001-roast-calculator/spec.md](specs/001-roast-calculator/spec.md): support for beef, lamb, pork, chicken, and gammon; weight-based calculations; doneness handling where appropriate; and a responsive web experience for mobile, tablet, and desktop.
+MeatyTimes is a lightweight web app for home cooks who want reliable roasting guidance without searching cookbooks or the web. The current scope is centred on the roast calculator experience described in [specs/001-roast-calculator/spec.md](specs/001-roast-calculator/spec.md): support for beef, lamb, pork, chicken, and gammon; weight-based calculations; doneness handling where appropriate; and a responsive experience for mobile, tablet, and desktop.
 
 ## Technology stack
 
 MeatyTimes is built with a modern .NET web stack:
 
 - .NET SDK 10.0.301 via [global.json](global.json)
-- C# and ASP.NET Core
+- C# and ASP.NET Core minimal APIs
 - Blazor Server with MudBlazor
 - .NET Aspire for local orchestration and service discovery
-- xUnit v3 for automated testing
+- xUnit v3 for automated testing, with Aspire hosting testing support
 - Central package management through [Directory.Packages.props](Directory.Packages.props)
 
 Key package versions currently in use include:
@@ -35,11 +35,11 @@ The repository is organised as a distributed application:
 
 - [src/MeatyTimes.AppHost](src/MeatyTimes.AppHost) — Aspire orchestration for the UI, API, and shared defaults
 - [src/MeatyTimes.ApiService](src/MeatyTimes.ApiService) — minimal API endpoints for roast calculation and scheduling
-- [src/MeatyTimes.Core](src/MeatyTimes.Core) — domain models, cooking rules, and calculation engine
+- [src/MeatyTimes.Core](src/MeatyTimes.Core) — domain models, cooking rules, and the calculation engine
 - [src/MeatyTimes.Web](src/MeatyTimes.Web) — MudBlazor-based Blazor UI
 - [src/MeatyTimes.ServiceDefaults](src/MeatyTimes.ServiceDefaults) — OpenTelemetry and health-check defaults
 
-The feature design and contracts for this architecture live under [specs/001-roast-calculator](specs/001-roast-calculator).
+The design and contracts for this architecture live under [specs/001-roast-calculator](specs/001-roast-calculator), including the implementation plan, data model, and API/UI contracts.
 
 ## Getting started
 
@@ -77,9 +77,9 @@ Then open the webfrontend endpoint shown in the Aspire dashboard.
 
 Feature work in this repository follows the Spec Kit workflow described in [specs/001-roast-calculator/tasks.md](specs/001-roast-calculator/tasks.md) and the project constitution in [.specify/memory/constitution.md](.specify/memory/constitution.md):
 
-- Create or update specs with the Spec Kit commands
-- Use feature branches in the form NNN-short-name
-- Keep cooking-critical logic well documented and covered by tests
+- Use the Spec Kit commands /speckit-specify, /speckit-plan, /speckit-tasks, and /speckit-implement for feature work
+- Keep feature branches in the form NNN-short-name
+- Follow the constitution’s quality gates for testing, UX, security, cooking accuracy, and simplicity
 
 ## Coding standards
 
@@ -88,7 +88,7 @@ The constitution in [.specify/memory/constitution.md](.specify/memory/constituti
 - Domain logic belongs in [src/MeatyTimes.Core](src/MeatyTimes.Core)
 - Cooking-critical rules should be clearly commented and easy to audit
 - Calculation changes require unit tests before merge
-- Deterministic rules should remain documented and traceable
+- Deterministic rules should remain documented and traceable through [src/MeatyTimes.Core/Rules/cooking-rules.json](src/MeatyTimes.Core/Rules/cooking-rules.json)
 
 ## Testing
 
@@ -103,6 +103,8 @@ Run the full suite, including Aspire integration tests:
 ```powershell
 dotnet test
 ```
+
+Cooking-critical behaviour should be covered by outcome-named tests and verified before merge.
 
 ## Contributing
 

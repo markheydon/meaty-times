@@ -1,0 +1,24 @@
+{
+    "name": "Meaty Times",
+
+    "image": "mcr.microsoft.com/devcontainers/dotnet:dev-10.0-noble",
+
+    "features": {
+        "ghcr.io/microsoft/aspire-devcontainer-feature/aspire:2": {},
+        "ghcr.io/devcontainers/features/github-cli:1": {}
+    },
+
+    "postCreateCommand": "dotnet restore",
+    "postStartCommand": "dotnet dev-certs https --trust",
+
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-dotnettools.csdevkit",
+                "microsoft-aspire.aspire-vscode",
+                "GitHub.copilot",
+                "GitHub.copilot-chat"
+            ]
+        }
+    }
+}

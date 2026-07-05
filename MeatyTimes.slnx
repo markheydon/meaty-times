@@ -6,4 +6,5 @@
   <Project Path="src/MeatyTimes.Web/MeatyTimes.Web.csproj" />
   <Project Path="tests/MeatyTimes.Core.Tests/MeatyTimes.Core.Tests.csproj" />
   <Project Path="tests/MeatyTimes.Tests/MeatyTimes.Tests.csproj" />
+  <Project Path="tests/MeatyTimes.Web.Tests/MeatyTimes.Web.Tests.csproj" />
 </Solution>

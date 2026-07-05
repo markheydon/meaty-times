@@ -1,8 +1,27 @@
 @using MeatyTimes.Web.Services
 
-@if (Result is not null)
+@if (Result is not null && Input is not null)
 {
     <MudPaper Class="pa-4 roast-results" Elevation="2">
+        <MudText Typo="Typo.subtitle2" Class="mb-2 roast-input-summary-heading">Calculation for</MudText>
+
+        <MudStack Spacing="1" Class="mb-4 roast-input-summary">
+            <MudText Typo="Typo.body1" Class="roast-input-summary-row">
+                <strong>Meat type:</strong> @MeatDisplayName
+            </MudText>
+            <MudText Typo="Typo.body1" Class="roast-input-summary-row">
+                <strong>Weight (kg):</strong> @RoastDisplayFormatting.FormatWeightKg(Input.WeightKg)
+            </MudText>
+            @if (ShowDoneness)
+            {
+                <MudText Typo="Typo.body1" Class="roast-input-summary-row">
+                    <strong>Doneness:</strong> @RoastDisplayFormatting.FormatDoneness(Input.Doneness!)
+                </MudText>
+            }
+        </MudStack>
+
+        <MudDivider Class="mb-3" />
+
         <MudText Typo="Typo.h6" GutterBottom="true">Roasting instructions</MudText>
 
         <MudTimeline TimelinePosition="TimelinePosition.Start">
@@ -29,6 +48,17 @@
 @code {
     [Parameter] public RoastApiClient.CookingResultDto? Result { get; set; }
 
+    [Parameter] public RoastInputForm.RoastInputModel? Input { get; set; }
+
+    [Parameter] public IReadOnlyList<RoastApiClient.MeatTypeDto> Meats { get; set; } = [];
+
+    private RoastApiClient.MeatTypeDto? SelectedMeat =>
+        Meats.FirstOrDefault(m => m.Id == Input?.MeatType);
+
+    private string MeatDisplayName => SelectedMeat?.DisplayName ?? Input?.MeatType ?? string.Empty;
+
+    private bool ShowDoneness => SelectedMeat?.SupportsDoneness == true && Input?.Doneness is not null;
+
     private static string FormatDuration(int minutes)
     {
         if (minutes < 60)
@@ -41,3 +71,21 @@
         return remaining == 0 ? $"{hours} hour{(hours == 1 ? "" : "s")}" : $"{hours} hour{(hours == 1 ? "" : "s")} {remaining} minutes";
     }
 }
+
+<style>
+    .roast-input-summary {
+        width: 100%;
+    }
+
+    .roast-input-summary-row {
+        word-break: break-word;
+    }
+
+    @@media (max-width: 600px) {
+        .roast-input-summary,
+        .roast-input-summary-row {
+            width: 100%;
+            max-width: 100%;
+        }
+    }
+</style>
