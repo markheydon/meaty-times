@@ -7,7 +7,7 @@ url: https://meatytimes.markheydon.me.uk
 lang: en-GB
 
 # Theme
-theme: cayman
+theme: jekyll-theme-cayman
 
 # Plugins
 plugins:
