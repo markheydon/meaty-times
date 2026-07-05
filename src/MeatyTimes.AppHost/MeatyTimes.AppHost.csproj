@@ -13,4 +13,8 @@
     <ProjectReference Include="..\MeatyTimes.Web\MeatyTimes.Web.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Aspire.Hosting.Azure.AppContainers" />
+  </ItemGroup>
+
 </Project>
