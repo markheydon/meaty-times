@@ -8,7 +8,7 @@ This guide explains how to use the Meaty Times roast calculator and serve-at pla
 
 ## Getting started
 
-1. Open the Meaty Times web application (see the [repository on GitHub](https://github.com/markheydon/meaty-times) for how to run it locally or check releases for a hosted instance).
+1. Open the [Meaty Times](https://webfrontend.yellowcoast-79687552.ukwest.azurecontainerapps.io/) web app.
 2. On the main **Roast details** form, choose your **meat type** and enter the **weight in kilograms**.
 3. If **Doneness** appears, select how you would like the joint cooked.
 4. Tap **Calculate** to see roasting instructions.

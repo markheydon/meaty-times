@@ -21,7 +21,7 @@ This website is a static site generated with Jekyll and hosted on GitHub Pages. 
 
 - Pages are served as ordinary HTML and assets.
 - This site does not set tracking cookies or run third-party analytics scripts.
-- GitHub Pages and your browser may handle standard web delivery (for example HTTPS certificates and basic access logs on GitHub’s infrastructure). Meaty Times does not receive or process those logs directly.
+- GitHub Pages and your browser may handle standard web delivery (for example HTTPS certificates and basic access logs on GitHub's infrastructure). Meaty Times does not receive or process those logs directly.
 
 ## Meaty Times web application
 
@@ -29,7 +29,7 @@ The roast calculator is separate software that may be hosted on a different doma
 
 - You are **not** asked to create an account or provide personal details to calculate a roast.
 - Roast inputs (meat type, weight, doneness, serving time) are used to produce a result and are **not persisted** as user profiles or history by the application logic.
-- Depending on where the app is hosted, the hosting provider may record routine server logs (such as IP address, request time, and user agent). Those logs are governed by the host’s policies, not by this documentation site.
+- Depending on where the app is hosted, the hosting provider may record routine server logs (such as IP address, request time, and user agent). Those logs are governed by the host's policies, not by this documentation site.
 
 ## Cookies
 
@@ -41,7 +41,7 @@ If the web application uses cookies in a future release (for example for essenti
 
 This site may link to GitHub and other external services. Those sites have their own privacy policies.
 
-## Children’s privacy
+## Children's privacy
 
 Meaty Times is a general cooking tool and is not directed at children. No personal information is knowingly collected from anyone.
 

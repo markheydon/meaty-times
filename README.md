@@ -81,7 +81,7 @@ Feature work in this repository follows the Spec Kit workflow described in [spec
 
 - Use the Spec Kit commands /speckit-specify, /speckit-plan, /speckit-tasks, and /speckit-implement for feature work
 - Keep feature branches in the form NNN-short-name
-- Follow the constitution’s quality gates for testing, UX, security, cooking accuracy, and simplicity
+- Follow the constitution's quality gates for testing, UX, security, cooking accuracy, and simplicity
 
 ## Coding standards
 
