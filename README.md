@@ -61,7 +61,7 @@ Then open the webfrontend endpoint shown in the Aspire dashboard.
 ## Project structure
 
 - [src](src) — application projects for the AppHost, API, web UI, core logic, and shared defaults
-- [tests](tests) — unit tests in [tests/MeatyTimes.Core.Tests](tests/MeatyTimes.Core.Tests) and Aspire integration tests in [tests/MeatyTimes.Tests](tests/MeatyTimes.Tests)
+- [tests](tests) — [MeatyTimes.Core.Tests](tests/MeatyTimes.Core.Tests) (domain unit tests), [MeatyTimes.Web.Tests](tests/MeatyTimes.Web.Tests) (Blazor component tests), and [MeatyTimes.AppHost.Tests](tests/MeatyTimes.AppHost.Tests) (Aspire integration tests)
 - [specs](specs) — feature specifications, implementation plans, and quickstarts
 - [.specify](.specify) — project constitution and Spec Kit configuration
 - [.github](.github) — CI workflow, prompts, and repository automation

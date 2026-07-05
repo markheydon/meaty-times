@@ -1,25 +1,39 @@
-# CI Azure credentials for Aspire tests
+# CI requirements for Aspire integration tests
 
-The GitHub Actions workflow in [.github/workflows/ci.yml](../.github/workflows/ci.yml) relies on the standard GitHub Actions environment for the test run.
+The GitHub Actions workflow in [.github/workflows/ci.yml](../.github/workflows/ci.yml) runs unit tests and Aspire AppHost integration tests on `ubuntu-latest`.
 
-GitHub Actions already sets `CI=true` automatically for workflow jobs, so the workflow does not need to set that variable explicitly.
+## HTTPS development certificate (required)
 
-The Azure-related variables below are only relevant if the Aspire/AppHost path needs to authenticate to Azure resources in a future scenario:
+Aspire integration tests start the full AppHost and probe child services over HTTPS. On Linux CI runners the ASP.NET Core development certificate must be trusted before integration tests run.
 
-- `AZURE_CLIENT_ID`
-- `AZURE_TENANT_ID`
-- `AZURE_CLIENT_SECRET`
-- `AZURE_SUBSCRIPTION_ID`
+The workflow:
 
-Their details have been left here for the time being, but they are not required for the current workflow to run the build and test steps. The workflow will still run successfully without them.
+1. Runs `MeatyTimes.Core.Tests` and `MeatyTimes.Web.Tests` first (no AppHost).
+2. Cleans and trusts the dev certificate via `dotnet dev-certs https --clean` and `dotnet dev-certs https --trust`.
+3. Sets `SSL_CERT_DIR` to `$HOME/.aspnet/dev-certs/trust:/etc/ssl/certs`.
+4. Runs [`tests/MeatyTimes.AppHost.Tests`](../tests/MeatyTimes.AppHost.Tests/) only after cert trust succeeds.
 
-## Why these variables exist
+Without this step, `StartAsync` times out because `apiservice` never becomes healthy and `webfrontend` (which `WaitFor`s the API) never starts. See [AGENTS.md](../AGENTS.md) and [Aspire troubleshooting: untrusted localhost certificate](https://learn.microsoft.com/en-us/dotnet/aspire/troubleshooting/untrusted-localhost-certificate).
 
-MeatyTimes uses Aspire and the AppHost is configured with Azure Container Apps-related behavior. If future tests or AppHost scenarios need to provision or call Azure resources, the Azure SDK can use the standard environment-variable pattern for authentication.
+On .NET SDK 10.x, `dotnet dev-certs https --trust` may exit with code `4` (partial trust) even when the certificate is usable. The workflow treats exit codes `0` and `4` as success.
 
-For the current test suite, the main requirement is to make the AppHost integration tests reliable in CI by giving them enough timeout headroom and by letting the standard GitHub Actions environment drive the test behavior.
+If integration tests fail in CI, download the `dcp-logs` workflow artifact for DCP diagnostics.
 
-- `CI=true` is already provided by GitHub Actions.
-- The Azure variables are optional for the current repo state.
-- They become relevant only when a future test or deployment path needs real Azure authentication.
-- The current workflow does not need to inject them just to run the existing build and test steps.
+## GitHub Actions environment
+
+GitHub Actions sets `CI=true` automatically. Integration tests use longer startup timeouts when `CI` is set.
+
+## Azure credentials (optional, future use)
+
+MeatyTimes deploys to Azure Container Apps via `aspire deploy`. The AppHost includes `AddAzureContainerAppEnvironment("aca-env")` for deployment metadata. **Current integration tests do not provision or call Azure resources** and do not require Azure authentication.
+
+When a future test or AppHost scenario needs Azure, configure these GitHub Actions secrets and pass them to the integration test step:
+
+| Variable | Description |
+| --- | --- |
+| `AZURE_CLIENT_ID` | Service principal application (client) ID |
+| `AZURE_TENANT_ID` | Azure AD tenant ID |
+| `AZURE_CLIENT_SECRET` | Service principal client secret |
+| `AZURE_SUBSCRIPTION_ID` | Azure subscription ID |
+
+See [Testing in CI/CD pipelines | Aspire](https://aspire.dev/testing/testing-in-ci/) for the standard `DefaultAzureCredential` environment-variable pattern.
