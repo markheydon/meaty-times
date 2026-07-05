@@ -1,0 +1,52 @@
+name: Validate PowerShell Scripts
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - scripts/**/*.ps1
+      - scripts/**/*.psm1
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: validate-powershell-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint-powershell:
+    name: Run ScriptAnalyzer
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Install PSScriptAnalyzer
+        shell: pwsh
+        run: |
+          Set-StrictMode -Version Latest
+          $ErrorActionPreference = 'Stop'
+          Install-Module -Name PSScriptAnalyzer -Force -Scope CurrentUser -Repository PSGallery
+
+      - name: Validate scripts with Invoke-ScriptAnalyzer
+        shell: pwsh
+        run: |
+          Set-StrictMode -Version Latest
+          $ErrorActionPreference = 'Stop'
+
+          $results = Invoke-ScriptAnalyzer -Path ./scripts -Recurse -Severity Error, Warning
+
+          if ($null -ne $results -and $results.Count -gt 0) {
+            $results | Sort-Object Severity, ScriptName, Line | Format-Table -AutoSize
+            throw "PSScriptAnalyzer found $($results.Count) issue(s) in scripts/."
+          }
+
+          Write-Host 'No PSScriptAnalyzer issues found in scripts/.'
