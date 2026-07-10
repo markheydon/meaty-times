@@ -6,7 +6,7 @@
     <!-- Aspire -->
     <PackageVersion Include="Aspire.Hosting.Azure.AppContainers" Version="13.4.6" />
     <PackageVersion Include="Aspire.Hosting.Testing" Version="13.4.6" />
-    <PackageVersion Include="Microsoft.OpenApi" Version="2.9.0" />
+    <PackageVersion Include="Microsoft.OpenApi" Version="3.8.0" />
     <!-- MudBlazor -->
     <PackageVersion Include="MudBlazor" Version="9.7.0" />
     <!-- Testing -->
