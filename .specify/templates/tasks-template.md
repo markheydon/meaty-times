@@ -157,8 +157,6 @@ Examples of foundational tasks (adjust based on your project):
 - [ ] TXXX [P] Additional unit tests (if requested) in tests/unit/
 - [ ] TXXX Security hardening
 - [ ] TXXX Run quickstart.md validation
-- [ ] TXXX Verify new abstractions satisfy Constitution Principle VI (Pragmatic Simplicity)
-- [ ] TXXX Confirm cooking calculation tests cover edge cases and documented source rules
 
 ---
 

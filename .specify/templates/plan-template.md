@@ -4,7 +4,7 @@
 
 **Input**: Feature specification from `/specs/[###-feature-name]/spec.md`
 
-**Note**: This template is filled in by the `/speckit-plan` command. See `.specify/templates/plan-template.md` for the execution workflow.
+**Note**: This template is filled in by the `/speckit-plan` command; its definition describes the execution workflow.
 
 ## Summary
 
@@ -40,23 +40,7 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-Verify compliance with `.specify/memory/constitution.md` (Principles I–VI):
-
-- **I. Code Quality**: Cooking domain logic isolated in well-named modules; required
-  comments on calculation rules and non-obvious behaviour; lint/format gates planned.
-- **II. Testing Standards**: Cooking-critical calculations have unit test plan covering
-  normal, edge, and meat-type-specific cases; red-green-refactor approach for new rules.
-- **III. Consistent UX**: Step-by-step instruction output order defined; terminology
-  consistent; validation and error states specified for home cooks.
-- **IV. Security**: Input validation planned; no secrets in code; dependency review
-  noted if new packages introduced.
-- **V. Cooking Accuracy**: Calculation rules traceable to documented sources; deterministic
-  outputs for given inputs; no undocumented magic numbers.
-- **VI. Pragmatic Simplicity**: Simplest viable design chosen; any abstractions justified
-  in Complexity Tracking below (Principle VI).
-
-If any gate cannot pass, document the violation and rejected simpler alternatives in
-the Complexity Tracking table before proceeding.
+[Gates determined based on constitution file]
 
 ## Project Structure
 
