@@ -1,20 +1,19 @@
 <!--
 Sync Impact Report
 ==================
-Version change: (none) → 1.0.0
-Modified principles: N/A (initial adoption, adapted from BillDrift v1.2.0)
-Added sections:
-  - Core Principles I–VI
-  - Domain Constraints
-  - Development Workflow & Quality Gates
-  - Governance
+Version change: 1.1.0 → 1.1.1
+Modified principles:
+  - II. Testing Standards — removed Aspire integration test layer
+Added sections: None
 Removed sections: None
 Templates requiring updates:
-  - .specify/templates/plan-template.md ✅ updated (Constitution Check gates + Principle VI reference)
-  - .specify/templates/spec-template.md ✅ no change (no implementation-specific constraints)
-  - .specify/templates/tasks-template.md ✅ updated (Polish phase simplicity verification)
+  - .specify/templates/plan-template.md ✅ no change required
+  - .specify/templates/spec-template.md ✅ no change required
+  - .specify/templates/tasks-template.md ✅ updated (testing standard note)
   - .specify/templates/commands/*.md — N/A (no command files present)
-  - README.md ✅ no changes required
+  - README.md ✅ updated (Testing section)
+  - CONTRIBUTING.md ✅ updated (Testing section)
+  - AGENTS.md ✅ updated (Testing standards subsection)
 Follow-up TODOs: None
 -->
 
@@ -65,6 +64,19 @@ Cooking-critical behavior MUST be proven by automated tests before it ships.
   rest for a 2 kg beef joint at medium-rare"), not internal method names.
 - Interfaces SHOULD NOT be created solely to enable mocking; domain logic SHOULD
   normally be tested through concrete types.
+- All automated tests MUST use xUnit v3.
+- Mocks, stubs, and test doubles MUST use NSubstitute when isolation is required.
+- Assertions MUST use built-in xUnit `Assert` methods only; test dependencies MUST
+  be kept to a minimum.
+- The following test libraries MUST NOT be introduced: FluentAssertions,
+  AwesomeAssertions, Shouldly, Moq, NUnit, MSTest.
+- Test layering MUST follow this model:
+  - **Unit tests** (`MeatyTimes.Core.Tests`) for domain logic and cooking calculations.
+  - **Component tests** (`MeatyTimes.Web.Tests`, bunit) for Blazor UI outcomes.
+  - **End-to-end tests** (Playwright) for complete user journeys when explicitly
+    required — not as a replacement for unit or component tests.
+- Playwright end-to-end tests MUST focus on key user journeys and business-critical
+  workflows; prefer a small number of high-value tests over brittle UI coverage.
 
 **Rationale**: Incorrect cooking times or temperatures directly cause undercooked or
 overcooked food. Tests are the primary safety net for a domain where users otherwise
@@ -200,4 +212,4 @@ formally amended.
 - Complexity beyond the simplest working design MUST be justified in the feature plan
   Complexity Tracking table.
 
-**Version**: 1.0.0 | **Ratified**: 2026-07-02 | **Last Amended**: 2026-07-02
+**Version**: 1.1.1 | **Ratified**: 2026-07-02 | **Last Amended**: 2026-07-19

@@ -16,8 +16,8 @@ updates:
       test-packages:
         patterns:
           - "xunit*"
-          - "Moq"
-          - "FluentAssertions"
+          - "NSubstitute"
+          - "bunit"
           - "Microsoft.NET.Test.Sdk"
           - "coverlet*"
       microsoft-extensions:

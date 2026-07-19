@@ -61,7 +61,7 @@ Generate a comprehensive README.md for the **MeatyTimes** repository by analysin
 ## Project Structure
 - Brief overview of repository layout:
   - `src/` — application projects
-  - `tests/` — `MeatyTimes.Core.Tests` (unit), `MeatyTimes.Web.Tests` (Blazor), and `MeatyTimes.AppHost.Tests` (Aspire integration)
+  - `tests/` — `MeatyTimes.Core.Tests` (unit) and `MeatyTimes.Web.Tests` (Blazor component)
   - `specs/` — Spec Kit feature specifications and plans
   - `docs/` — end-user documentation that can inform how the project is presented
   - `docs-internal/` — internal contributor documentation that can inform development guidance
@@ -89,7 +89,7 @@ Generate a comprehensive README.md for the **MeatyTimes** repository by analysin
 
 ## Testing
 - Unit tests: `dotnet test tests/MeatyTimes.Core.Tests`
-- Full suite (includes Aspire integration tests): `dotnet test`
+- Full suite: `dotnet test`
 - Cooking-critical behaviour must be covered by outcome-named tests per constitution Principle II.
 - Source from feature `quickstart.md`, `tests/`, and the constitution.
 

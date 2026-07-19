@@ -9,7 +9,7 @@ description: "Task list template for feature implementation"
 
 **Prerequisites**: plan.md (required), spec.md (required for user stories), research.md, data-model.md, contracts/
 
-**Tests**: The examples below include test tasks. Tests are OPTIONAL - only include them if explicitly requested in the feature specification.
+**Tests**: The examples below include test tasks. Tests are OPTIONAL - only include them if explicitly requested in the feature specification. When tests are included, use xUnit v3, built-in `Assert` methods, and NSubstitute for mocks; do not introduce FluentAssertions, Moq, NUnit, or MSTest.
 
 **Organization**: Tasks are grouped by user story to enable independent implementation and testing of each story.
 

@@ -61,7 +61,7 @@ Then open the webfrontend endpoint shown in the Aspire dashboard.
 ## Project Structure
 
 - [src](src) — application projects for the AppHost, API, web UI, core logic, and shared defaults
-- [tests](tests) — [MeatyTimes.Core.Tests](tests/MeatyTimes.Core.Tests) (domain unit tests), [MeatyTimes.Web.Tests](tests/MeatyTimes.Web.Tests) (Blazor component tests), and [MeatyTimes.AppHost.Tests](tests/MeatyTimes.AppHost.Tests) (Aspire integration tests)
+- [tests](tests) — [MeatyTimes.Core.Tests](tests/MeatyTimes.Core.Tests) (domain unit tests) and [MeatyTimes.Web.Tests](tests/MeatyTimes.Web.Tests) (Blazor component tests)
 - [specs](specs) — feature specifications, implementation plans, and quickstarts
 - [docs](docs) — end-user documentation and guidance for how the project is presented
 - [docs-internal](docs-internal) — contributor and developer documentation for internal workflows
@@ -94,13 +94,22 @@ The constitution in [.specify/memory/constitution.md](.specify/memory/constituti
 
 ## Testing
 
+MeatyTimes uses a two-layer test strategy aligned with [.specify/memory/constitution.md](.specify/memory/constitution.md) Principle II:
+
+| Layer | Project | Purpose |
+|-------|---------|---------|
+| Unit | [tests/MeatyTimes.Core.Tests](tests/MeatyTimes.Core.Tests) | Domain logic and cooking calculations |
+| Component | [tests/MeatyTimes.Web.Tests](tests/MeatyTimes.Web.Tests) | Blazor UI outcomes via bunit |
+
+**Tooling standard**: xUnit v3, built-in `Assert` methods only, NSubstitute for mocks when needed. Do not introduce FluentAssertions, AwesomeAssertions, Shouldly, Moq, NUnit, or MSTest. Playwright is reserved for end-to-end user-journey tests when explicitly required.
+
 Run the unit tests for the calculation engine:
 
 ```powershell
 dotnet test tests/MeatyTimes.Core.Tests
 ```
 
-Run the full suite, including Aspire integration tests:
+Run the full suite:
 
 ```powershell
 dotnet test
