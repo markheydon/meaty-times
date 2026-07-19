@@ -49,6 +49,39 @@ Changes to roasting times, temperatures, or meat-type behaviour should:
 If you are unsure about a rule change, open an issue to discuss before investing
 in a large PR.
 
+## Testing
+
+All automated tests follow the tooling standard in [.specify/memory/constitution.md](.specify/memory/constitution.md) Principle II.
+
+### Test projects
+
+| Project | Role |
+|---------|------|
+| `tests/MeatyTimes.Core.Tests` | Unit tests for domain logic and cooking calculations |
+| `tests/MeatyTimes.Web.Tests` | Blazor component tests (bunit) asserting user-facing outcomes |
+| `tests/MeatyTimes.AppHost.Tests` | Aspire integration smoke tests (API + web endpoints) |
+
+### Allowed stack
+
+- **xUnit v3** — test framework for all automated tests
+- **Built-in `Assert` methods** — assertions only (no FluentAssertions, Shouldly, etc.)
+- **NSubstitute** — mocks and stubs when isolation is required (add to a project only when needed)
+- **bunit** — Blazor component unit tests
+- **Aspire.Hosting.Testing** — full-stack integration tests
+- **Playwright** — end-to-end user-journey tests when explicitly required (not yet in use)
+
+### Forbidden libraries
+
+Do not introduce FluentAssertions, AwesomeAssertions, Shouldly, Moq, NUnit, or MSTest.
+
+### Running tests
+
+```powershell
+dotnet test
+```
+
+Cooking-critical behaviour changes require unit tests with outcome-named assertions before merge.
+
 ## Code Style
 
 - Domain logic belongs in `MeatyTimes.Core`

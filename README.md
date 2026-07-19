@@ -94,6 +94,16 @@ The constitution in [.specify/memory/constitution.md](.specify/memory/constituti
 
 ## Testing
 
+MeatyTimes uses a three-layer test strategy aligned with [.specify/memory/constitution.md](.specify/memory/constitution.md) Principle II:
+
+| Layer | Project | Purpose |
+|-------|---------|---------|
+| Unit | [tests/MeatyTimes.Core.Tests](tests/MeatyTimes.Core.Tests) | Domain logic and cooking calculations |
+| Component | [tests/MeatyTimes.Web.Tests](tests/MeatyTimes.Web.Tests) | Blazor UI outcomes via bunit |
+| Integration | [tests/MeatyTimes.AppHost.Tests](tests/MeatyTimes.AppHost.Tests) | Aspire full-stack smoke tests |
+
+**Tooling standard**: xUnit v3, built-in `Assert` methods only, NSubstitute for mocks when needed. Do not introduce FluentAssertions, AwesomeAssertions, Shouldly, Moq, NUnit, or MSTest. Playwright is reserved for end-to-end user-journey tests when explicitly required.
+
 Run the unit tests for the calculation engine:
 
 ```powershell
