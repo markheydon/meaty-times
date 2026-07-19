@@ -21,7 +21,7 @@ bug fixes, new features, documentation, tests, or cooking-rule improvements.
    dotnet test
    ```
 
-   Test projects: `MeatyTimes.Core.Tests` (domain logic), `MeatyTimes.Web.Tests` (Blazor components), `MeatyTimes.AppHost.Tests` (full-stack Aspire integration).
+   Test projects: `MeatyTimes.Core.Tests` (domain logic) and `MeatyTimes.Web.Tests` (Blazor components).
 
 CI on `main` also runs `dotnet format --verify-no-changes`, so formatting should pass locally.
 
@@ -59,7 +59,6 @@ All automated tests follow the tooling standard in [.specify/memory/constitution
 |---------|------|
 | `tests/MeatyTimes.Core.Tests` | Unit tests for domain logic and cooking calculations |
 | `tests/MeatyTimes.Web.Tests` | Blazor component tests (bunit) asserting user-facing outcomes |
-| `tests/MeatyTimes.AppHost.Tests` | Aspire integration smoke tests (API + web endpoints) |
 
 ### Allowed stack
 
@@ -67,7 +66,6 @@ All automated tests follow the tooling standard in [.specify/memory/constitution
 - **Built-in `Assert` methods** — assertions only (no FluentAssertions, Shouldly, etc.)
 - **NSubstitute** — mocks and stubs when isolation is required (add to a project only when needed)
 - **bunit** — Blazor component unit tests
-- **Aspire.Hosting.Testing** — full-stack integration tests
 - **Playwright** — end-to-end user-journey tests when explicitly required (not yet in use)
 
 ### Forbidden libraries

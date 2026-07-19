@@ -1,33 +1,24 @@
-# CI requirements for Aspire integration tests
+# CI requirements
 
-The GitHub Actions workflow in [.github/workflows/ci.yml](../.github/workflows/ci.yml) runs unit tests and Aspire AppHost integration tests on `ubuntu-latest`.
+The GitHub Actions workflow in [.github/workflows/ci.yml](../.github/workflows/ci.yml) runs unit and component tests on `ubuntu-latest` via `dotnet test MeatyTimes.slnx`.
 
-## HTTPS development certificate (required)
+## HTTPS development certificate (local development only)
 
-Aspire integration tests start the full AppHost and probe child services over HTTPS. On Linux CI runners the ASP.NET Core development certificate must be trusted before integration tests run.
+Aspire AppHost health-checks the API over HTTPS during local development. Without a trusted ASP.NET Core development certificate, `apiservice` may never report healthy and `webfrontend` (which `WaitFor`s the API) may not start.
 
-The workflow:
+For local `dotnet run --project src/MeatyTimes.AppHost`, trust the dev certificate:
 
-1. Runs `MeatyTimes.Core.Tests` and `MeatyTimes.Web.Tests` first (no AppHost).
-2. Cleans and trusts the dev certificate via `dotnet dev-certs https --clean` and `dotnet dev-certs https --trust`.
-3. Sets `SSL_CERT_DIR` to `$HOME/.aspnet/dev-certs/trust:/etc/ssl/certs`.
-4. Runs [`tests/MeatyTimes.AppHost.Tests`](../tests/MeatyTimes.AppHost.Tests/) only after cert trust succeeds.
+```powershell
+dotnet dev-certs https --trust
+```
 
-Without this step, `StartAsync` times out because `apiservice` never becomes healthy and `webfrontend` (which `WaitFor`s the API) never starts. See [AGENTS.md](../AGENTS.md) and [Aspire troubleshooting: untrusted localhost certificate](https://learn.microsoft.com/en-us/dotnet/aspire/troubleshooting/untrusted-localhost-certificate).
-
-On .NET SDK 10.x, `dotnet dev-certs https --trust` may exit with code `4` (partial trust) even when the certificate is usable. The workflow treats exit codes `0` and `4` as success.
-
-If integration tests fail in CI, download the `dcp-logs` workflow artifact for DCP diagnostics.
-
-## GitHub Actions environment
-
-GitHub Actions sets `CI=true` automatically. Integration tests use longer startup timeouts when `CI` is set.
+See [AGENTS.md](../AGENTS.md) and [Aspire troubleshooting: untrusted localhost certificate](https://learn.microsoft.com/en-us/dotnet/aspire/troubleshooting/untrusted-localhost-certificate).
 
 ## Azure credentials (optional, future use)
 
-MeatyTimes deploys to Azure Container Apps via `aspire deploy`. The AppHost includes `AddAzureContainerAppEnvironment("aca-env")` for deployment metadata. **Current integration tests do not provision or call Azure resources** and do not require Azure authentication.
+MeatyTimes deploys to Azure Container Apps via `aspire deploy`. The AppHost includes `AddAzureContainerAppEnvironment("aca-env")` for deployment metadata. **Current CI tests do not provision or call Azure resources** and do not require Azure authentication.
 
-When a future test or AppHost scenario needs Azure, configure these GitHub Actions secrets and pass them to the integration test step:
+When a future test or AppHost scenario needs Azure, configure these GitHub Actions secrets:
 
 | Variable | Description |
 | --- | --- |

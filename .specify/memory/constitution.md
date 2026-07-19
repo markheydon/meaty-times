@@ -1,9 +1,9 @@
 <!--
 Sync Impact Report
 ==================
-Version change: 1.0.0 → 1.1.0
+Version change: 1.1.0 → 1.1.1
 Modified principles:
-  - II. Testing Standards — expanded with explicit tooling and layering guidance
+  - II. Testing Standards — removed Aspire integration test layer
 Added sections: None
 Removed sections: None
 Templates requiring updates:
@@ -73,8 +73,6 @@ Cooking-critical behavior MUST be proven by automated tests before it ships.
 - Test layering MUST follow this model:
   - **Unit tests** (`MeatyTimes.Core.Tests`) for domain logic and cooking calculations.
   - **Component tests** (`MeatyTimes.Web.Tests`, bunit) for Blazor UI outcomes.
-  - **Integration tests** (`MeatyTimes.AppHost.Tests`, Aspire hosting testing) for
-    full-stack smoke coverage of API and web endpoints.
   - **End-to-end tests** (Playwright) for complete user journeys when explicitly
     required — not as a replacement for unit or component tests.
 - Playwright end-to-end tests MUST focus on key user journeys and business-critical
@@ -214,4 +212,4 @@ formally amended.
 - Complexity beyond the simplest working design MUST be justified in the feature plan
   Complexity Tracking table.
 
-**Version**: 1.1.0 | **Ratified**: 2026-07-02 | **Last Amended**: 2026-07-19
+**Version**: 1.1.1 | **Ratified**: 2026-07-02 | **Last Amended**: 2026-07-19
