@@ -28,6 +28,6 @@
     <PackageVersion Include="OpenTelemetry.Instrumentation.Runtime" Version="1.17.0" />
   </ItemGroup>
   <ItemGroup>
-    <PackageVersion Include="AngleSharp" Version="1.6.0" />
+    <PackageVersion Include="AngleSharp" Version="1.7.0" />
   </ItemGroup>
 </Project>
