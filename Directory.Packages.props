@@ -4,7 +4,7 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- Aspire -->
-    <PackageVersion Include="Aspire.Hosting.Azure.AppContainers" Version="13.4.6" />
+    <PackageVersion Include="Aspire.Hosting.Azure.AppContainers" Version="13.5.2" />
     <PackageVersion Include="Microsoft.OpenApi" Version="2.9.0" />
     <!-- MudBlazor -->
     <PackageVersion Include="MudBlazor" Version="9.8.0" />
@@ -28,6 +28,6 @@
     <PackageVersion Include="OpenTelemetry.Instrumentation.Runtime" Version="1.18.0" />
   </ItemGroup>
   <ItemGroup>
-    <PackageVersion Include="AngleSharp" Version="1.7.1" />
+    <PackageVersion Include="AngleSharp" Version="1.7.2" />
   </ItemGroup>
 </Project>
