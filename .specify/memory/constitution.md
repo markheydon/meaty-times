@@ -1,19 +1,35 @@
 <!--
 Sync Impact Report
 ==================
-Version change: 1.1.0 → 1.1.1
+Version change: 1.1.1 → 2.0.0
 Modified principles:
-  - II. Testing Standards — removed Aspire integration test layer
-Added sections: None
-Removed sections: None
+  - I. Code Quality & Maintainability → I. Separation of Concerns
+      (quality rules split; stack-specific module examples removed)
+  - II. Testing Standards → III. Testability
+      (tooling, libraries, and test-project names migrated)
+  - III. Consistent User Experience → IV. Explicit Error Handling
+      (UX/terminology rules moved into V. User-Facing Consistency)
+  - IV. Security by Design → VI. Security by Design (content retained)
+  - V. Cooking Accuracy & Source Transparency → VII. Traceability
+  - VI. Pragmatic Simplicity → II. Architectural Discipline
+      (renumbered; YAGNI rules retained without stack examples)
+Added principles:
+  - II. Architectural Discipline
+  - V. User-Facing Consistency
+Added sections:
+  - None in this file (Quality Gates retained as section 2)
+Removed sections:
+  - Domain Constraints (migrated to docs-internal/product-scope.md)
+Migrated out of constitution (retained in docs-internal/):
+  - Testing tooling, libraries, layering, and forbidden packages
+    → docs-internal/testing-standards.md
+  - Stack, project layout, and contributor run/test conventions
+    → docs-internal/tech-stack.md
+  - v0.1 product scope, primary users, in/out of scope
+    → docs-internal/product-scope.md
 Templates requiring updates:
-  - .specify/templates/plan-template.md ✅ no change required
-  - .specify/templates/spec-template.md ✅ no change required
-  - .specify/templates/tasks-template.md ✅ updated (testing standard note)
-  - .specify/templates/commands/*.md — N/A (no command files present)
-  - README.md ✅ updated (Testing section)
-  - CONTRIBUTING.md ✅ updated (Testing section)
-  - AGENTS.md ✅ updated (Testing standards subsection)
+  - Dependent Spec Kit templates are not modified by this command
+  - Existing specs that cite old principle numbers (I–VI) need a later pass
 Follow-up TODOs: None
 -->
 
@@ -21,180 +37,150 @@ Follow-up TODOs: None
 
 ## Core Principles
 
-### I. Code Quality & Maintainability
+### I. Separation of Concerns
 
-All code MUST be clear, reviewable, and structured for long-term maintenance in a
-simple cooking-assistant app.
+Domain behaviour MUST be isolated from presentation, orchestration, and I/O.
 
-- Domain logic (meat-type rules, weight-to-time calculations, temperature profiles,
-  resting guidance, instruction sequencing) MUST live in well-named modules with single,
-  explicit responsibilities.
-- Public interfaces between modules MUST be typed and documented; implicit coupling
-  across meat types or calculation paths is prohibited.
-- Code comments are REQUIRED, not optional. Every module, public interface, and
-  non-trivial algorithm MUST include comments that explain intent, cooking rules,
-  and non-obvious behavior.
-- Cooking calculation logic (time-per-kg rules, temperature steps, doneness thresholds,
-  resting durations, meat-specific exceptions) MUST be commented so contributors and
-  users can verify correctness without reverse-engineering.
-- Comments MUST explain why a decision was made, not merely restate what the code
-  does; redundant comments that duplicate obvious code are discouraged, but
-  absence of required comments is prohibited.
-- Linting and formatting MUST pass in CI before merge; style drift is not accepted.
-- Complexity beyond the simplest working design MUST be documented in the feature plan
+- Cooking rules, calculations, and instruction sequencing MUST live in dedicated
+  domain modules with a single, explicit responsibility.
+- Presentation, hosting, and infrastructure MUST consume domain outputs; they MUST
+  NOT embed or duplicate cooking rules.
+- Public interfaces between modules MUST be typed and documented.
+- Implicit coupling across independent domain paths is prohibited.
+
+**Rationale**: Mixing calculation rules with UI or hosting makes errors hard to find
+and untestable in isolation. Clear boundaries keep roasting guidance inspectable.
+
+### II. Architectural Discipline
+
+Implementations MUST stay at the simplest design that meets the current specification.
+
+- Work MUST start from the simplest design capable of meeting the current feature spec.
+- Abstractions MUST NOT be introduced solely for anticipated future requirements.
+- Interfaces, providers, factories, strategies, pipelines, mediators, or extra project
+  boundaries require at least one of: more than one active implementation; a proven
+  testing need that concrete types cannot reasonably satisfy; existing duplication
+  that would otherwise remain; isolation of an external dependency.
+- Complexity beyond the simplest working design MUST be recorded in the feature plan
   Complexity Tracking table with rejected alternatives.
-- Dead code, commented-out blocks, and unused dependencies MUST be removed before merge.
+- Future ideas MUST be recorded in specifications and documentation, not implemented
+  ahead of a current requirement.
 
-**Rationale**: MeatyTimes exists to replace guesswork with trustworthy roasting
-guidance. Maintainable, well-commented code keeps cooking rules inspectable and
-reduces the risk of silently wrong instructions that could ruin a meal.
+**Rationale**: Extra layers hide cooking logic and slow review. Discipline keeps the
+system small enough that a wrong instruction can be found and fixed.
 
-### II. Testing Standards (NON-NEGOTIABLE)
+### III. Testability (NON-NEGOTIABLE)
 
-Cooking-critical behavior MUST be proven by automated tests before it ships.
+Cooking-critical behaviour MUST be proven by automated tests before it ships.
 
-- Roasting calculation logic (cooking time, temperature steps, resting duration,
-  doneness adjustments) MUST have unit tests covering normal cases, edge cases, and
-  known meat-type rule variations.
-- Instruction generation (step ordering, unit display, weight-boundary behaviour)
-  MUST have tests that assert user-facing outcomes, not implementation details.
+- Roasting calculation logic MUST have automated tests covering normal cases, edge
+  cases, and known rule variations.
+- Instruction generation MUST be tested by asserting user-facing outcomes, not
+  internal method structure.
 - For cooking-critical features, tests MUST be written or updated first, MUST fail
-  before implementation, and MUST pass before merge (red-green-refactor).
-- Test names and assertions MUST describe business outcomes (e.g., "returns 20-minute
-  rest for a 2 kg beef joint at medium-rare"), not internal method names.
-- Interfaces SHOULD NOT be created solely to enable mocking; domain logic SHOULD
-  normally be tested through concrete types.
-- All automated tests MUST use xUnit v3.
-- Mocks, stubs, and test doubles MUST use NSubstitute when isolation is required.
-- Assertions MUST use built-in xUnit `Assert` methods only; test dependencies MUST
-  be kept to a minimum.
-- The following test libraries MUST NOT be introduced: FluentAssertions,
-  AwesomeAssertions, Shouldly, Moq, NUnit, MSTest.
-- Test layering MUST follow this model:
-  - **Unit tests** (`MeatyTimes.Core.Tests`) for domain logic and cooking calculations.
-  - **Component tests** (`MeatyTimes.Web.Tests`, bunit) for Blazor UI outcomes.
-  - **End-to-end tests** (Playwright) for complete user journeys when explicitly
-    required — not as a replacement for unit or component tests.
-- Playwright end-to-end tests MUST focus on key user journeys and business-critical
-  workflows; prefer a small number of high-value tests over brittle UI coverage.
+  before implementation, and MUST pass before merge.
+- Test names and assertions MUST describe business outcomes, not internal names.
+- Types MUST NOT be introduced solely to enable mocking; domain logic MUST normally
+  be exercised through the same types production code uses.
+- Tooling, libraries, and test-project layout live in
+  `docs-internal/testing-standards.md` and MUST be followed; they are not restated here
+  so a stack change does not require a constitution amendment.
 
-**Rationale**: Incorrect cooking times or temperatures directly cause undercooked or
-overcooked food. Tests are the primary safety net for a domain where users otherwise
-rely on inconsistent online sources or memory.
+**Rationale**: Wrong times or temperatures cause undercooked or overcooked food.
+Tests are the check that a spec or PR can pass or fail without arguing taste.
 
-### III. Consistent User Experience
+### IV. Explicit Error Handling
 
-The product MUST feel coherent, predictable, and easy to use for home cooks who roast
-joints infrequently.
+Failures MUST be visible, explained, and safe.
 
-- Terminology MUST be consistent across UI, API responses, logs, and documentation
-  (e.g., "doneness", "resting time", "initial temperature", "reduce-to temperature").
-- Results MUST present clear, step-by-step roasting instructions: oven settings,
-  timing, temperature changes, and resting guidance in a fixed, scannable order.
-- Input validation MUST give actionable feedback (e.g., unsupported meat type,
-  out-of-range weight) without exposing stack traces or internal errors.
-- Error, empty, and loading states MUST be handled consistently; failures MUST tell
-  the user what went wrong and what to do next.
-- Accessibility and responsive layout MUST be considered for the primary calculate-and-
-  display workflow; new UI MUST reuse established components and patterns rather than
-  one-off implementations.
-- The experience MUST prioritise speed and simplicity: users SHOULD reach reliable
-  instructions in minimal steps without navigating recipe libraries or meal planners.
+- Invalid input MUST be rejected with actionable feedback.
+- Internal errors, stack traces, and implementation details MUST NOT be shown to
+  users.
+- Error, empty, and in-progress states MUST each have defined behaviour; silent
+  failure is prohibited.
+- User-facing failure messages MUST state what went wrong and what to do next.
 
-**Rationale**: Users adopt MeatyTimes to avoid searching cookbooks or the web every
-time they roast. An inconsistent or cluttered UX recreates the confusion the app is
-meant to eliminate.
+**Rationale**: A cooking assistant that fails quietly is worse than no assistant.
+Callers and cooks need a clear next step, not a blank or crashed screen.
 
-### IV. Security by Design
+### V. User-Facing Consistency
 
-Security MUST be treated as a requirement, not a polish item, even for a simple
-cooking assistant.
+User-facing behaviour MUST be coherent and checkable across surfaces.
 
-- Secrets (API keys, tokens, connection strings) MUST NEVER be committed, logged, or
-  returned in API responses; use environment variables or a secrets manager when
-  external services are introduced.
-- User-supplied input (meat type, weight, doneness) MUST be validated and sanitised
-  before use in calculations or rendered output.
-- Dependencies MUST be kept current; known high/critical vulnerabilities in direct
-  dependencies MUST be remediated or explicitly waived with documented risk acceptance.
-- If authentication or persistence is added in future versions, access controls MUST
-  protect user data from the outset; retrofitted security is not acceptable.
+- Terminology MUST be consistent across UI, API responses, logs, and documentation.
+- Results MUST present roasting instructions in a fixed, scannable order covering
+  oven settings, timing, temperature changes, and resting guidance.
+- New UI MUST reuse established patterns for the primary calculate-and-display
+  workflow rather than one-off implementations.
+- Accessibility and responsive layout MUST be addressed for that primary workflow.
+- The path to instructions MUST stay short: users MUST reach results without being
+  required to use recipe libraries, accounts, or meal planners.
 
-**Rationale**: Even a lightweight app accumulates trust. Input handling flaws or
-neglected dependencies can undermine user confidence and create avoidable risk as
-the product grows.
+**Rationale**: Occasional cooks will not learn a new vocabulary each visit. Consistent
+wording and order are the difference between trust and another web search.
 
-### V. Cooking Accuracy & Source Transparency
+### VI. Security by Design
 
-Roasting instructions MUST be correct, traceable, and honest about their basis.
+Security MUST be treated as a requirement, not a polish item.
 
-- Calculation algorithms MUST be deterministic for a given input; the same meat type,
-  weight, and doneness MUST always produce the same instruction set.
+- Secrets MUST NEVER be committed, logged, or returned in responses; environment
+  variables or a secrets manager MUST be used when external services are introduced.
+- User-supplied input MUST be validated and sanitised before use in calculations or
+  rendered output.
+- Known high or critical vulnerabilities in direct dependencies MUST be remediated
+  or explicitly waived with documented risk acceptance.
+- If authentication or persistence is added, access controls MUST protect user data
+  from the outset.
+
+**Rationale**: Input handling flaws and neglected dependencies create avoidable risk
+even in a small app. Security is cheaper when it is designed in.
+
+### VII. Traceability
+
+Roasting instructions MUST be correct, deterministic, and honest about their basis.
+
+- The same meat type, weight, and doneness MUST always produce the same instruction set.
 - Every instruction set MUST be explainable: which rule fired, which weight band
   applied, and how temperature and resting guidance were derived.
-- Cooking rules MUST be sourced from documented references (cookbooks, food-safety
-  guidance, or project-approved references); magic numbers without documented
+- Cooking rules MUST cite documented references; magic numbers without documented
   provenance MUST NOT ship.
-- When multiple authoritative sources disagree, the chosen rule MUST be documented
-  with rationale; silent averaging or undocumented compromise is prohibited.
-- User-facing surfaces MUST NOT imply official endorsement by food brands, chefs, or
-  publishers unless a formal partnership exists.
+- When sources disagree, the chosen rule MUST be documented with rationale; silent
+  averaging or undocumented compromise is prohibited.
+- User-facing surfaces MUST NOT imply endorsement by brands, chefs, or publishers
+  unless a formal partnership exists.
+- Food-safety minimums MUST NOT be weakened for convenience.
 
-**Rationale**: MeatyTimes replaces guesswork only if users can trust the output.
-Traceable, documented rules make errors correctable and build confidence for occasional
-home cooks.
+**Rationale**: Trust depends on being able to answer why an instruction exists. If a
+rule cannot be traced, it cannot be reviewed.
 
-### VI. Pragmatic Simplicity
+### VIII. Code Quality
 
-MeatyTimes prioritises simple, understandable solutions over architectural purity.
+Code MUST be reviewable, commented, and free of avoidable residue.
 
-- Implementations MUST begin with the simplest design capable of meeting the current
-  feature specification.
-- Abstractions MUST NOT be introduced solely for anticipated future requirements.
-- Interfaces, providers, factories, strategies, pipelines, mediators, or additional
-  project boundaries require at least one of the following:
-  - More than one active implementation.
-  - A proven testing requirement that cannot reasonably be satisfied through concrete types.
-  - Existing duplication that would otherwise remain.
-  - Isolation of external dependencies.
-- Where multiple designs are possible, the design with the lowest conceptual
-  complexity SHOULD be preferred.
-- Future roadmap items (recipe management, meal planning, user accounts) SHOULD be
-  represented in specifications and documentation rather than premature implementation.
+- Every module, public interface, and non-trivial algorithm MUST include comments that
+  explain intent and non-obvious behaviour.
+- Cooking calculation logic MUST be commented so a reviewer can verify the rule
+  without reverse-engineering.
+- Comments MUST explain why a decision was made, not merely restate the code.
+- Linting and formatting MUST pass in CI before merge.
+- Dead code, commented-out blocks, and unused dependencies MUST be removed before merge.
 
-**Rationale**: Over-engineering slows delivery and obscures cooking logic. Simplicity
-keeps the codebase approachable and aligned with the product goal of fast, reliable
-roasting guidance.
+**Rationale**: MeatyTimes replaces guesswork only if contributors can audit the rules.
+Uncommented or leftover code is a defect, not a style preference.
 
-## Domain Constraints
-
-- **Primary users**: Home cooks who roast large joints of meat occasionally and need
-  reliable temperature, timing, and resting guidance without consulting multiple sources.
-- **v0.1 scope**: Calculate and display roasting instructions from meat type, weight,
-  and desired doneness; prioritise simplicity, speed, and accuracy.
-- **Out of scope (v0.1)**: Recipe management, meal planning, shopping lists, social
-  sharing, multi-course menus, unattended cooking automation.
-- **Accuracy expectation**: Instructions MUST reflect documented roasting conventions;
-  food-safety minimums MUST NOT be compromised for convenience.
-- **License & openness**: The project is open source; contributions MUST preserve
-  clarity of cooking logic and test coverage expectations defined in this constitution.
-
-## Development Workflow & Quality Gates
+## Quality Gates
 
 - Every feature plan MUST include a Constitution Check gate (pre-research and
-  post-design) verifying compliance with Principles I–VI.
+  post-design) verifying compliance with Principles I–VIII.
 - Pull requests MUST not merge with failing CI, missing tests for cooking-critical
   changes, or unresolved security findings above the project's accepted threshold.
-- Code review MUST explicitly confirm: calculation correctness, instruction clarity
-  for home cooks, source documentation for new or changed cooking rules, adequate
-  code comments on new or modified cooking-critical logic, public interfaces, and
-  non-obvious implementation choices, and that abstractions introduced satisfy
-  Principle VI.
-- New meat types or materially changed calculation rules MUST include unit tests,
+- Code review MUST confirm: calculation correctness; instruction clarity; source
+  documentation for new or changed cooking rules; required comments; explicit error
+  handling; and that any new abstraction satisfies Principle II.
+- New meat types or materially changed calculation rules MUST include automated tests,
   documented source references, and user-facing examples before release.
-- Runtime development guidance lives in feature `quickstart.md` files and `README.md`;
-  agents and contributors MUST consult the current feature plan for stack-specific
-  commands.
+- Stack-specific commands, package versions, and runtime setup live in
+  `docs-internal/tech-stack.md`, `README.md`, and feature `quickstart.md` files.
 
 ## Governance
 
@@ -207,9 +193,11 @@ formally amended.
 - Version increments follow semantic rules: MAJOR for backward-incompatible principle
   removals or redefinitions; MINOR for new principles or materially expanded guidance;
   PATCH for clarifications and non-semantic refinements.
+- Stack, testing-tool, and product-scope changes that do not alter these principles MUST
+  be made in `docs-internal/` (or the relevant spec) rather than in this file.
 - All pull requests and feature plans MUST verify compliance with the current
   constitution version before merge or implementation begins.
-- Complexity beyond the simplest working design MUST be justified in the feature plan
-  Complexity Tracking table.
+- A rule belongs here only if a reviewer can answer yes or no against a spec or PR
+  without depending on a particular library, framework, or UI kit.
 
-**Version**: 1.1.1 | **Ratified**: 2026-07-02 | **Last Amended**: 2026-07-19
+**Version**: 2.0.0 | **Ratified**: 2026-07-02 | **Last Amended**: 2026-08-30

@@ -127,7 +127,7 @@ Calculated roasting instructions returned to the user.
 | `totalPreparationMinutes` | int | `totalCookingMinutes + restingMinutes` |
 | `source` | string | Rule source reference (for transparency/debug) |
 
-**Display order** (constitution Principle III):
+**Display order** (constitution Principle V):
 1. Initial oven temperature and duration
 2. Secondary temperature and duration (if applicable)
 3. Total cooking duration
@@ -219,4 +219,4 @@ Backwards-calculated timeline from a target serving time.
 }
 ```
 
-Exact values and sources to be finalized during implementation with documented references per constitution Principle V.
+Exact values and sources to be finalized during implementation with documented references per constitution Principle VII.

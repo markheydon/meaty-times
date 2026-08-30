@@ -36,12 +36,14 @@ Technical approach: extend `RoastResultsDisplay` with input summary rendering; p
 
 | Principle | Pre-Research | Post-Design |
 |-----------|--------------|-------------|
-| **I. Code Quality** | PASS — UI-only; label formatting colocated in results component or shared static helper | PASS — `CalculationInputSummary` derivation documented in data model; no domain logic moved |
-| **II. Testing Standards** | PASS — Presentation tests planned; no cooking calculation changes | PASS — bUnit component tests for summary visibility, doneness conditional, display names |
-| **III. Consistent UX** | PASS — Form labels reused; summary above instructions in fixed order | PASS — UI contract defines layout, states, and terminology |
-| **IV. Security** | PASS — No new inputs or endpoints; summary displays already-validated submitted values | PASS — No secrets; read-only display of prior successful input |
-| **V. Cooking Accuracy** | PASS — Calculation engine untouched; instructions unchanged | PASS — No rule or algorithm changes |
-| **VI. Pragmatic Simplicity** | PASS — Reuses `_lastInput` snapshot; no new API fields or services | PASS — Extends existing component; bUnit justified for Blazor markup regression |
+| **I. Separation of Concerns** | PASS — UI-only; cooking rules stay in Core | PASS — `CalculationInputSummary` is presentation; no domain logic moved |
+| **II. Architectural Discipline** | PASS — Reuses `_lastInput` snapshot; no new API fields or services | PASS — Extends existing component; shared helper only if duplication would remain |
+| **III. Testability** | PASS — Presentation tests planned; no cooking calculation changes | PASS — Component tests for summary visibility, doneness conditional, display names |
+| **IV. Explicit Error Handling** | PASS — No new inputs; existing validation path unchanged | PASS — Summary is read-only; error/empty/in-progress states stay as contracted |
+| **V. User-Facing Consistency** | PASS — Form labels reused; summary above instructions in fixed order | PASS — UI contract defines layout, states, and terminology |
+| **VI. Security by Design** | PASS — No new inputs or endpoints; summary displays already-validated submitted values | PASS — No secrets; read-only display of prior successful input |
+| **VII. Traceability** | PASS — Calculation engine untouched; instructions unchanged | PASS — No rule or algorithm changes |
+| **VIII. Code Quality** | PASS — Label formatting colocated in results component or shared static helper | PASS — `CalculationInputSummary` derivation documented in data model |
 
 ## Project Structure
 
@@ -102,7 +104,7 @@ tests/
 
 2. **RoastCalculator.razor**: Pass `_lastInput` and `_meats` to `RoastResultsDisplay`. In `HandleCalculate` catch block, only set `_result = null` when there was no prior successful result (or remove unconditional clear entirely and only update on success).
 
-3. **Doneness formatting**: Reuse same mapping as `RoastInputForm.FormatDoneness` — extract to shared static helper if duplication would otherwise occur (single small helper acceptable per Principle VI).
+3. **Doneness formatting**: Reuse same mapping as `RoastInputForm.FormatDoneness` — extract to shared static helper if duplication would otherwise occur (single small helper acceptable per Principle II).
 
 4. **Tests**: Create `MeatyTimes.Web.Tests` with bUnit + MudBlazor test harness; cover scenarios in [quickstart.md](./quickstart.md) component test checklist.
 

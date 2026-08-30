@@ -132,7 +132,7 @@ dotnet test tests/MeatyTimes.Web.Tests
 
 ---
 
-### Scenario 8: Determinism (Principle V)
+### Scenario 8: Determinism (Principle VII)
 
 **Goal**: Verify same inputs produce same outputs.
 

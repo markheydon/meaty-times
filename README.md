@@ -92,7 +92,7 @@ The constitution in [.specify/memory/constitution.md](.specify/memory/constituti
 
 ## Testing
 
-MeatyTimes uses a two-layer test strategy aligned with [.specify/memory/constitution.md](.specify/memory/constitution.md) Principle II:
+MeatyTimes uses a two-layer test strategy. Tooling and project layout: [docs-internal/testing-standards.md](docs-internal/testing-standards.md). Coverage rules: constitution Principle III.
 
 | Layer | Project | Purpose |
 |-------|---------|---------|

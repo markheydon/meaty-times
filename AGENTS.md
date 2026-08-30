@@ -17,7 +17,7 @@ MeatyTimes is a .NET 10 Aspire distributed app (a roast-cooking assistant). Stan
 
 ### Testing standards
 
-All automated tests MUST follow the tooling standard in `.specify/memory/constitution.md` Principle II:
+All automated tests MUST follow the tooling standard in `docs-internal/testing-standards.md` (constitution Principle III for what must be tested):
 
 - **xUnit v3** with built-in `Assert` methods only
 - **NSubstitute** for mocks/stubs when isolation is required (pin in `Directory.Packages.props`; reference per-project only when needed)
