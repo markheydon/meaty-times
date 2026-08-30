@@ -27,11 +27,11 @@ Open the Aspire dashboard and navigate to the **webfrontend** endpoint (typicall
 # All tests
 dotnet test
 
-# Calculation unit tests only (after MeatyTimes.Core.Tests is created)
+# Calculation unit tests only
 dotnet test tests/MeatyTimes.Core.Tests
 
-# Integration tests
-dotnet test tests/MeatyTimes.Tests
+# Blazor component and service tests
+dotnet test tests/MeatyTimes.Web.Tests
 ```
 
 ## Validation Scenarios
@@ -48,16 +48,6 @@ dotnet test tests/MeatyTimes.Tests
 - Results appear within 3 seconds.
 - Instructions include initial temperature, phased durations (if two-phase), total cooking time, resting time, and total preparation time.
 - Steps appear in fixed order per [ui-contract.md](./contracts/ui-contract.md).
-
-**API equivalent**:
-
-```powershell
-curl -X POST http://localhost:{api-port}/api/roast/calculate `
-  -H "Content-Type: application/json" `
-  -d '{"meatType":"beef","weightKg":2.0,"doneness":"Medium"}'
-```
-
-Returns 200 with `phases`, `totalCookingMinutes`, `restingMinutes`, `totalPreparationMinutes`.
 
 ---
 
@@ -112,14 +102,6 @@ Returns 200 with `phases`, `totalCookingMinutes`, `restingMinutes`, `totalPrepar
 **Expected**:
 - Schedule shows: start cooking time, temperature change time (if applicable), remove from oven time, resting start time.
 - All times are logically ordered and sum to the serving time.
-
-**API equivalent**:
-
-```powershell
-curl -X POST http://localhost:{api-port}/api/roast/schedule `
-  -H "Content-Type: application/json" `
-  -d '{"meatType":"beef","weightKg":2.0,"doneness":"Medium","servingTime":"2026-07-05T18:00:00"}'
-```
 
 ---
 
@@ -182,5 +164,5 @@ After implementation, these unit tests MUST exist and pass:
 
 - [spec.md](./spec.md) — feature requirements
 - [data-model.md](./data-model.md) — entity definitions
-- [contracts/roast-api.md](./contracts/roast-api.md) — API shapes
+- [contracts/roast-api.md](./contracts/roast-api.md) — in-process service contract (`RoastService`)
 - [contracts/ui-contract.md](./contracts/ui-contract.md) — UI behaviour

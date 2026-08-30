@@ -31,7 +31,7 @@ Defined in `RoastInputForm.razor`. Submitted values for a calculate request.
 
 ### MeatTypeDto (existing)
 
-From `RoastApiClient`. Catalog metadata for label resolution.
+From `RoastService` view DTOs. Catalog metadata for label resolution.
 
 | Field | Type | Relevant to summary |
 |-------|------|---------------------|

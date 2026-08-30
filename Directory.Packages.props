@@ -5,7 +5,6 @@
   <ItemGroup>
     <!-- Aspire -->
     <PackageVersion Include="Aspire.Hosting.Azure.AppContainers" Version="13.5.3" />
-    <PackageVersion Include="Microsoft.OpenApi" Version="2.9.0" />
     <!-- MudBlazor -->
     <PackageVersion Include="MudBlazor" Version="9.9.0" />
     <!-- Testing -->
@@ -16,7 +15,6 @@
     <PackageVersion Include="xunit.v3" Version="4.0.0" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.9.0" />
     <!-- ASP.NET Core -->
-    <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="10.0.11" />
     <PackageVersion Include="Microsoft.Extensions.Http.Resilience" Version="10.9.0" />
     <PackageVersion Include="Microsoft.Extensions.ServiceDiscovery" Version="10.9.0" />
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.11" />

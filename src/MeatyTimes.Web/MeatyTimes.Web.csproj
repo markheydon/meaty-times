@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MeatyTimes.Core\MeatyTimes.Core.csproj" />
     <ProjectReference Include="..\MeatyTimes.ServiceDefaults\MeatyTimes.ServiceDefaults.csproj" />
   </ItemGroup>
 

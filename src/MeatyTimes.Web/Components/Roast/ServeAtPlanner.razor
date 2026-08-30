@@ -70,13 +70,13 @@
 @code {
     [Parameter] public RoastInputForm.RoastInputModel? LastInput { get; set; }
 
-    [Parameter] public RoastApiClient.CookingResultDto? Result { get; set; }
+    [Parameter] public CookingResultDto? Result { get; set; }
 
     [Parameter] public bool IsLoading { get; set; }
 
     [Parameter] public EventCallback<DateTimeOffset> OnPlanRequested { get; set; }
 
-    [Parameter] public RoastApiClient.ScheduleDto? Schedule { get; set; }
+    [Parameter] public ScheduleDto? Schedule { get; set; }
 
     [Parameter] public string? Error { get; set; }
 

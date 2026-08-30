@@ -41,10 +41,10 @@
 
 | Element | Component | Behaviour |
 |---------|-----------|-----------|
-| Meat type | `MudSelect` | Populated from `GET /api/meats`; triggers doneness visibility |
+| Meat type | `MudSelect` | Populated from `RoastService.GetMeats()`; triggers doneness visibility |
 | Weight | `MudNumericField<decimal>` | Min/max from selected meat; step 0.1; suffix "kg" |
-| Doneness | `MudSelect` | Visible only when `supportsDoneness` is true; options from API |
-| Calculate | `MudButton` | Calls `POST /api/roast/calculate`; shows loading state |
+| Doneness | `MudSelect` | Visible only when `supportsDoneness` is true; options from meat catalog |
+| Calculate | `MudButton` | Calls `RoastService.Calculate`; shows loading state |
 
 ### RoastResultsDisplay
 
@@ -60,7 +60,7 @@
 | Element | Component | Behaviour |
 |---------|-----------|-----------|
 | Serving time | `MudDatePicker` + `MudTimePicker` or `MudTextField` | Future datetime only |
-| Plan | `MudButton` | Calls `POST /api/roast/schedule` |
+| Plan | `MudButton` | Calls `RoastService.PlanSchedule` |
 | Schedule | `MudAlert` or `MudList` | Shows milestones with clock times |
 | Unachievable warning | `MudAlert Severity.Warning` | Shows `earliestServingTime` |
 
