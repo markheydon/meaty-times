@@ -1,7 +1,6 @@
 using MeatyTimes.Core;
 using MeatyTimes.Web.Components;
 using MeatyTimes.Web.Services;
-using MudBlazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,7 +9,6 @@ builder.AddServiceDefaults();
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-builder.Services.AddMudServices();
 builder.Services.AddOutputCache();
 
 builder.Services.AddMeatyTimesCore();

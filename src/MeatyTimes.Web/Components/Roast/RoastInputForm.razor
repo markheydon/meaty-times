@@ -1,58 +1,101 @@
 @using MeatyTimes.Web.Services
 
-<MudPaper Class="pa-4 roast-input-form" Elevation="2">
-    <MudText Typo="Typo.h6" GutterBottom="true">Roast details</MudText>
+<div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+    <div class="flex items-center gap-2 mb-5">
+        <LucideIcon Name="utensils" Size="22" Class="text-primary" />
+        <h2 class="text-lg font-semibold text-gray-900">Your Roast</h2>
+    </div>
 
-    <MudSelect T="string"
-               Label="Meat type"
-               @bind-Value="_selectedMeatId"
-               Required="true"
-               Class="mb-3 roast-field-full-width"
-               aria-label="Meat type">
-        @foreach (var meat in Meats)
-        {
-            <MudSelectItem Value="@meat.Id">@meat.DisplayName</MudSelectItem>
-        }
-    </MudSelect>
+    <div class="space-y-4">
+        <div>
+            <label for="meat-type" class="block text-sm font-medium text-gray-700 mb-1">Meat type</label>
+            <div class="relative">
+                <select id="meat-type"
+                        class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary appearance-none"
+                        @bind="_selectedMeatId"
+                        aria-label="Meat type">
+                    @foreach (var meat in Meats)
+                    {
+                        <option value="@meat.Id">@meat.DisplayName</option>
+                    }
+                </select>
+            </div>
+        </div>
 
-    <MudNumericField T="decimal?"
-                     Label="Weight (kg)"
-                     @bind-Value="_weightKg"
-                     Min="@MinWeight"
-                     Max="@MaxWeight"
-                     Step="0.1m"
-                     Required="true"
-                     Class="mb-3 roast-field-full-width"
-                     Error="@(!string.IsNullOrEmpty(WeightError))"
-                     ErrorText="@WeightError"
-                     aria-label="Weight in kilograms" />
-
-    @if (SelectedMeat?.SupportsDoneness == true)
-    {
-        <MudSelect T="string"
-                   Label="Doneness"
-                   @bind-Value="_selectedDoneness"
-                   Required="true"
-                   Class="mb-3 roast-field-full-width"
-                   Error="@(!string.IsNullOrEmpty(DonenessError))"
-                   ErrorText="@DonenessError"
-                   aria-label="Doneness">
-            @foreach (var option in SelectedMeat.DonenessOptions)
+        <div>
+            <label for="weight-kg" class="block text-sm font-medium text-gray-700 mb-1">Weight</label>
+            <div class="relative">
+                <input id="weight-kg"
+                       type="number"
+                       step="0.1"
+                       min="@MinWeight"
+                       max="@MaxWeight"
+                       class="w-full rounded-lg border @(WeightError is not null ? "border-red-500" : "border-gray-300") bg-white px-3 py-2.5 pr-12 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                       @bind="_weightKg"
+                       aria-label="Weight in kilograms"
+                       aria-invalid="@(WeightError is not null)"
+                       aria-describedby="weight-help@(WeightError is not null ? " weight-error" : "")" />
+                <span class="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-500 pointer-events-none">kg</span>
+            </div>
+            <p id="weight-help" class="mt-1 text-xs text-gray-500">Enter the raw weight of your roast.</p>
+            @if (WeightError is not null)
             {
-                <MudSelectItem Value="@option">@RoastDisplayFormatting.FormatDoneness(option)</MudSelectItem>
+                <p id="weight-error" class="mt-1 text-sm text-red-600" role="alert">@WeightError</p>
             }
-        </MudSelect>
-    }
+        </div>
 
-    <MudButton Variant="Variant.Filled"
-               Color="Color.Primary"
-               OnClick="OnCalculate"
-               Disabled="IsLoading"
-               FullWidth="true"
-               Class="roast-calculate-btn">
-        Calculate
-    </MudButton>
-</MudPaper>
+        @if (SelectedMeat?.SupportsDoneness == true)
+        {
+            <div>
+                <label for="doneness" class="block text-sm font-medium text-gray-700 mb-1">Doneness</label>
+                <select id="doneness"
+                        class="w-full rounded-lg border @(DonenessError is not null ? "border-red-500" : "border-gray-300") bg-white px-3 py-2.5 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                        @bind="_selectedDoneness"
+                        aria-label="Doneness"
+                        aria-invalid="@(DonenessError is not null)"
+                        aria-describedby="doneness-help@(DonenessError is not null ? " doneness-error" : "")">
+                    @foreach (var option in SelectedMeat.DonenessOptions)
+                    {
+                        <option value="@option">@RoastDisplayFormatting.FormatDoneness(option)</option>
+                    }
+                </select>
+                <p id="doneness-help" class="mt-1 text-xs text-gray-500">Choose your preferred level of doneness.</p>
+                @if (DonenessError is not null)
+                {
+                    <p id="doneness-error" class="mt-1 text-sm text-red-600" role="alert">@DonenessError</p>
+                }
+            </div>
+        }
+
+        <div>
+            <label for="serve-at" class="block text-sm font-medium text-gray-700 mb-1">Serve at <span class="text-gray-400 font-normal">(optional)</span></label>
+            <input id="serve-at"
+                   type="datetime-local"
+                   class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                   value="@_servingTimeLocal"
+                   @onchange="OnServingTimeChanged"
+                   aria-label="Serving time" />
+            <p class="mt-1 text-xs text-gray-500">When would you like to serve your roast?</p>
+        </div>
+
+        <button type="button"
+                class="w-full flex items-center justify-center gap-2 rounded-lg bg-primary hover:bg-primary-dark text-white font-medium py-3 px-4 text-sm transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+                @onclick="OnCalculate"
+                disabled="@IsLoading"
+                aria-busy="@IsLoading">
+            @if (IsLoading)
+            {
+                <span class="inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" aria-hidden="true"></span>
+                <span>Calculating…</span>
+            }
+            else
+            {
+                <LucideIcon Name="calculator" Size="18" />
+                <span>Calculate Times</span>
+            }
+        </button>
+    </div>
+</div>
 
 @code {
     [Parameter] public IReadOnlyList<MeatTypeDto> Meats { get; set; } = [];
@@ -68,6 +111,7 @@
     private string? _selectedMeatId;
     private decimal? _weightKg = 2.0m;
     private string? _selectedDoneness = "Medium";
+    private string? _servingTimeLocal;
 
     private MeatTypeDto? SelectedMeat =>
         Meats.FirstOrDefault(m => m.Id == _selectedMeatId);
@@ -81,6 +125,11 @@
         _selectedMeatId ??= Meats.FirstOrDefault()?.Id;
     }
 
+    private void OnServingTimeChanged(ChangeEventArgs e)
+    {
+        _servingTimeLocal = e.Value?.ToString();
+    }
+
     private async Task OnCalculate()
     {
         if (_selectedMeatId is null || _weightKg is null)
@@ -88,11 +137,19 @@
             return;
         }
 
+        DateTimeOffset? servingTime = null;
+        if (!string.IsNullOrEmpty(_servingTimeLocal)
+            && DateTime.TryParse(_servingTimeLocal, out var localDateTime))
+        {
+            servingTime = new DateTimeOffset(localDateTime, TimeZoneInfo.Local.GetUtcOffset(localDateTime));
+        }
+
         await OnCalculateRequested.InvokeAsync(new RoastInputModel(
             _selectedMeatId,
             _weightKg.Value,
-            SelectedMeat?.SupportsDoneness == true ? _selectedDoneness : null));
+            SelectedMeat?.SupportsDoneness == true ? _selectedDoneness : null,
+            servingTime));
     }
 
-    public sealed record RoastInputModel(string MeatType, decimal WeightKg, string? Doneness);
+    public sealed record RoastInputModel(string MeatType, decimal WeightKg, string? Doneness, DateTimeOffset? ServingTime = null);
 }

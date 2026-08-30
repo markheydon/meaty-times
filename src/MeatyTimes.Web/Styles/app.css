@@ -1,0 +1,24 @@
+@import "tailwindcss";
+
+@source "../Components/**/*.razor";
+@source "../Components/**/*.razor.css";
+
+@theme {
+  --color-primary: #005f63;
+  --color-primary-dark: #004a4d;
+  --color-page: #f0f4f5;
+  --color-results: #e8f4f5;
+  --color-tip: #fef9e7;
+  --color-tip-border: #f5e6a8;
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+@layer base {
+  html {
+    font-family: var(--font-sans);
+  }
+
+  body {
+    @apply bg-page text-gray-900 antialiased;
+  }
+}

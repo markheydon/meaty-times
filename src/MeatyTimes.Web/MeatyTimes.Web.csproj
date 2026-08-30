@@ -4,6 +4,7 @@
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <TailwindCliPath>$(MSBuildThisFileDirectory)../../tools/tailwind/tailwindcss</TailwindCliPath>
   </PropertyGroup>
 
   <ItemGroup>
@@ -11,8 +12,13 @@
     <ProjectReference Include="..\MeatyTimes.ServiceDefaults\MeatyTimes.ServiceDefaults.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="MudBlazor" />
-  </ItemGroup>
+  <Target Name="EnsureTailwindCli" BeforeTargets="BuildTailwindCss">
+    <Exec Command="bash &quot;$(MSBuildThisFileDirectory)../../tools/tailwind/download.sh&quot;" />
+  </Target>
+
+  <Target Name="BuildTailwindCss" BeforeTargets="BeforeBuild" DependsOnTargets="EnsureTailwindCli">
+    <Exec Command="&quot;$(TailwindCliPath)&quot; -i Styles/app.css -o wwwroot/css/app.css"
+          WorkingDirectory="$(MSBuildProjectDirectory)" />
+  </Target>
 
 </Project>

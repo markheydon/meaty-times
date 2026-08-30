@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <AspireUseCliBundle>false</AspireUseCliBundle>
+    <AspireUseCliBundle>true</AspireUseCliBundle>
   </PropertyGroup>
 
   <ItemGroup>

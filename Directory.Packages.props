@@ -5,8 +5,6 @@
   <ItemGroup>
     <!-- Aspire -->
     <PackageVersion Include="Aspire.Hosting.Azure.AppContainers" Version="13.5.3" />
-    <!-- MudBlazor -->
-    <PackageVersion Include="MudBlazor" Version="9.9.0" />
     <!-- Testing -->
     <PackageVersion Include="bunit" Version="2.9.0" />
     <PackageVersion Include="coverlet.collector" Version="10.0.1" />
