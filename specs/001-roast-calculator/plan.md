@@ -8,7 +8,7 @@
 
 Build a roast instruction calculator for home cooks: select meat type (beef, lamb, pork, chicken, gammon), enter weight in kg, choose doneness where applicable, and receive step-by-step oven temperatures, phased cooking durations, resting time, and total preparation time. Optionally enter a target serving time to receive a backwards cooking schedule.
 
-Technical approach: extract cooking-critical logic into a shared `MeatyTimes.Core` library with JSON-defined cooking rules; call Core in-process from a MudBlazor Blazor Web App via `RoastService`; host with .NET Aspire as a single web container. V1 uses bundled JSON rules (not Azure Storage) to satisfy constitution Principle VI.
+Technical approach: extract cooking-critical logic into a shared `MeatyTimes.Core` library with JSON-defined cooking rules; call Core in-process from a MudBlazor Blazor Web App via `RoastService`; host with .NET Aspire as a single web container. V1 uses bundled JSON rules (not Azure Storage) to satisfy constitution Principle II.
 
 ## Technical Context
 
@@ -36,12 +36,14 @@ Technical approach: extract cooking-critical logic into a shared `MeatyTimes.Cor
 
 | Principle | Pre-Research | Post-Design |
 |-----------|--------------|-------------|
-| **I. Code Quality** | PASS — Domain logic isolated in `MeatyTimes.Core`; calculation modules with required comments on rules | PASS — `RoastCalculator`, `CookingRuleLoader`, and rule JSON schema documented |
-| **II. Testing Standards** | PASS — Unit test plan for all 5 meats, weight boundaries, doneness variants, schedule calculation | PASS — `MeatyTimes.Core.Tests` with outcome-named tests per meat type |
-| **III. Consistent UX** | PASS — Fixed instruction step order defined in contracts; MudBlazor components for consistent validation/errors | PASS — UI contract specifies step order and terminology |
-| **IV. Security** | PASS — Input validation at service boundary; no secrets in JSON rules; no user data stored | PASS — Validation rules in data model; `RoastServiceException` for errors |
-| **V. Cooking Accuracy** | PASS — Rules sourced from documented references in `research.md`; provenance field in rule JSON | PASS — Each rule entry includes `source` reference; deterministic engine |
-| **VI. Pragmatic Simplicity** | PASS — JSON file over Azure Storage; single Core library over strategy/factory patterns; Traditional Roast only in V1 | PASS — Complexity Tracking documents deferred abstractions |
+| **I. Separation of Concerns** | PASS — Domain logic isolated in `MeatyTimes.Core` | PASS — `RoastCalculator` and `CookingRuleLoader` stay out of the UI |
+| **II. Architectural Discipline** | PASS — JSON file over Azure Storage; single Core library over strategy/factory patterns; Traditional Roast only in V1 | PASS — Complexity Tracking documents deferred abstractions |
+| **III. Testability** | PASS — Unit test plan for all 5 meats, weight boundaries, doneness variants, schedule calculation | PASS — `MeatyTimes.Core.Tests` with outcome-named tests per meat type |
+| **IV. Explicit Error Handling** | PASS — Input validation at service boundary; user-facing errors without stack traces | PASS — Validation rules in data model; `RoastServiceException` for errors |
+| **V. User-Facing Consistency** | PASS — Fixed instruction step order defined in contracts | PASS — UI contract specifies step order and terminology |
+| **VI. Security by Design** | PASS — No secrets in JSON rules; no user data stored | PASS — Validation at the service boundary; no secrets in responses |
+| **VII. Traceability** | PASS — Rules sourced from documented references in `research.md`; provenance field in rule JSON | PASS — Each rule entry includes `source` reference; deterministic engine |
+| **VIII. Code Quality** | PASS — Calculation modules with required comments on rules | PASS — `RoastCalculator`, `CookingRuleLoader`, and rule JSON schema documented |
 
 ## Project Structure
 
@@ -81,7 +83,7 @@ tests/
 └── MeatyTimes.Web.Tests/         # Blazor component and RoastService tests
 ```
 
-**Structure Decision**: `MeatyTimes.Core` is referenced by `MeatyTimes.Web` and `MeatyTimes.Core.Tests`. This keeps cooking logic testable without HTTP overhead and satisfies constitution Principle I (isolated domain modules) and Principle VI (concrete types over interfaces). The Web project calls Core in-process via `RoastService`.
+**Structure Decision**: `MeatyTimes.Core` is referenced by `MeatyTimes.Web` and `MeatyTimes.Core.Tests`. This keeps cooking logic testable without HTTP overhead and satisfies constitution Principle I (isolated domain modules) and Principle II (concrete types over interfaces). The Web project calls Core in-process via `RoastService`.
 
 ## Complexity Tracking
 
@@ -89,7 +91,7 @@ tests/
 |-----------|------------|-------------------------------------|
 | Separate `MeatyTimes.Core` project | Cooking logic must be unit-tested independently and shared by Web; constitution requires isolated domain modules | Inline logic in Web rejected — untestable without extraction; duplicate rules rejected — violates single source of truth |
 | `CookingMethod` entity in data model (not user-selectable in V1) | Domain model anticipates Traditional/High Heat/Reverse Sear per user input; V1 hard-codes Traditional Roast | Removing entity entirely rejected — would require schema redesign when V2 adds method selection |
-| Azure Storage deferred (user suggested it) | V1 rules are static, small (~5 meats), and change only via deploy | Azure Storage adds infrastructure, secrets, and latency for no V1 user value (Principle VI) |
+| Azure Storage deferred (user suggested it) | V1 rules are static, small (~5 meats), and change only via deploy | Azure Storage adds infrastructure, secrets, and latency for no V1 user value (Principle II) |
 
 ## Phase 0 & Phase 1 Outputs
 

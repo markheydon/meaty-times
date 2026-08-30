@@ -32,5 +32,5 @@
 ## Notes
 
 - All checklist items passed on first validation iteration (2026-07-02).
-- v0.1 scope explicitly excludes favourites, history, imperial units, printable cards, timers, and accounts per user input and project constitution.
-- Serve-at time planning included as P2 per user's primary use cases; constitution v0.1 wording focuses on instruction calculation—plan phase should reconcile if needed.
+- v0.1 scope explicitly excludes favourites, history, imperial units, printable cards, timers, and accounts per user input and [docs-internal/product-scope.md](../../../docs-internal/product-scope.md).
+- Serve-at time planning included as P2 per user's primary use cases; product-scope v0.1 wording focuses on instruction calculation—plan phase should reconcile if needed.

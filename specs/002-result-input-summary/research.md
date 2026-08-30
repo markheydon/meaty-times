@@ -11,7 +11,7 @@
 **Alternatives considered**:
 - *Read live form field values*: Rejected — causes the exact confusion this feature fixes.
 - *Use `CookingResultDto` echo fields only*: Rejected — API returns meat type ID and raw doneness enum strings (e.g., `WellDone`), not the friendly labels shown in the form.
-- *New API field for display summary*: Rejected — presentation concern only; violates Principle VI.
+- *New API field for display summary*: Rejected — presentation concern only; violates Principle II.
 
 ## 2. Component Placement
 
@@ -27,7 +27,7 @@
 
 **Decision**: Show a compact labelled block using MudBlazor (`MudText` / `MudStack`) with labels matching the form: "Meat type", "Weight (kg)", and "Doneness" (conditional). Weight formatted to one decimal place with "kg" suffix. Doneness formatted with the same friendly mapping as the form (`WellDone` → "Well Done").
 
-**Rationale**: Constitution Principle III requires consistent terminology and scannable step order. Reusing form label text and doneness formatting avoids a second vocabulary. MudBlazor matches existing results styling (`MudPaper`, typography hierarchy).
+**Rationale**: Constitution Principle V requires consistent terminology and scannable step order. Reusing form label text and doneness formatting avoids a second vocabulary. MudBlazor matches existing results styling (`MudPaper`, typography hierarchy).
 
 **Alternatives considered**:
 - *Single-line sentence (e.g., "Beef, 2.0 kg, Medium")*: Rejected — harder to scan quickly and less consistent with labelled form fields.
@@ -73,7 +73,7 @@ So the implementation may need to change error handling to NOT clear `_result` a
 
 **Decision**: Add focused Blazor component tests using **bUnit** in a new `MeatyTimes.Web.Tests` project (or extend integration coverage via rendered markup assertion). Primary cases: summary visible after result, doneness hidden for chicken, summary unchanged when parameters change without new result, summary updates on new successful calculate.
 
-**Rationale**: Constitution Principle II applies to cooking-critical logic; this feature is presentation-only, so unit tests on the results component are sufficient. bUnit is the standard Blazor component test approach and avoids full Aspire startup for UI markup checks. Manual quickstart scenarios cover end-to-end validation.
+**Rationale**: Constitution Principle III applies to cooking-critical logic; this feature is presentation-only, so unit tests on the results component are sufficient. bUnit is the standard Blazor component test approach and avoids full Aspire startup for UI markup checks. Manual quickstart scenarios cover end-to-end validation.
 
 **Alternatives considered**:
 - *Aspire integration test only*: Rejected — Blazor Server interactive markup is hard to assert without component-level tests.

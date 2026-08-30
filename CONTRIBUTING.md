@@ -51,7 +51,7 @@ in a large PR.
 
 ## Testing
 
-All automated tests follow the tooling standard in [.specify/memory/constitution.md](.specify/memory/constitution.md) Principle II.
+All automated tests follow [docs-internal/testing-standards.md](docs-internal/testing-standards.md). Outcome and coverage rules are constitution Principle III.
 
 ### Test projects
 

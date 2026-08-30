@@ -113,7 +113,7 @@
 
 - [x] T020 [P] Run `dotnet test MeatyTimes.slnx` and fix any failures across tests/MeatyTimes.Web.Tests/, tests/MeatyTimes.Core.Tests/, and tests/MeatyTimes.Tests/
 - [x] T021 Run quickstart.md validation Scenarios 1–6 manually or document results in specs/002-result-input-summary/quickstart.md
-- [x] T022 Verify no new abstractions beyond RoastDisplayFormatting satisfy Constitution Principle VI (Pragmatic Simplicity)
+- [x] T022 Verify no new abstractions beyond RoastDisplayFormatting satisfy Constitution Principle II (Architectural Discipline)
 - [x] T023 Confirm ServeAtPlanner in src/MeatyTimes.Web/Components/Roast/ServeAtPlanner.razor requires no duplicate input summary per spec assumptions
 
 ---

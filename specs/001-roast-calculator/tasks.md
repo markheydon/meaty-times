@@ -4,7 +4,7 @@
 
 **Prerequisites**: plan.md, spec.md, research.md, data-model.md, contracts/, quickstart.md
 
-**Tests**: Included — constitution Principle II (NON-NEGOTIABLE) requires unit tests for cooking-critical calculation logic. Tests MUST be written first and fail before implementation (red-green-refactor).
+**Tests**: Included — constitution Principle III (NON-NEGOTIABLE) requires unit tests for cooking-critical calculation logic. Tests MUST be written first and fail before implementation (red-green-refactor).
 
 **Organization**: Tasks grouped by user story for independent implementation and testing.
 
@@ -134,8 +134,8 @@
 - [x] T038 [P] Remove unused WeatherApiClient and sample API endpoints from src/MeatyTimes.Web/Program.cs and src/MeatyTimes.ApiService/Program.cs
 - [x] T039 Update README.md with MeatyTimes purpose, run commands, and link to specs/001-roast-calculator/quickstart.md
 - [x] T040 Run all quickstart.md validation scenarios and fix any failures
-- [x] T041 Verify new abstractions satisfy Constitution Principle VI (no interfaces/factories beyond justified Core library split)
-- [x] T042 Confirm every rule in src/MeatyTimes.Core/Rules/cooking-rules.json has a documented source reference per Principle V
+- [x] T041 Verify new abstractions satisfy Constitution Principle II (no interfaces/factories beyond justified Core library split)
+- [x] T042 Confirm every rule in src/MeatyTimes.Core/Rules/cooking-rules.json has a documented source reference per Principle VII
 
 ---
 
@@ -225,5 +225,5 @@ With multiple developers after Foundational:
 - V1 meats: beef, lamb, pork, chicken, gammon (gammon replaces turkey per plan.md)
 - Doneness: Rare, Medium, WellDone for beef/lamb only
 - All cooking logic lives in MeatyTimes.Core — never duplicate in Web or ApiService
-- Code comments required on all calculation logic per constitution Principle I
+- Code comments required on all calculation logic per constitution Principle VIII
 - Commit after each task or logical group
