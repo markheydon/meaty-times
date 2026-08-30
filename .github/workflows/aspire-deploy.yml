@@ -1,0 +1,92 @@
+name: Aspire Deploy
+
+on:
+  workflow_call:
+    inputs:
+      aspire_environment:
+        description: Aspire deploy environment name.
+        required: true
+        type: string
+      github_environment:
+        description: GitHub Environment name for secrets and deployment protection.
+        required: true
+        type: string
+
+permissions:
+  id-token: write
+  contents: read
+
+concurrency:
+  group: cd-${{ inputs.github_environment }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    name: Deploy (${{ inputs.aspire_environment }})
+    runs-on: ubuntu-latest
+    environment:
+      name: ${{ inputs.github_environment }}
+    timeout-minutes: 45
+    env:
+      DOTNET_CLI_TELEMETRY_OPTOUT: 1
+      DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+      DOTNET_NOLOGO: true
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      # Fail fast on OIDC or environment-secret mistakes before restore, build, or Aspire install.
+      - name: Azure login (OIDC)
+        uses: azure/login@v3
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Set up .NET SDK from global.json
+        uses: actions/setup-dotnet@v6
+        with:
+          global-json-file: global.json
+
+      - name: Install Aspire CLI
+        run: |
+          curl -sSL https://aspire.dev/install.sh | bash -s -- --version 13.5.3
+          echo "$HOME/.aspire/bin" >> "$GITHUB_PATH"
+
+      - name: Restore and build solution
+        run: |
+          dotnet restore MeatyTimes.slnx
+          dotnet build MeatyTimes.slnx --no-restore --configuration Release
+
+      - name: List Aspire deployment steps
+        run: aspire deploy --list-steps --apphost src/MeatyTimes.AppHost/MeatyTimes.AppHost.csproj --environment ${{ inputs.aspire_environment }} --non-interactive
+        env:
+          Azure__SubscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          Azure__Location: ${{ vars.AZURE_LOCATION }}
+          Azure__ResourceGroup: ${{ vars.AZURE_RESOURCE_GROUP }}
+
+      - name: Deploy with Aspire
+        run: |
+          set -euo pipefail
+          deploy_env="${{ inputs.aspire_environment }}"
+          apphost="src/MeatyTimes.AppHost/MeatyTimes.AppHost.csproj"
+          for attempt in 1 2 3; do
+            echo "Aspire deploy attempt ${attempt}/3 for ${deploy_env}"
+            rm -rf "${HOME}/.aspire/deployments"
+            if aspire deploy --apphost "${apphost}" --environment "${deploy_env}" --non-interactive; then
+              exit 0
+            fi
+            if [ "${attempt}" -lt 3 ]; then
+              echo "Deploy failed; waiting 20s before retry..."
+              sleep 20
+            fi
+          done
+          echo "Aspire deploy failed after 3 attempts"
+          exit 1
+        env:
+          Azure__SubscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          Azure__Location: ${{ vars.AZURE_LOCATION }}
+          Azure__ResourceGroup: ${{ vars.AZURE_RESOURCE_GROUP }}

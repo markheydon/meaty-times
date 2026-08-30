@@ -25,6 +25,8 @@ bug fixes, new features, documentation, tests, or cooking-rule improvements.
 
 CI on `main` also runs `dotnet format --verify-no-changes`, so formatting should pass locally.
 
+Merges to `main` trigger CD (`.github/workflows/cd.yml`), which deploys to Azure Container Apps via `aspire deploy`. Contributors do not need Azure access for normal PRs; CI validates the AppHost deployment model without provisioning cloud resources.
+
 ## Pull Requests
 
 1. Create a branch from `main` with a short, descriptive name (for example `fix/chicken-rest-time` or `add-turkey-rules`).
