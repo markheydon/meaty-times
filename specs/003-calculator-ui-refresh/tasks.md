@@ -26,10 +26,10 @@
 
 **Purpose**: Tailwind v4 standalone CLI pipeline (no Node/npm)
 
-- [ ] T001 Add Tailwind v4 standalone CLI binary at `tools/tailwind/tailwindcss` (linux-x64, executable) and document OS replacement in `docs-internal/tech-stack.md`
-- [ ] T002 Create `src/MeatyTimes.Web/Styles/app.css` with `@import "tailwindcss"`, `@source` for `Components/**/*.razor` and `Components/**/*.razor.css`, and `@theme` tokens matching the mockup palette (`#005f63` primary, light page, tinted results card, pale tip strip) per `specs/003-calculator-ui-refresh/visual-reference.jpg`
-- [ ] T003 Add MSBuild `BeforeBuild` Exec target in `src/MeatyTimes.Web/MeatyTimes.Web.csproj` running `tailwindcss -i Styles/app.css -o wwwroot/css/app.css` from the Web project directory
-- [ ] T004 [P] Add generated `src/MeatyTimes.Web/wwwroot/css/app.css` to `.gitignore` or commit a placeholder and link it from `src/MeatyTimes.Web/Components/App.razor` (remove MudBlazor CSS/JS links)
+- [x] T001 Add Tailwind v4 standalone CLI via `tools/tailwind/download.sh` (linux-x64) and document OS replacement in `docs-internal/tech-stack.md`
+- [x] T002 Create `src/MeatyTimes.Web/Styles/app.css` with `@import "tailwindcss"`, `@source` for `Components/**/*.razor` and `Components/**/*.razor.css`, and `@theme` tokens matching the mockup palette (`#005f63` primary, light page, tinted results card, pale tip strip) per `specs/003-calculator-ui-refresh/visual-reference.jpg`
+- [x] T003 Add MSBuild `BeforeBuild` Exec target in `src/MeatyTimes.Web/MeatyTimes.Web.csproj` running `tailwindcss -i Styles/app.css -o wwwroot/css/app.css` from the Web project directory
+- [x] T004 [P] Add generated `src/MeatyTimes.Web/wwwroot/css/app.css` to `.gitignore` or commit a placeholder and link it from `src/MeatyTimes.Web/Components/App.razor` (remove MudBlazor CSS/JS links)
 
 ---
 
@@ -39,16 +39,16 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T005 Remove `MudBlazor` package reference from `src/MeatyTimes.Web/MeatyTimes.Web.csproj` and `Directory.Packages.props` if no longer referenced
-- [ ] T006 Remove `AddMudServices()` from `src/MeatyTimes.Web/Program.cs`
-- [ ] T007 [P] Remove MudBlazor `@using` and provider markup from `src/MeatyTimes.Web/Components/_Imports.razor` and `src/MeatyTimes.Web/Components/App.razor`
-- [ ] T008 [P] Create closed-set `src/MeatyTimes.Web/Components/Icons/LucideIcon.razor` with inlined Lucide SVG paths (utensils, calculator, clock, book, info, thermometer, oven/flame, cloche, lightbulb, meat cues) and `aria-hidden="true"` on decorative icons per `specs/003-calculator-ui-refresh/research.md`
-- [ ] T009 [P] Extend `src/MeatyTimes.Web/Components/Roast/RoastDisplayFormatting.cs` with `FormatTemperatureFahrenheit(int celsius)` (nearest 5 °F) and `FormatDurationCompact(int minutes)` per `specs/003-calculator-ui-refresh/data-model.md`
-- [ ] T010 [P] Add unit tests for °F conversion and compact duration formatting in `tests/MeatyTimes.Web.Tests/RoastDisplayFormattingTests.cs`
-- [ ] T011 Create `src/MeatyTimes.Web/Components/Layout/AppHeader.razor` with logo, MeatyTimes brand, and destination slots (Calculator active; History, Guides, About visible but non-working) per `specs/003-calculator-ui-refresh/contracts/ui-contract.md`
-- [ ] T012 Rewrite `src/MeatyTimes.Web/Components/Layout/MainLayout.razor` to use `AppHeader`, light page background, and main content area — remove `MudAppBar`, `MudDrawer`, `MudLayout`, and `NavMenu` usage
-- [ ] T013 [P] Delete or retire unused `src/MeatyTimes.Web/Components/Layout/NavMenu.razor` if fully replaced by `AppHeader.razor`
-- [ ] T014 [P] Restyle `src/MeatyTimes.Web/Components/Layout/ReconnectModal.razor` and `src/MeatyTimes.Web/Components/Layout/ReconnectModal.razor.css` with Tailwind-compatible classes while preserving reconnect behaviour
+- [x] T005 Remove `MudBlazor` package reference from `src/MeatyTimes.Web/MeatyTimes.Web.csproj` and `Directory.Packages.props` if no longer referenced
+- [x] T006 Remove `AddMudServices()` from `src/MeatyTimes.Web/Program.cs`
+- [x] T007 [P] Remove MudBlazor `@using` and provider markup from `src/MeatyTimes.Web/Components/_Imports.razor` and `src/MeatyTimes.Web/Components/App.razor`
+- [x] T008 [P] Create closed-set `src/MeatyTimes.Web/Components/Icons/LucideIcon.razor` with inlined Lucide SVG paths (utensils, calculator, clock, book, info, thermometer, oven/flame, cloche, lightbulb, meat cues) and `aria-hidden="true"` on decorative icons per `specs/003-calculator-ui-refresh/research.md`
+- [x] T009 [P] Extend `src/MeatyTimes.Web/Components/Roast/RoastDisplayFormatting.cs` with `FormatTemperatureFahrenheit(int celsius)` (nearest 5 °F) and `FormatDurationCompact(int minutes)` per `specs/003-calculator-ui-refresh/data-model.md`
+- [x] T010 [P] Add unit tests for °F conversion and compact duration formatting in `tests/MeatyTimes.Web.Tests/RoastDisplayFormattingTests.cs`
+- [x] T011 Create `src/MeatyTimes.Web/Components/Layout/AppHeader.razor` with logo, MeatyTimes brand, and destination slots (Calculator active; History, Guides, About visible but non-working) per `specs/003-calculator-ui-refresh/contracts/ui-contract.md`
+- [x] T012 Rewrite `src/MeatyTimes.Web/Components/Layout/MainLayout.razor` to use `AppHeader`, light page background, and main content area — remove `MudAppBar`, `MudDrawer`, `MudLayout`, and `NavMenu` usage
+- [x] T013 [P] Delete or retire unused `src/MeatyTimes.Web/Components/Layout/NavMenu.razor` if fully replaced by `AppHeader.razor`
+- [x] T014 [P] Restyle `src/MeatyTimes.Web/Components/Layout/ReconnectModal.razor` and `src/MeatyTimes.Web/Components/Layout/ReconnectModal.razor.css` with Tailwind-compatible classes while preserving reconnect behaviour
 
 **Checkpoint**: Foundation ready — MudBlazor removed, Tailwind builds, header shell in place
 
@@ -62,10 +62,10 @@
 
 ### Implementation for User Story 1
 
-- [ ] T015 [US1] Rewrite `src/MeatyTimes.Web/Components/Pages/RoastCalculator.razor` to a two-column Tailwind grid (`form ~2/5`, `results ~3/5` on `md+`) with always-visible “Your Roast” and “Roasting Instructions” card chrome per `specs/003-calculator-ui-refresh/contracts/ui-contract.md`
-- [ ] T016 [P] [US1] Apply mockup card treatments (white input card, cooler tinted results card, rounded corners, generous padding, icon-led section titles) via Tailwind classes on `RoastInputForm` and `RoastResultsDisplay` shells in `src/MeatyTimes.Web/Components/Roast/RoastInputForm.razor` and `src/MeatyTimes.Web/Components/Roast/RoastResultsDisplay.razor`
-- [ ] T017 [US1] Ensure empty results state shows “Roasting Instructions” heading and supporting line only — no invented temperatures, times, or input summary in `src/MeatyTimes.Web/Components/Roast/RoastResultsDisplay.razor` per `specs/003-calculator-ui-refresh/data-model.md` visibility table
-- [ ] T018 [P] [US1] Remove page-level Mud typography (`MudText`, `MudGrid`, `MudItem`, `MudProgressLinear`, `MudAlert`) from `src/MeatyTimes.Web/Components/Pages/RoastCalculator.razor`; replace with Tailwind alert/loading patterns
+- [x] T015 [US1] Rewrite `src/MeatyTimes.Web/Components/Pages/RoastCalculator.razor` to a two-column Tailwind grid (`form ~2/5`, `results ~3/5` on `md+`) with always-visible “Your Roast” and “Roasting Instructions” card chrome per `specs/003-calculator-ui-refresh/contracts/ui-contract.md`
+- [x] T016 [P] [US1] Apply mockup card treatments (white input card, cooler tinted results card, rounded corners, generous padding, icon-led section titles) via Tailwind classes on `RoastInputForm` and `RoastResultsDisplay` shells in `src/MeatyTimes.Web/Components/Roast/RoastInputForm.razor` and `src/MeatyTimes.Web/Components/Roast/RoastResultsDisplay.razor`
+- [x] T017 [US1] Ensure empty results state shows “Roasting Instructions” heading and supporting line only — no invented temperatures, times, or input summary in `src/MeatyTimes.Web/Components/Roast/RoastResultsDisplay.razor` per `specs/003-calculator-ui-refresh/data-model.md` visibility table
+- [x] T018 [P] [US1] Remove page-level Mud typography (`MudText`, `MudGrid`, `MudItem`, `MudProgressLinear`, `MudAlert`) from `src/MeatyTimes.Web/Components/Pages/RoastCalculator.razor`; replace with Tailwind alert/loading patterns
 
 **Checkpoint**: User Story 1 complete — page reads as the mockup before any calculation
 
@@ -81,15 +81,15 @@
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T019 [P] [US2] Remove `AddMudServices()` from `tests/MeatyTimes.Web.Tests/RoastResultsDisplayTests.cs` test fixture (and any new fixtures) per quickstart component test checklist
-- [ ] T020 [P] [US2] Add bUnit tests for `RoastInputForm` markup: “Your Roast” title, native selects/inputs, `kg` suffix, “Calculate Times” button, doneness hidden for unsupported meat in `tests/MeatyTimes.Web.Tests/RoastInputFormTests.cs`
+- [x] T019 [P] [US2] Remove `AddMudServices()` from `tests/MeatyTimes.Web.Tests/RoastResultsDisplayTests.cs` test fixture (and any new fixtures) per quickstart component test checklist
+- [x] T020 [P] [US2] Add bUnit tests for `RoastInputForm` markup: “Your Roast” title, native selects/inputs, `kg` suffix, “Calculate Times” button, doneness hidden for unsupported meat in `tests/MeatyTimes.Web.Tests/RoastInputFormTests.cs`
 
 ### Implementation for User Story 2
 
-- [ ] T021 [US2] Rebuild `src/MeatyTimes.Web/Components/Roast/RoastInputForm.razor` with native `<select>` for meat and doneness, `<input type="number">` with visible `kg` suffix, helper text under fields, and full-width primary `<button>` labelled “Calculate Times” per `specs/003-calculator-ui-refresh/contracts/ui-contract.md`
-- [ ] T022 [US2] Wire validation display (`WeightError`, `DonenessError`) to Tailwind field-level errors and an alert region in `src/MeatyTimes.Web/Components/Roast/RoastInputForm.razor` and `src/MeatyTimes.Web/Components/Pages/RoastCalculator.razor`
-- [ ] T023 [US2] Preserve existing `OnCalculateRequested` callback and `RoastInputModel` meat/weight/doneness semantics in `src/MeatyTimes.Web/Components/Roast/RoastInputForm.razor` — no Core rule changes
-- [ ] T024 [US2] Disable “Calculate Times” while `IsLoading` and show in-progress feedback in `src/MeatyTimes.Web/Components/Roast/RoastInputForm.razor` and `src/MeatyTimes.Web/Components/Pages/RoastCalculator.razor`
+- [x] T021 [US2] Rebuild `src/MeatyTimes.Web/Components/Roast/RoastInputForm.razor` with native `<select>` for meat and doneness, `<input type="number">` with visible `kg` suffix, helper text under fields, and full-width primary `<button>` labelled “Calculate Times” per `specs/003-calculator-ui-refresh/contracts/ui-contract.md`
+- [x] T022 [US2] Wire validation display (`WeightError`, `DonenessError`) to Tailwind field-level errors and an alert region in `src/MeatyTimes.Web/Components/Roast/RoastInputForm.razor` and `src/MeatyTimes.Web/Components/Pages/RoastCalculator.razor`
+- [x] T023 [US2] Preserve existing `OnCalculateRequested` callback and `RoastInputModel` meat/weight/doneness semantics in `src/MeatyTimes.Web/Components/Roast/RoastInputForm.razor` — no Core rule changes
+- [x] T024 [US2] Disable “Calculate Times” while `IsLoading` and show in-progress feedback in `src/MeatyTimes.Web/Components/Roast/RoastInputForm.razor` and `src/MeatyTimes.Web/Components/Pages/RoastCalculator.razor`
 
 **Checkpoint**: User Story 2 complete — calculate workflow works in the new form
 
@@ -105,16 +105,16 @@
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T025 [P] [US3] Rewrite `tests/MeatyTimes.Web.Tests/RoastResultsDisplayTests.cs` without MudBlazor — assert summary labels/values, instruction heading, and empty snapshot behaviour per quickstart checklist
-- [ ] T026 [P] [US3] Add test: each cooking phase renders as its own row (not collapsed) when `CookingResultDto` has multiple phases in `tests/MeatyTimes.Web.Tests/RoastResultsDisplayTests.cs`
-- [ ] T027 [P] [US3] Add test: temperature rows show °C prominently and °F secondary via `RoastDisplayFormatting` in `tests/MeatyTimes.Web.Tests/RoastResultsDisplayTests.cs`
+- [x] T025 [P] [US3] Rewrite `tests/MeatyTimes.Web.Tests/RoastResultsDisplayTests.cs` without MudBlazor — assert summary labels/values, instruction heading, and empty snapshot behaviour per quickstart checklist
+- [x] T026 [P] [US3] Add test: each cooking phase renders as its own row (not collapsed) when `CookingResultDto` has multiple phases in `tests/MeatyTimes.Web.Tests/RoastResultsDisplayTests.cs`
+- [x] T027 [P] [US3] Add test: temperature rows show °C prominently and °F secondary via `RoastDisplayFormatting` in `tests/MeatyTimes.Web.Tests/RoastResultsDisplayTests.cs`
 
 ### Implementation for User Story 3
 
-- [ ] T028 [US3] Rebuild `src/MeatyTimes.Web/Components/Roast/RoastResultsDisplay.razor` with icon-led instruction rows (one per `PhaseDto`), rest row, total cooking / total preparation rows, and estimate disclaimer per `specs/003-calculator-ui-refresh/contracts/ui-contract.md`
-- [ ] T029 [US3] Render input summary (meat display name, `{0.0} kg`, conditional doneness) from snapshot `Input` + `Meats` above instruction rows in `src/MeatyTimes.Web/Components/Roast/RoastResultsDisplay.razor` — retain 002 semantics
-- [ ] T030 [US3] Apply `RoastDisplayFormatting.FormatTemperatureFahrenheit` and `FormatDurationCompact` to prominent result values in `src/MeatyTimes.Web/Components/Roast/RoastResultsDisplay.razor`
-- [ ] T031 [US3] Use primary teal treatment for prominent values and secondary text for °F equivalents in `src/MeatyTimes.Web/Components/Roast/RoastResultsDisplay.razor` per `specs/003-calculator-ui-refresh/spec.md` FR-002/FR-008
+- [x] T028 [US3] Rebuild `src/MeatyTimes.Web/Components/Roast/RoastResultsDisplay.razor` with icon-led instruction rows (one per `PhaseDto`), rest row, total cooking / total preparation rows, and estimate disclaimer per `specs/003-calculator-ui-refresh/contracts/ui-contract.md`
+- [x] T029 [US3] Render input summary (meat display name, `{0.0} kg`, conditional doneness) from snapshot `Input` + `Meats` above instruction rows in `src/MeatyTimes.Web/Components/Roast/RoastResultsDisplay.razor` — retain 002 semantics
+- [x] T030 [US3] Apply `RoastDisplayFormatting.FormatTemperatureFahrenheit` and `FormatDurationCompact` to prominent result values in `src/MeatyTimes.Web/Components/Roast/RoastResultsDisplay.razor`
+- [x] T031 [US3] Use primary teal treatment for prominent values and secondary text for °F equivalents in `src/MeatyTimes.Web/Components/Roast/RoastResultsDisplay.razor` per `specs/003-calculator-ui-refresh/spec.md` FR-002/FR-008
 
 **Checkpoint**: User Stories 1–3 complete — full calculate-and-read path in the new design (MVP)
 
@@ -128,11 +128,11 @@
 
 ### Implementation for User Story 4
 
-- [ ] T032 [US4] Add optional `ServingTime` (`DateTimeOffset?`) to `RoastInputForm.RoastInputModel` in `src/MeatyTimes.Web/Components/Roast/RoastInputForm.razor` per `specs/003-calculator-ui-refresh/data-model.md`
-- [ ] T033 [US4] Add optional native `<input type="datetime-local">` with helper text to `src/MeatyTimes.Web/Components/Roast/RoastInputForm.razor` per mockup
-- [ ] T034 [US4] Update `HandleCalculate` in `src/MeatyTimes.Web/Components/Pages/RoastCalculator.razor` to call `RoastService.PlanSchedule` when `ServingTime` is set (after successful `Calculate`), removing the separate Plan button flow
-- [ ] T035 [US4] Restyle `src/MeatyTimes.Web/Components/Roast/ServeAtPlanner.razor` as schedule milestone display inside the results column (achievable milestones, unachievable warning, errors) — remove duplicate serve-at input controls
-- [ ] T036 [US4] Preserve prior instruction snapshot on schedule failure in `src/MeatyTimes.Web/Components/Pages/RoastCalculator.razor` per `specs/003-calculator-ui-refresh/data-model.md` state transitions
+- [x] T032 [US4] Add optional `ServingTime` (`DateTimeOffset?`) to `RoastInputForm.RoastInputModel` in `src/MeatyTimes.Web/Components/Roast/RoastInputForm.razor` per `specs/003-calculator-ui-refresh/data-model.md`
+- [x] T033 [US4] Add optional native `<input type="datetime-local">` with helper text to `src/MeatyTimes.Web/Components/Roast/RoastInputForm.razor` per mockup
+- [x] T034 [US4] Update `HandleCalculate` in `src/MeatyTimes.Web/Components/Pages/RoastCalculator.razor` to call `RoastService.PlanSchedule` when `ServingTime` is set (after successful `Calculate`), removing the separate Plan button flow
+- [x] T035 [US4] Restyle `src/MeatyTimes.Web/Components/Roast/ServeAtPlanner.razor` as schedule milestone display inside the results column (achievable milestones, unachievable warning, errors) — remove duplicate serve-at input controls
+- [x] T036 [US4] Preserve prior instruction snapshot on schedule failure in `src/MeatyTimes.Web/Components/Pages/RoastCalculator.razor` per `specs/003-calculator-ui-refresh/data-model.md` state transitions
 
 **Checkpoint**: User Story 4 complete — serve-at relocated without capability loss
 
@@ -146,9 +146,9 @@
 
 ### Implementation for User Story 5
 
-- [ ] T037 [US5] Add responsive Tailwind breakpoints so form and results stack (`flex-col` / single column) below `md` and sit side-by-side at `md+` in `src/MeatyTimes.Web/Components/Pages/RoastCalculator.razor`
-- [ ] T038 [P] [US5] Ensure instruction rows and summary do not overflow horizontally on narrow viewports in `src/MeatyTimes.Web/Components/Roast/RoastResultsDisplay.razor`
-- [ ] T039 [P] [US5] Make `AppHeader` destinations wrap or compress without hiding Calculator or the logo on narrow widths in `src/MeatyTimes.Web/Components/Layout/AppHeader.razor`
+- [x] T037 [US5] Add responsive Tailwind breakpoints so form and results stack (`flex-col` / single column) below `md` and sit side-by-side at `md+` in `src/MeatyTimes.Web/Components/Pages/RoastCalculator.razor`
+- [x] T038 [P] [US5] Ensure instruction rows and summary do not overflow horizontally on narrow viewports in `src/MeatyTimes.Web/Components/Roast/RoastResultsDisplay.razor`
+- [x] T039 [P] [US5] Make `AppHeader` destinations wrap or compress without hiding Calculator or the logo on narrow widths in `src/MeatyTimes.Web/Components/Layout/AppHeader.razor`
 
 **Checkpoint**: User Story 5 complete — kitchen-friendly responsive layout
 
@@ -162,10 +162,10 @@
 
 ### Implementation for User Story 6
 
-- [ ] T040 [US6] Render History, Guides, and About as non-interactive labelled items (not links to routes) in `src/MeatyTimes.Web/Components/Layout/AppHeader.razor` per `specs/003-calculator-ui-refresh/research.md` decision 8
-- [ ] T041 [US6] Confirm `src/MeatyTimes.Web/Components/Roast/RoastResultsDisplay.razor` has no “Save to History” or equivalent control per FR-014
-- [ ] T042 [US6] Add generic tip strip below the cards in `src/MeatyTimes.Web/Components/Pages/RoastCalculator.razor` (thermometer reminder; no unsourced °C internal-temp ranges) per `specs/003-calculator-ui-refresh/research.md` decision 9
-- [ ] T043 [P] [US6] Restyle `src/MeatyTimes.Web/Components/Pages/Error.razor` and `src/MeatyTimes.Web/Components/Pages/NotFound.razor` without MudBlazor so error pages match the light chrome
+- [x] T040 [US6] Render History, Guides, and About as non-interactive labelled items (not links to routes) in `src/MeatyTimes.Web/Components/Layout/AppHeader.razor` per `specs/003-calculator-ui-refresh/research.md` decision 8
+- [x] T041 [US6] Confirm `src/MeatyTimes.Web/Components/Roast/RoastResultsDisplay.razor` has no “Save to History” or equivalent control per FR-014
+- [x] T042 [US6] Add generic tip strip below the cards in `src/MeatyTimes.Web/Components/Pages/RoastCalculator.razor` (thermometer reminder; no unsourced °C internal-temp ranges) per `specs/003-calculator-ui-refresh/research.md` decision 9
+- [x] T043 [P] [US6] Restyle `src/MeatyTimes.Web/Components/Pages/Error.razor` and `src/MeatyTimes.Web/Components/Pages/NotFound.razor` without MudBlazor so error pages match the light chrome
 
 **Checkpoint**: All user stories complete — chrome is honest and mockup-faithful
 
@@ -175,11 +175,11 @@
 
 **Purpose**: Test suite hygiene, documentation, and manual validation
 
-- [ ] T044 [P] Remove `MudBlazor` from `tests/MeatyTimes.Web.Tests/MeatyTimes.Web.Tests.csproj` if still referenced after test rewrites
-- [ ] T045 [P] Update `docs-internal/tech-stack.md`, `README.md`, and `AGENTS.md` to describe Blazor Server + Tailwind v4 standalone CLI + Lucide (not MudBlazor)
-- [ ] T046 Run `~/.dotnet/dotnet test MeatyTimes.slnx` and fix failures in `tests/MeatyTimes.Web.Tests/` and `tests/MeatyTimes.Core.Tests/`
-- [ ] T047 Run quickstart.md validation Scenarios 1–7 (visual compare against `specs/003-calculator-ui-refresh/visual-reference.jpg`) and note results in `specs/003-calculator-ui-refresh/quickstart.md`
-- [ ] T048 Verify no new abstractions beyond `LucideIcon`, `RoastDisplayFormatting`, and layout primitives violate Constitution Principle II in the feature plan Complexity Tracking table
+- [x] T044 [P] Remove `MudBlazor` from `tests/MeatyTimes.Web.Tests/MeatyTimes.Web.Tests.csproj` if still referenced after test rewrites
+- [x] T045 [P] Update `docs-internal/tech-stack.md`, `README.md`, and `AGENTS.md` to describe Blazor Server + Tailwind v4 standalone CLI + Lucide (not MudBlazor)
+- [x] T046 Run `~/.dotnet/dotnet test MeatyTimes.slnx` and fix failures in `tests/MeatyTimes.Web.Tests/` and `tests/MeatyTimes.Core.Tests/`
+- [x] T047 Run quickstart.md validation Scenarios 1–7 (visual compare against `specs/003-calculator-ui-refresh/visual-reference.jpg`) and note results in `specs/003-calculator-ui-refresh/quickstart.md`
+- [x] T048 Verify no new abstractions beyond `LucideIcon`, `RoastDisplayFormatting`, and layout primitives violate Constitution Principle II in the feature plan Complexity Tracking table
 
 ---
 

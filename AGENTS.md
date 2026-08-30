@@ -6,7 +6,7 @@ MeatyTimes is a .NET 10 Aspire distributed app (a roast-cooking assistant). Stan
 
 ### Services
 - `MeatyTimes.AppHost` — Aspire orchestrator; launches the Web app and the Aspire dashboard.
-- `MeatyTimes.Web` — Blazor Server + MudBlazor UI (the roast calculator); calls `MeatyTimes.Core` in-process.
+- `MeatyTimes.Web` — Blazor Server + Tailwind CSS UI (the roast calculator); calls `MeatyTimes.Core` in-process.
 - `MeatyTimes.Core` — domain logic; `MeatyTimes.ServiceDefaults` — OTel/health-check defaults.
 
 ### Non-obvious caveats

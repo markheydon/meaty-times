@@ -437,3 +437,9 @@ docs/.bundle/
 
 # Playwright files
 .playwright-cli/*.yml
+
+# Tailwind generated CSS
+src/MeatyTimes.Web/wwwroot/css/app.css
+
+# Tailwind standalone CLI binary (downloaded via tools/tailwind/download.sh)
+tools/tailwind/tailwindcss

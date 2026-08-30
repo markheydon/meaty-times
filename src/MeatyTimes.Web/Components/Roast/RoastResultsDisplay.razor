@@ -1,49 +1,97 @@
 @using MeatyTimes.Web.Services
 
-@if (Result is not null && Input is not null)
-{
-    <MudPaper Class="pa-4 roast-results" Elevation="2">
-        <MudText Typo="Typo.subtitle2" Class="mb-2 roast-input-summary-heading">Calculation for</MudText>
+<div class="bg-results rounded-xl border border-gray-200 p-6 shadow-sm h-full">
+    <div class="flex items-center gap-2 mb-2">
+        <LucideIcon Name="oven" Size="22" Class="text-primary" />
+        <h2 class="text-lg font-semibold text-gray-900">Roasting Instructions</h2>
+    </div>
 
-        <MudStack Spacing="1" Class="mb-4 roast-input-summary">
-            <MudText Typo="Typo.body1" Class="roast-input-summary-row">
-                <strong>Meat type:</strong> @MeatDisplayName
-            </MudText>
-            <MudText Typo="Typo.body1" Class="roast-input-summary-row">
-                <strong>Weight (kg):</strong> @RoastDisplayFormatting.FormatWeightKg(Input.WeightKg)
-            </MudText>
+    @if (Result is not null && Input is not null)
+    {
+        <p class="text-sm text-gray-600 mb-4">Here are your recommended roasting times.</p>
+
+        <div class="mb-4 pb-4 border-b border-gray-200/80 space-y-1">
+            <p class="text-sm text-gray-700">
+                <span class="font-medium">Meat type:</span> @MeatDisplayName
+            </p>
+            <p class="text-sm text-gray-700">
+                <span class="font-medium">Weight:</span> @RoastDisplayFormatting.FormatWeightKg(Input.WeightKg)
+            </p>
             @if (ShowDoneness)
             {
-                <MudText Typo="Typo.body1" Class="roast-input-summary-row">
-                    <strong>Doneness:</strong> @RoastDisplayFormatting.FormatDoneness(Input.Doneness!)
-                </MudText>
+                <p class="text-sm text-gray-700">
+                    <span class="font-medium">Doneness:</span> @RoastDisplayFormatting.FormatDoneness(Input.Doneness!)
+                </p>
             }
-        </MudStack>
+        </div>
 
-        <MudDivider Class="mb-3" />
-
-        <MudText Typo="Typo.h6" GutterBottom="true">Roasting instructions</MudText>
-
-        <MudTimeline TimelinePosition="TimelinePosition.Start">
+        <div class="space-y-0 divide-y divide-gray-200/80">
             @foreach (var phase in Result.Phases.OrderBy(p => p.Order))
             {
-                <MudTimelineItem Color="Color.Primary">
-                    <ItemContent>
-                        <MudText Typo="Typo.body1">
-                            <strong>Step @phase.Order:</strong> @phase.Description at @phase.TemperatureC°C for @FormatDuration(phase.DurationMinutes).
-                        </MudText>
-                    </ItemContent>
-                </MudTimelineItem>
+                <div class="flex items-start gap-3 py-4 min-w-0">
+                    <div class="shrink-0 mt-0.5 text-primary">
+                        <LucideIcon Name="thermometer" Size="20" />
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm font-medium text-gray-900">@phase.Description</p>
+                        <p class="text-xs text-gray-500 mt-0.5">Set your oven to the following temperature and roast for the listed time.</p>
+                    </div>
+                    <div class="text-right shrink-0">
+                        <p class="text-lg font-bold text-primary">@RoastDisplayFormatting.FormatTemperatureCelsius(phase.TemperatureC)</p>
+                        <p class="text-xs text-gray-500">@RoastDisplayFormatting.FormatTemperatureFahrenheitDisplay(phase.TemperatureC)</p>
+                        <p class="text-lg font-bold text-primary mt-1">@RoastDisplayFormatting.FormatDurationCompact(phase.DurationMinutes)</p>
+                    </div>
+                </div>
             }
-        </MudTimeline>
 
-        <MudDivider Class="my-3" />
+            <div class="flex items-start gap-3 py-4 min-w-0">
+                <div class="shrink-0 mt-0.5 text-primary">
+                    <LucideIcon Name="cloche" Size="20" />
+                </div>
+                <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium text-gray-900">Rest time</p>
+                    <p class="text-xs text-gray-500 mt-0.5">Rest for this amount of time before carving.</p>
+                </div>
+                <div class="text-right shrink-0">
+                    <p class="text-lg font-bold text-primary">@RoastDisplayFormatting.FormatDurationCompact(Result.RestingMinutes)</p>
+                </div>
+            </div>
 
-        <MudText Typo="Typo.body1"><strong>Total cooking:</strong> @FormatDuration(Result.TotalCookingMinutes)</MudText>
-        <MudText Typo="Typo.body1"><strong>Resting time:</strong> @FormatDuration(Result.RestingMinutes)</MudText>
-        <MudText Typo="Typo.h6" Class="mt-2"><strong>Total preparation:</strong> @FormatDuration(Result.TotalPreparationMinutes)</MudText>
-    </MudPaper>
-}
+            <div class="flex items-start gap-3 py-4 min-w-0">
+                <div class="shrink-0 mt-0.5 text-primary">
+                    <LucideIcon Name="clock" Size="20" />
+                </div>
+                <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium text-gray-900">Total cooking</p>
+                </div>
+                <div class="text-right shrink-0">
+                    <p class="text-lg font-bold text-primary">@RoastDisplayFormatting.FormatDurationCompact(Result.TotalCookingMinutes)</p>
+                </div>
+            </div>
+
+            <div class="flex items-start gap-3 py-4 min-w-0">
+                <div class="shrink-0 mt-0.5 text-primary">
+                    <LucideIcon Name="clock" Size="20" />
+                </div>
+                <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium text-gray-900">Total preparation</p>
+                </div>
+                <div class="text-right shrink-0">
+                    <p class="text-lg font-bold text-primary">@RoastDisplayFormatting.FormatDurationCompact(Result.TotalPreparationMinutes)</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-4 flex items-start gap-2 rounded-lg bg-blue-50 border border-blue-100 p-3 text-sm text-blue-800">
+            <LucideIcon Name="info" Size="18" Class="shrink-0 mt-0.5" />
+            <p>Times are estimated and may vary depending on the exact shape of your roast and oven performance.</p>
+        </div>
+    }
+    else
+    {
+        <p class="text-sm text-gray-600">Enter your roast details and calculate to see instructions here.</p>
+    }
+</div>
 
 @code {
     [Parameter] public CookingResultDto? Result { get; set; }
@@ -58,34 +106,4 @@
     private string MeatDisplayName => SelectedMeat?.DisplayName ?? Input?.MeatType ?? string.Empty;
 
     private bool ShowDoneness => SelectedMeat?.SupportsDoneness == true && Input?.Doneness is not null;
-
-    private static string FormatDuration(int minutes)
-    {
-        if (minutes < 60)
-        {
-            return $"{minutes} minutes";
-        }
-
-        var hours = minutes / 60;
-        var remaining = minutes % 60;
-        return remaining == 0 ? $"{hours} hour{(hours == 1 ? "" : "s")}" : $"{hours} hour{(hours == 1 ? "" : "s")} {remaining} minutes";
-    }
 }
-
-<style>
-    .roast-input-summary {
-        width: 100%;
-    }
-
-    .roast-input-summary-row {
-        word-break: break-word;
-    }
-
-    @@media (max-width: 600px) {
-        .roast-input-summary,
-        .roast-input-summary-row {
-            width: 100%;
-            max-width: 100%;
-        }
-    }
-</style>

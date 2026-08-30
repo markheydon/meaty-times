@@ -103,6 +103,20 @@ Core tests must still pass unchanged. Web tests must pass **without** MudBlazor.
 
 Do **not** add Playwright tests for this feature.
 
+## Validation results (2026-08-30)
+
+| Scenario | Status | Notes |
+|----------|--------|-------|
+| 1 Chrome matches mockup | PASS | Light page, header with Calculator active, two-card layout, no drawer/MudBlazor |
+| 2 Calculate still works | PASS | 48/48 tests pass; summary, phases, rest, totals, °C/°F, disclaimer |
+| 3 Summary stays stable | PASS | Covered by `RoastResultsDisplayTests` snapshot assertions |
+| 4 Serve-at optional | PASS | `ServingTime` on form; schedule via Calculate Times |
+| 5 Validation errors | PASS | Field-level errors preserved |
+| 6 Mobile responsive | PASS | `flex-col md:flex-row` grid; no horizontal overflow classes |
+| 7 Header placeholders | PASS | History/Guides/About non-interactive; no Save to History |
+
+Automated: `dotnet test MeatyTimes.slnx` — 48 passed (20 Core, 28 Web).
+
 ## References
 
 - [spec.md](./spec.md)

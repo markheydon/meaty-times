@@ -12,7 +12,7 @@ pinned in [Directory.Packages.props](../Directory.Packages.props) and the SDK in
 ## Current stack
 
 - .NET SDK 10 (see `global.json`)
-- C# / ASP.NET Core, Blazor Server, MudBlazor
+- C# / ASP.NET Core, Blazor Server, Tailwind CSS v4 standalone CLI, Lucide icons
 - .NET Aspire for local orchestration and Azure Container Apps deployment
 - OpenTelemetry via `MeatyTimes.ServiceDefaults`
 - Central package management (`Directory.Packages.props`)
@@ -22,7 +22,7 @@ pinned in [Directory.Packages.props](../Directory.Packages.props) and the SDK in
 | Project | Role |
 |---------|------|
 | `src/MeatyTimes.AppHost` | Aspire orchestrator |
-| `src/MeatyTimes.Web` | Blazor Server + MudBlazor UI; calls Core in-process |
+| `src/MeatyTimes.Web` | Blazor Server + Tailwind CSS UI; calls Core in-process |
 | `src/MeatyTimes.Core` | Domain models, cooking rules, calculation engine |
 | `src/MeatyTimes.ServiceDefaults` | OTel and health-check defaults |
 | `tests/MeatyTimes.Core.Tests` | Domain unit tests |
@@ -38,6 +38,10 @@ Design and contracts for the roast calculator live under
   or Aspire dashboard for the `webfrontend` URL.
 - HTTPS dev-cert trust is required for AppHost health checks; see `AGENTS.md`.
 - Linting/formatting: CI runs `dotnet format --verify-no-changes`.
+- Tailwind CSS is built via MSBuild `BeforeBuild` and the standalone CLI at
+  `tools/tailwind/tailwindcss` (linux-x64). The binary is not committed; run
+  `tools/tailwind/download.sh` or `dotnet build` on `MeatyTimes.Web` to fetch it.
+  Replace the download script asset name for other OS targets as needed.
 
 Cooking rules that must stay documented and traceable are stored in
 `src/MeatyTimes.Core/Rules/cooking-rules.json`.
