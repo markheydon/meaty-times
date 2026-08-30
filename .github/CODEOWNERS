@@ -1,9 +1,9 @@
 # Default owner for the repository
 * @markheydon
 
-# Cooking logic, rules, and API contracts — changes here affect food-safety guidance
+# Cooking logic, rules, and in-process service contracts — changes here affect food-safety guidance
 /src/MeatyTimes.Core/ @markheydon
-/src/MeatyTimes.ApiService/Endpoints/ @markheydon
+/src/MeatyTimes.Web/Services/ @markheydon
 
 # CI, dependency, and governance configuration
 /.github/ @markheydon

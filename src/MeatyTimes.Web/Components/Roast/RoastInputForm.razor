@@ -55,7 +55,7 @@
 </MudPaper>
 
 @code {
-    [Parameter] public IReadOnlyList<RoastApiClient.MeatTypeDto> Meats { get; set; } = [];
+    [Parameter] public IReadOnlyList<MeatTypeDto> Meats { get; set; } = [];
 
     [Parameter] public bool IsLoading { get; set; }
 
@@ -69,7 +69,7 @@
     private decimal? _weightKg = 2.0m;
     private string? _selectedDoneness = "Medium";
 
-    private RoastApiClient.MeatTypeDto? SelectedMeat =>
+    private MeatTypeDto? SelectedMeat =>
         Meats.FirstOrDefault(m => m.Id == _selectedMeatId);
 
     private decimal MinWeight => SelectedMeat?.MinWeightKg ?? 0.5m;

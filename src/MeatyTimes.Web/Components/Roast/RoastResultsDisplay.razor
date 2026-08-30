@@ -46,13 +46,13 @@
 }
 
 @code {
-    [Parameter] public RoastApiClient.CookingResultDto? Result { get; set; }
+    [Parameter] public CookingResultDto? Result { get; set; }
 
     [Parameter] public RoastInputForm.RoastInputModel? Input { get; set; }
 
-    [Parameter] public IReadOnlyList<RoastApiClient.MeatTypeDto> Meats { get; set; } = [];
+    [Parameter] public IReadOnlyList<MeatTypeDto> Meats { get; set; } = [];
 
-    private RoastApiClient.MeatTypeDto? SelectedMeat =>
+    private MeatTypeDto? SelectedMeat =>
         Meats.FirstOrDefault(m => m.Id == Input?.MeatType);
 
     private string MeatDisplayName => SelectedMeat?.DisplayName ?? Input?.MeatType ?? string.Empty;

@@ -1,3 +1,4 @@
+using MeatyTimes.Core;
 using MeatyTimes.Web.Components;
 using MeatyTimes.Web.Services;
 using MudBlazor.Services;
@@ -12,10 +13,8 @@ builder.Services.AddRazorComponents()
 builder.Services.AddMudServices();
 builder.Services.AddOutputCache();
 
-builder.Services.AddHttpClient<RoastApiClient>(client =>
-{
-    client.BaseAddress = new("https+http://apiservice");
-});
+builder.Services.AddMeatyTimesCore();
+builder.Services.AddSingleton<RoastService>();
 
 var app = builder.Build();
 

@@ -4,7 +4,7 @@ The GitHub Actions workflow in [.github/workflows/ci.yml](../.github/workflows/c
 
 ## HTTPS development certificate (local development only)
 
-Aspire AppHost health-checks the API over HTTPS during local development. Without a trusted ASP.NET Core development certificate, `apiservice` may never report healthy and `webfrontend` (which `WaitFor`s the API) may not start.
+Aspire AppHost health-checks `webfrontend` over HTTPS during local development. Without a trusted ASP.NET Core development certificate, the web app may never report healthy and AppHost startup can hang.
 
 For local `dotnet run --project src/MeatyTimes.AppHost`, trust the dev certificate:
 

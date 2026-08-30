@@ -7,7 +7,7 @@ namespace MeatyTimes.Web.Tests;
 
 public class RoastResultsDisplayTests : BunitContext
 {
-    private static readonly IReadOnlyList<RoastApiClient.MeatTypeDto> Meats =
+    private static readonly IReadOnlyList<MeatTypeDto> Meats =
     [
         new("beef", "Beef", true, ["Rare", "Medium", "WellDone"], 0.5m, 15m),
         new("chicken", "Chicken", false, [], 0.8m, 10m),
@@ -64,7 +64,7 @@ public class RoastResultsDisplayTests : BunitContext
         var input = new RoastInputForm.RoastInputModel("beef", 2.0m, "Medium");
 
         var cut = Render<RoastResultsDisplay>(parameters => parameters
-            .Add(p => p.Result, (RoastApiClient.CookingResultDto?)null)
+            .Add(p => p.Result, (CookingResultDto?)null)
             .Add(p => p.Input, input)
             .Add(p => p.Meats, Meats));
 
@@ -116,7 +116,7 @@ public class RoastResultsDisplayTests : BunitContext
         Assert.Contains("Roasting instructions", cut.Markup);
     }
 
-    private static RoastApiClient.CookingResultDto CreateResult(string meatType = "beef") =>
+    private static CookingResultDto CreateResult(string meatType = "beef") =>
         new(
             meatType,
             2.0m,

@@ -39,11 +39,10 @@ Generate a comprehensive README.md for the **MeatyTimes** repository by analysin
 - Note central package management via `Directory.Packages.props`.
 
 ## Project Architecture
-- High-level distributed app layout:
+- High-level Aspire app layout:
   - `MeatyTimes.AppHost` — Aspire orchestration
-  - `MeatyTimes.ApiService` — minimal API for roast calculation
   - `MeatyTimes.Core` — domain logic, cooking rules, calculation engine
-  - `MeatyTimes.Web` — MudBlazor Blazor UI
+  - `MeatyTimes.Web` — MudBlazor Blazor UI (calls Core in-process)
   - `MeatyTimes.ServiceDefaults` — OpenTelemetry and health checks
 - Source from feature `plan.md`, `data-model.md`, and `contracts/*` under `specs/`.
 

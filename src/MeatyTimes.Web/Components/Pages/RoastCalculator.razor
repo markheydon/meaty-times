@@ -1,7 +1,7 @@
 @page "/"
 @using MeatyTimes.Web.Components.Roast
 @using MeatyTimes.Web.Services
-@inject RoastApiClient RoastApi
+@inject RoastService RoastService
 
 <PageTitle>MeatyTimes — Roast Calculator</PageTitle>
 
@@ -48,9 +48,9 @@ else
 }
 
 @code {
-    private IReadOnlyList<RoastApiClient.MeatTypeDto> _meats = [];
-    private RoastApiClient.CookingResultDto? _result;
-    private RoastApiClient.ScheduleDto? _schedule;
+    private IReadOnlyList<MeatTypeDto> _meats = [];
+    private CookingResultDto? _result;
+    private ScheduleDto? _schedule;
     private RoastInputForm.RoastInputModel? _lastInput;
     private bool _isLoading;
     private bool _isPlanning;
@@ -64,7 +64,8 @@ else
     {
         try
         {
-            _meats = await RoastApi.GetMeatsAsync();
+            await Task.Yield();
+            _meats = RoastService.GetMeats();
         }
         catch (Exception ex)
         {
@@ -80,13 +81,14 @@ else
         _donenessError = null;
         _schedule = null;
         _scheduleError = null;
+        await Task.Yield();
 
         try
         {
-            _result = await RoastApi.CalculateAsync(input.MeatType, input.WeightKg, input.Doneness);
+            _result = RoastService.Calculate(input.MeatType, input.WeightKg, input.Doneness);
             _lastInput = input;
         }
-        catch (RoastApiException ex)
+        catch (RoastServiceException ex)
         {
             _weightError = ex.Errors.GetValueOrDefault("weightKg")?.FirstOrDefault();
             _donenessError = ex.Errors.GetValueOrDefault("doneness")?.FirstOrDefault();
@@ -107,16 +109,17 @@ else
 
         _isPlanning = true;
         _scheduleError = null;
+        await Task.Yield();
 
         try
         {
-            _schedule = await RoastApi.PlanScheduleAsync(
+            _schedule = RoastService.PlanSchedule(
                 _lastInput.MeatType,
                 _lastInput.WeightKg,
                 _lastInput.Doneness,
                 servingTime);
         }
-        catch (RoastApiException ex)
+        catch (RoastServiceException ex)
         {
             _schedule = null;
             _scheduleError = ex.FirstError;

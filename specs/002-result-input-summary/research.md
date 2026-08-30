@@ -35,7 +35,7 @@
 
 ## 4. API and Domain Changes
 
-**Decision**: No changes to `MeatyTimes.Core`, `MeatyTimes.ApiService`, or API contracts.
+**Decision**: No changes to `MeatyTimes.Core` or service contracts.
 
 **Rationale**: `CookingResultDto` and calculation logic are unaffected. This is a UI clarity improvement on existing data already held client-side after calculate.
 
@@ -51,7 +51,7 @@
 Wait - let me re-read HandleCalculate:
 
 ```csharp
-catch (RoastApiException ex)
+catch (RoastServiceException ex)
 {
     _result = null;  // This clears results on error!
     ...

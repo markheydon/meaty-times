@@ -36,24 +36,24 @@
 
 ## 4. Architecture: Shared Core Library
 
-**Decision**: Create `MeatyTimes.Core` class library containing domain types, `RoastCalculator`, `ScheduleCalculator`, and `CookingRuleLoader`. Referenced by `ApiService` and `MeatyTimes.Core.Tests`.
+**Decision**: Create `MeatyTimes.Core` class library containing domain types, `RoastCalculator`, `ScheduleCalculator`, and `CookingRuleLoader`. Referenced by `MeatyTimes.Web` (via `RoastService`) and `MeatyTimes.Core.Tests`.
 
-**Rationale**: Constitution Principle II requires unit tests on calculation logic without HTTP. Principle I requires domain logic in dedicated modules. A single shared library avoids duplicating rules between API and tests.
+**Rationale**: Constitution Principle II requires unit tests on calculation logic without HTTP. Principle I requires domain logic in dedicated modules. A single shared library avoids duplicating rules between UI and tests.
 
 **Alternatives considered**:
-- *Calculation in ApiService only*: Rejected — forces integration tests for all calculation coverage.
-- *Calculation in Web with API as passthrough*: Rejected — business logic in UI layer violates separation; harder to test.
+- *Calculation in Web only*: Rejected — business logic in UI layer violates separation; harder to test.
+- *Separate HTTP API service*: Originally used for Aspire starter pattern; removed when the app simplified to a single container — Web now calls Core in-process.
 - *Interface + strategy per meat type*: Rejected — only one algorithm path in V1; violates Principle VI.
 
-## 5. API Design Pattern
+## 5. Application Service Layer
 
-**Decision**: ASP.NET Core minimal APIs in `MeatyTimes.ApiService` with route groups: `GET /api/meats`, `POST /api/roast/calculate`, `POST /api/roast/schedule`. Return JSON; use `ProblemDetails` for validation errors.
+**Decision**: `RoastService` in `MeatyTimes.Web` provides an in-process façade over `MeatyTimes.Core` for the Blazor UI. String inputs are parsed via `RoastRequest.FromInputs` in Core. View DTOs (`MeatTypeDto`, `CookingResultDto`, `ScheduleDto`) map domain results for components.
 
-**Rationale**: Matches existing Aspire starter pattern (minimal APIs, OpenAPI in development). Thin endpoints delegate to `MeatyTimes.Core`. Web uses typed `HttpClient` with Aspire service discovery (`https+http://apiservice`).
+**Rationale**: Keeps Blazor components free of domain enum parsing and phase mapping. Validation errors surface as `RoastServiceException` with field-keyed errors for form binding.
 
 **Alternatives considered**:
-- *Calculation only in Blazor (no API)*: Rejected — prevents future mobile/PWA clients; couples UI to domain.
-- *gRPC*: Rejected — unnecessary complexity for a simple request/response calculator.
+- *Components call Core directly*: Rejected — duplicates mapping and error translation in every component.
+- *Restore HTTP API*: Rejected — unnecessary network hop for a single-container app with no external API consumers.
 
 ## 6. UI Framework and Render Mode
 
@@ -86,10 +86,10 @@
 
 ## 9. Testing Strategy
 
-**Decision**: `MeatyTimes.Core.Tests` (xUnit v3) for calculation unit tests; extend `MeatyTimes.Tests` with API integration test for `/api/roast/calculate`. Red-green-refactor for each meat type.
+**Decision**: `MeatyTimes.Core.Tests` (xUnit v3) for calculation unit tests; `MeatyTimes.Web.Tests` for Blazor component tests and `RoastService` façade tests. Red-green-refactor for each meat type.
 
-**Rationale**: Constitution Principle II (non-negotiable). Unit tests name business outcomes. Integration test confirms API wiring and JSON serialization.
+**Rationale**: Constitution Principle II (non-negotiable). Unit tests name business outcomes. Web service tests confirm DTO mapping and validation error translation.
 
 **Alternatives considered**:
 - *UI tests only (Playwright)*: Rejected as sole coverage — too slow and brittle for calculation edge cases.
-- *Mocks of calculation engine in API tests*: Rejected — constitution discourages interfaces solely for mocking.
+- *HTTP integration tests for removed API*: No longer applicable after single-container simplification.

@@ -1,65 +1,57 @@
-# API Contract: Roast Calculator
+# Service Contract: Roast Calculator
 
-**Base URL**: `https+http://apiservice` (Aspire service discovery) / `http://localhost:{port}` (direct)
+**Implementation**: `MeatyTimes.Web.Services.RoastService` (in-process facade over `MeatyTimes.Core`)
 
-**Content-Type**: `application/json`
+**Registration**: `AddMeatyTimesCore()` + `AddSingleton<RoastService>()` in `MeatyTimes.Web/Program.cs`
 
-**Error format**: [RFC 7807 ProblemDetails](https://datatracker.ietf.org/doc/html/rfc7807)
+**Error format**: `RoastServiceException` with optional field-keyed `Errors` dictionary (mirrors former API ProblemDetails shape for UI binding)
 
 ---
 
-## GET /api/meats
+## GetMeats
 
 Returns supported meat types and their configuration for populating the UI.
 
-### Response 200
+### Response
 
 ```json
-{
-  "meats": [
-    {
-      "id": "beef",
-      "displayName": "Beef",
-      "supportsDoneness": true,
-      "donenessOptions": ["Rare", "Medium", "WellDone"],
-      "minWeightKg": 0.5,
-      "maxWeightKg": 15.0
-    },
-    {
-      "id": "chicken",
-      "displayName": "Chicken",
-      "supportsDoneness": false,
-      "donenessOptions": [],
-      "minWeightKg": 0.8,
-      "maxWeightKg": 8.0
-    }
-  ]
-}
+[
+  {
+    "id": "beef",
+    "displayName": "Beef",
+    "supportsDoneness": true,
+    "donenessOptions": ["Rare", "Medium", "WellDone"],
+    "minWeightKg": 0.5,
+    "maxWeightKg": 15.0
+  },
+  {
+    "id": "chicken",
+    "displayName": "Chicken",
+    "supportsDoneness": false,
+    "donenessOptions": [],
+    "minWeightKg": 0.8,
+    "maxWeightKg": 8.0
+  }
+]
 ```
 
 ---
 
-## POST /api/roast/calculate
+## Calculate
 
 Calculates roasting instructions from user inputs.
 
-### Request Body
-
-```json
-{
-  "meatType": "beef",
-  "weightKg": 2.0,
-  "doneness": "Medium"
-}
-```
+### Inputs
 
 | Field | Type | Required | Notes |
 |-------|------|----------|-------|
 | `meatType` | string | Yes | One of: `beef`, `lamb`, `pork`, `chicken`, `gammon` |
-| `weightKg` | number | Yes | Positive decimal, max 2 decimal places |
+| `weightKg` | number | Yes | Positive decimal |
 | `doneness` | string | Conditional | `Rare`, `Medium`, or `WellDone` — required for beef/lamb |
 
-### Response 200
+Parsed via `RoastRequest.FromInputs` in `MeatyTimes.Core`.
+
+### Response (`CookingResultDto`)
 
 ```json
 {
@@ -88,52 +80,40 @@ Calculates roasting instructions from user inputs.
 }
 ```
 
-### Response 400 (validation error)
+### Validation error
+
+Throws `RoastServiceException` with `Errors` keyed by field name:
 
 ```json
 {
-  "type": "https://tools.ietf.org/html/rfc7231#section-6.5.1",
-  "title": "Validation failed",
-  "status": 400,
-  "errors": {
-    "weightKg": ["Minimum weight for beef is 0.5 kg"]
-  }
+  "weightKg": ["Minimum weight for beef is 0.5 kg"]
 }
 ```
 
 ---
 
-## POST /api/roast/schedule
+## PlanSchedule
 
 Calculates a backwards cooking schedule from a target serving time.
 
-### Request Body
-
-```json
-{
-  "meatType": "beef",
-  "weightKg": 2.0,
-  "doneness": "Medium",
-  "servingTime": "2026-07-05T18:00:00"
-}
-```
+### Inputs
 
 | Field | Type | Required | Notes |
 |-------|------|----------|-------|
 | `meatType` | string | Yes | Same as calculate |
 | `weightKg` | number | Yes | Same as calculate |
 | `doneness` | string | Conditional | Same as calculate |
-| `servingTime` | string (ISO 8601) | Yes | Local datetime; must be in the future |
+| `servingTime` | `DateTimeOffset` | Yes | Must be in the future |
 
-### Response 200 (achievable)
+### Response (`ScheduleDto`) — achievable
 
 ```json
 {
-  "servingTime": "2026-07-05T18:00:00",
-  "startCookingTime": "2026-07-05T17:00:00",
-  "temperatureChangeTime": "2026-07-05T17:10:00",
-  "removeFromOvenTime": "2026-07-05T17:40:00",
-  "restingStartTime": "2026-07-05T17:40:00",
+  "servingTime": "2026-07-05T18:00:00+01:00",
+  "startCookingTime": "2026-07-05T17:00:00+01:00",
+  "temperatureChangeTime": "2026-07-05T17:10:00+01:00",
+  "removeFromOvenTime": "2026-07-05T17:40:00+01:00",
+  "restingStartTime": "2026-07-05T17:40:00+01:00",
   "isAchievable": true,
   "earliestServingTime": null,
   "instructions": {
@@ -144,17 +124,17 @@ Calculates a backwards cooking schedule from a target serving time.
 }
 ```
 
-### Response 200 (not achievable)
+### Response — not achievable
 
 ```json
 {
-  "servingTime": "2026-07-05T17:15:00",
+  "servingTime": "2026-07-05T17:15:00+01:00",
   "startCookingTime": null,
   "temperatureChangeTime": null,
   "removeFromOvenTime": null,
   "restingStartTime": null,
   "isAchievable": false,
-  "earliestServingTime": "2026-07-05T18:00:00",
+  "earliestServingTime": "2026-07-05T18:00:00+01:00",
   "instructions": {
     "totalCookingMinutes": 40,
     "restingMinutes": 20,
@@ -163,21 +143,21 @@ Calculates a backwards cooking schedule from a target serving time.
 }
 ```
 
-### Response 400
+### Validation error
 
-Same ProblemDetails format as `/api/roast/calculate`.
+Throws `RoastServiceException` for invalid inputs (e.g. past `servingTime`).
 
 ---
 
-## Health Endpoints (existing)
+## Health Endpoints
 
 | Endpoint | Purpose |
 |----------|---------|
-| `GET /health` | Health check (Aspire) |
-| `GET /alive` | Liveness probe |
+| `GET /health` | Health check (Development / Aspire) |
+| `GET /alive` | Liveness probe (Development / Aspire) |
 
 ---
 
-## OpenAPI
+## Architecture note
 
-OpenAPI document available at `/openapi/v1.json` in Development environment (existing Aspire pattern).
+This contract replaced the former HTTP API (`MeatyTimes.ApiService`) when the app was simplified to a single Blazor container. External HTTP access is not exposed; all calls are in-process within `MeatyTimes.Web`.

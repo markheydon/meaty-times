@@ -15,28 +15,26 @@ MeatyTimes is a lightweight web app for home cooks who want reliable roasting gu
 MeatyTimes is built with a modern .NET web stack:
 
 - .NET SDK 10.0.301 via [global.json](global.json)
-- C# and ASP.NET Core minimal APIs
+- C# and ASP.NET Core (Blazor Server)
 - Blazor Server with MudBlazor
-- .NET Aspire for local orchestration and service discovery
-- xUnit v3 for automated testing, with Aspire hosting testing support
+- .NET Aspire for local orchestration and Azure Container Apps deployment
+- xUnit v3 for automated testing
 - Central package management through [Directory.Packages.props](Directory.Packages.props)
 
 Key package versions currently in use include:
 
-- Aspire Hosting Testing: 13.4.6
-- MudBlazor: 9.6.0
-- xUnit v3: 3.2.2
-- ASP.NET Core OpenAPI: 10.0.9
-- OpenTelemetry packages: 1.15.1–1.16.0
+- Aspire Hosting Azure App Containers: 13.5.3
+- MudBlazor: 9.9.0
+- xUnit v3: 4.0.0
+- OpenTelemetry packages: 1.18.0
 
 ## Project architecture
 
-The repository is organised as a distributed application:
+The repository is organised as a single-container Aspire app:
 
-- [src/MeatyTimes.AppHost](src/MeatyTimes.AppHost) — Aspire orchestration for the UI, API, and shared defaults
-- [src/MeatyTimes.ApiService](src/MeatyTimes.ApiService) — minimal API endpoints for roast calculation and scheduling
+- [src/MeatyTimes.AppHost](src/MeatyTimes.AppHost) — Aspire orchestration for the web UI and shared defaults
 - [src/MeatyTimes.Core](src/MeatyTimes.Core) — domain models, cooking rules, and the calculation engine
-- [src/MeatyTimes.Web](src/MeatyTimes.Web) — MudBlazor-based Blazor UI
+- [src/MeatyTimes.Web](src/MeatyTimes.Web) — MudBlazor-based Blazor UI (calls Core in-process)
 - [src/MeatyTimes.ServiceDefaults](src/MeatyTimes.ServiceDefaults) — OpenTelemetry and health-check defaults
 
 The design and contracts for this architecture live under [specs/001-roast-calculator](specs/001-roast-calculator), including the implementation plan, data model, and API/UI contracts.
@@ -60,7 +58,7 @@ Then open the webfrontend endpoint shown in the Aspire dashboard.
 
 ## Project Structure
 
-- [src](src) — application projects for the AppHost, API, web UI, core logic, and shared defaults
+- [src](src) — application projects for the AppHost, web UI, core logic, and shared defaults
 - [tests](tests) — [MeatyTimes.Core.Tests](tests/MeatyTimes.Core.Tests) (domain unit tests) and [MeatyTimes.Web.Tests](tests/MeatyTimes.Web.Tests) (Blazor component tests)
 - [specs](specs) — feature specifications, implementation plans, and quickstarts
 - [docs](docs) — end-user documentation and guidance for how the project is presented

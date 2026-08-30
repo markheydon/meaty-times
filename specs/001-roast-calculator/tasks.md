@@ -8,6 +8,8 @@
 
 **Organization**: Tasks grouped by user story for independent implementation and testing.
 
+> **Architecture note (2026-08)**: `MeatyTimes.ApiService` was removed; the Web app now calls `MeatyTimes.Core` in-process via `RoastService`. Historical task references to ApiService/HTTP client describe the original implementation.
+
 ## Format: `[ID] [P?] [Story] Description`
 
 - **[P]**: Can run in parallel (different files, no dependencies)
@@ -16,8 +18,8 @@
 
 ## Path Conventions
 
-- **Source**: `src/` (MeatyTimes.Core, ApiService, Web, AppHost, ServiceDefaults)
-- **Tests**: `tests/MeatyTimes.Core.Tests/`, `tests/MeatyTimes.Tests/`
+- **Source**: `src/` (MeatyTimes.Core, Web, AppHost, ServiceDefaults)
+- **Tests**: `tests/MeatyTimes.Core.Tests/`, `tests/MeatyTimes.Web.Tests/`
 
 ---
 

@@ -14,15 +14,15 @@ Technical approach: extend `RoastResultsDisplay` with input summary rendering; p
 
 **Language/Version**: C# / .NET 10.0
 
-**Primary Dependencies**: Blazor Server (interactive), MudBlazor, existing `RoastApiClient` DTOs
+**Primary Dependencies**: Blazor Server (interactive), MudBlazor, existing `RoastService` view DTOs
 
 **Storage**: N/A (client-side snapshot of last successful input in component state)
 
-**Testing**: xUnit v3; new `MeatyTimes.Web.Tests` with bUnit for `RoastResultsDisplay`; existing Aspire integration tests unchanged
+**Testing**: xUnit v3; `MeatyTimes.Web.Tests` with bUnit for `RoastResultsDisplay`
 
 **Target Platform**: Web browsers via MeatyTimes.Web (mobile, tablet, desktop)
 
-**Project Type**: UI enhancement to existing distributed web application
+**Project Type**: UI enhancement to existing single-container web application
 
 **Performance Goals**: No measurable latency impact; summary derived synchronously from in-memory state
 
@@ -69,16 +69,15 @@ src/
 │   │   └── Roast/
 │   │       └── RoastResultsDisplay.razor  # Add input summary block above instructions
 │   └── Services/
-│       └── RoastApiClient.cs              # Unchanged
+│       └── RoastService.cs                # Unchanged for this feature
 
 tests/
-├── MeatyTimes.Web.Tests/                  # NEW — bUnit component tests
+├── MeatyTimes.Web.Tests/                  # bUnit component tests
 │   └── RoastResultsDisplayTests.cs
-├── MeatyTimes.Core.Tests/                 # Unchanged
-└── MeatyTimes.Tests/                      # Unchanged
+└── MeatyTimes.Core.Tests/                 # Unchanged
 ```
 
-**Structure Decision**: All changes confined to `MeatyTimes.Web` plus a small focused test project. No changes to `MeatyTimes.Core` or `MeatyTimes.ApiService`. Parent page already owns `_lastInput` — minimal state wiring.
+**Structure Decision**: All changes confined to `MeatyTimes.Web` plus component tests. No changes to `MeatyTimes.Core`. Parent page already owns `_lastInput` — minimal state wiring.
 
 ## Complexity Tracking
 
