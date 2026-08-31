@@ -115,7 +115,25 @@ Optional: enable required reviewers on `production` before granting deploy acces
 After a successful deploy:
 
 1. Note the Container App FQDN from the workflow output or Azure portal.
-2. Smoke-check: `curl -sf "https://<fqdn>/health"`. Cold start after scale-to-zero is expected.
+2. Smoke-check the health endpoints (see [Health endpoints](#health-endpoints) below). Cold start after scale-to-zero is expected — retry if the first request times out.
+
+### Health endpoints
+
+`MeatyTimes.ServiceDefaults` maps two HTTP health endpoints on the web app. The AppHost registers `/health` with Azure Container Apps via `WithHttpHealthCheck("/health")`.
+
+| Endpoint | Purpose |
+| --- | --- |
+| `GET /health` | Readiness — all registered health checks must pass |
+| `GET /alive` | Liveness — checks tagged `live` only (the built-in `self` check) |
+
+Both return `200` with a `Healthy` body when checks pass. Example:
+
+```bash
+curl -sf "https://<fqdn>/health"
+curl -sf "https://<fqdn>/alive"
+```
+
+If either returns **404**, the deployed revision predates health endpoint mapping in production — redeploy after merging the fix.
 
 ## Deploy locally
 
@@ -188,4 +206,5 @@ Confirm the subscription, resource group, and environment before running destroy
 | OIDC login fails in CD | Stale secrets or federated credential subject mismatch | Confirm secrets match the CD managed identity and that a federated credential exists for `repo:markheydon/meaty-times:environment:production` |
 | Deploy fails after merge | Missing GitHub Environment variables | Set `AZURE_LOCATION` and `AZURE_RESOURCE_GROUP` on `production` |
 | Cold start / SignalR disconnect | Scale-to-zero idle | Expected; refresh the page or wait for the container to warm up |
+| `/health` or `/alive` returns 404 | Old deployment without production health mapping | Redeploy; both endpoints are mapped in all environments via `MapDefaultEndpoints` |
 | `aspire deploy --list-steps` fails in CI | AppHost or hosting package breakage | Fix before merge; CI does not use Azure auth |
