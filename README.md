@@ -16,7 +16,7 @@ MeatyTimes is built with a modern .NET web stack:
 
 - .NET SDK 10.0.301 via [global.json](global.json)
 - C# and ASP.NET Core (Blazor Server)
-- Blazor Server with MudBlazor
+- Blazor Server with Tailwind CSS v4 (standalone CLI) and Lucide icons
 - .NET Aspire for local orchestration and Azure Container Apps deployment
 - xUnit v3 for automated testing
 - Central package management through [Directory.Packages.props](Directory.Packages.props)
@@ -24,7 +24,7 @@ MeatyTimes is built with a modern .NET web stack:
 Key package versions currently in use include:
 
 - Aspire Hosting Azure App Containers: 13.5.3
-- MudBlazor: 9.9.0
+- Tailwind CSS v4 standalone CLI (no Node/npm) at `tools/tailwind/tailwindcss`
 - xUnit v3: 4.0.0
 - OpenTelemetry packages: 1.18.0
 
@@ -34,7 +34,7 @@ The repository is organised as a single-container Aspire app:
 
 - [src/MeatyTimes.AppHost](src/MeatyTimes.AppHost) — Aspire orchestration for the web UI and shared defaults
 - [src/MeatyTimes.Core](src/MeatyTimes.Core) — domain models, cooking rules, and the calculation engine
-- [src/MeatyTimes.Web](src/MeatyTimes.Web) — MudBlazor-based Blazor UI (calls Core in-process)
+- [src/MeatyTimes.Web](src/MeatyTimes.Web) — Blazor Server UI with Tailwind CSS (calls Core in-process)
 - [src/MeatyTimes.ServiceDefaults](src/MeatyTimes.ServiceDefaults) — OpenTelemetry and health-check defaults
 
 The design and contracts for this architecture live under [specs/001-roast-calculator](specs/001-roast-calculator), including the implementation plan, data model, and API/UI contracts.
@@ -71,7 +71,7 @@ Then open the webfrontend endpoint shown in the Aspire dashboard.
 - Roast instruction calculation for beef, lamb, pork, chicken, and gammon
 - Doneness selection where applicable, with food-safe defaults for poultry and pork
 - Serve-at backwards scheduling for planned meal timing
-- Responsive UI built with MudBlazor for mobile, tablet, and desktop
+- Responsive UI built with Tailwind CSS for mobile, tablet, and desktop
 
 ## Development workflow
 

@@ -1,0 +1,54 @@
+name: CD - Deploy to Azure
+
+# Deploys MeatyTimes to Azure Container Apps on merge to main.
+# Before the first deploy, follow docs-internal/deployment.md to configure
+# Azure OIDC and the GitHub production environment.
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+permissions:
+  id-token: write
+  contents: read
+
+concurrency:
+  group: cd-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: Validate before deploy
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Set up .NET SDK from global.json
+        uses: actions/setup-dotnet@v6
+        with:
+          global-json-file: global.json
+
+      - name: Restore dependencies
+        run: dotnet restore MeatyTimes.slnx
+
+      - name: Build solution
+        run: dotnet build MeatyTimes.slnx --no-restore --configuration Release
+
+      - name: Run tests
+        run: dotnet test MeatyTimes.slnx --no-build --configuration Release --verbosity normal
+
+  deploy:
+    name: Deploy to production
+    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.ref == 'refs/heads/main')
+    needs: validate
+    uses: ./.github/workflows/aspire-deploy.yml
+    with:
+      aspire_environment: Production
+      github_environment: production
+    secrets: inherit

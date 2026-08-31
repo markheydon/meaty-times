@@ -5,46 +5,44 @@
 
 <PageTitle>MeatyTimes — Roast Calculator</PageTitle>
 
-<MudText Typo="Typo.h4" Class="mb-2">MeatyTimes</MudText>
-<MudText Typo="Typo.body1" Class="mb-4">Calculate roasting temperatures and timings for your joint.</MudText>
-
 @if (_loadError is not null)
 {
-    <MudAlert Severity="Severity.Error">@_loadError</MudAlert>
+    <div class="rounded-lg bg-red-50 border border-red-200 p-4 text-sm text-red-800" role="alert">
+        @_loadError
+    </div>
 }
 else
 {
-    <MudGrid Spacing="3" Class="roast-calculator-grid">
-        <MudItem xs="12" md="5">
+    <div class="flex flex-col md:flex-row gap-6">
+        <div class="w-full md:w-2/5 shrink-0">
             <RoastInputForm Meats="_meats"
                             IsLoading="_isLoading"
                             OnCalculateRequested="HandleCalculate"
                             WeightError="@_weightError"
                             DonenessError="@_donenessError" />
-        </MudItem>
-        <MudItem xs="12" md="7">
-            @if (_isLoading)
-            {
-                <MudProgressLinear Indeterminate="true" Class="mb-3" />
-            }
+        </div>
 
+        <div class="w-full md:w-3/5 flex flex-col gap-0">
             @if (!string.IsNullOrEmpty(_generalError))
             {
-                <MudAlert Severity="Severity.Error" Class="mb-3">@_generalError</MudAlert>
+                <div class="mb-4 rounded-lg bg-red-50 border border-red-200 p-4 text-sm text-red-800" role="alert">
+                    @_generalError
+                </div>
             }
 
             <RoastResultsDisplay Result="_result"
                                  Input="_lastInput"
                                  Meats="_meats" />
 
-            <ServeAtPlanner LastInput="_lastInput"
-                            Result="_result"
-                            IsLoading="_isPlanning"
-                            OnPlanRequested="HandlePlan"
-                            Schedule="_schedule"
+            <ServeAtPlanner Schedule="_schedule"
                             Error="@_scheduleError" />
-        </MudItem>
-    </MudGrid>
+        </div>
+    </div>
+
+    <div class="mt-6 flex items-start gap-3 rounded-lg bg-tip border border-tip-border p-4 text-sm text-gray-700">
+        <LucideIcon Name="lightbulb" Size="20" Class="text-amber-500 shrink-0 mt-0.5" />
+        <p><strong>Tip:</strong> For best results, use a meat thermometer to check your roast is cooked through. Cooking times are estimates and may vary.</p>
+    </div>
 }
 
 @code {
@@ -53,7 +51,6 @@ else
     private ScheduleDto? _schedule;
     private RoastInputForm.RoastInputModel? _lastInput;
     private bool _isLoading;
-    private bool _isPlanning;
     private string? _loadError;
     private string? _generalError;
     private string? _weightError;
@@ -79,7 +76,6 @@ else
         _generalError = null;
         _weightError = null;
         _donenessError = null;
-        _schedule = null;
         _scheduleError = null;
         await Task.Yield();
 
@@ -87,67 +83,39 @@ else
         {
             _result = RoastService.Calculate(input.MeatType, input.WeightKg, input.Doneness);
             _lastInput = input;
+
+            if (input.ServingTime is { } servingTime)
+            {
+                try
+                {
+                    _schedule = RoastService.PlanSchedule(
+                        input.MeatType,
+                        input.WeightKg,
+                        input.Doneness,
+                        servingTime);
+                }
+                catch (RoastServiceException ex)
+                {
+                    _schedule = null;
+                    _scheduleError = ex.FirstError;
+                }
+            }
+            else
+            {
+                _schedule = null;
+            }
         }
         catch (RoastServiceException ex)
         {
             _weightError = ex.Errors.GetValueOrDefault("weightKg")?.FirstOrDefault();
             _donenessError = ex.Errors.GetValueOrDefault("doneness")?.FirstOrDefault();
-            _generalError = ex.FirstError;
+            _generalError = _weightError is null && _donenessError is null
+                ? ex.FirstError
+                : null;
         }
         finally
         {
             _isLoading = false;
         }
     }
-
-    private async Task HandlePlan(DateTimeOffset servingTime)
-    {
-        if (_lastInput is null)
-        {
-            return;
-        }
-
-        _isPlanning = true;
-        _scheduleError = null;
-        await Task.Yield();
-
-        try
-        {
-            _schedule = RoastService.PlanSchedule(
-                _lastInput.MeatType,
-                _lastInput.WeightKg,
-                _lastInput.Doneness,
-                servingTime);
-        }
-        catch (RoastServiceException ex)
-        {
-            _schedule = null;
-            _scheduleError = ex.FirstError;
-        }
-        finally
-        {
-            _isPlanning = false;
-        }
-    }
 }
-
-<style>
-    @@media (max-width: 600px) {
-        .roast-calculator-grid {
-            flex-direction: column;
-        }
-
-        .roast-field-full-width {
-            width: 100%;
-        }
-
-        .roast-schedule-inputs {
-            flex-direction: column !important;
-        }
-
-        .roast-input-summary,
-        .roast-input-summary-row {
-            max-width: 100%;
-        }
-    }
-</style>
