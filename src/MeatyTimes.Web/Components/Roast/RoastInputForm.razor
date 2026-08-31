@@ -30,17 +30,18 @@
                        step="0.1"
                        min="@MinWeight"
                        max="@MaxWeight"
-                       class="w-full rounded-lg border @(WeightError is not null ? "border-red-500" : "border-gray-300") bg-white px-3 py-2.5 pr-12 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                       class="w-full rounded-lg border @(EffectiveWeightError is not null ? "border-red-500" : "border-gray-300") bg-white px-3 py-2.5 pr-12 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
                        @bind="_weightKg"
+                       @bind:after="ClearLocalWeightError"
                        aria-label="Weight in kilograms"
-                       aria-invalid="@(WeightError is not null)"
-                       aria-describedby="weight-help@(WeightError is not null ? " weight-error" : "")" />
+                       aria-invalid="@(EffectiveWeightError is not null)"
+                       aria-describedby="weight-help@(EffectiveWeightError is not null ? " weight-error" : "")" />
                 <span class="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-500 pointer-events-none">kg</span>
             </div>
             <p id="weight-help" class="mt-1 text-xs text-gray-500">Enter the raw weight of your roast.</p>
-            @if (WeightError is not null)
+            @if (EffectiveWeightError is not null)
             {
-                <p id="weight-error" class="mt-1 text-sm text-red-600" role="alert">@WeightError</p>
+                <p id="weight-error" class="mt-1 text-sm text-red-600" role="alert">@EffectiveWeightError</p>
             }
         </div>
 
@@ -71,11 +72,17 @@
             <label for="serve-at" class="block text-sm font-medium text-gray-700 mb-1">Serve at <span class="text-gray-400 font-normal">(optional)</span></label>
             <input id="serve-at"
                    type="datetime-local"
-                   class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                   class="w-full rounded-lg border @(_servingTimeError is not null ? "border-red-500" : "border-gray-300") bg-white px-3 py-2.5 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
                    value="@_servingTimeLocal"
                    @onchange="OnServingTimeChanged"
-                   aria-label="Serving time" />
-            <p class="mt-1 text-xs text-gray-500">When would you like to serve your roast?</p>
+                   aria-label="Serving time"
+                   aria-invalid="@(_servingTimeError is not null)"
+                   aria-describedby="serve-at-help@(_servingTimeError is not null ? " serve-at-error" : "")" />
+            <p id="serve-at-help" class="mt-1 text-xs text-gray-500">When would you like to serve your roast?</p>
+            @if (_servingTimeError is not null)
+            {
+                <p id="serve-at-error" class="mt-1 text-sm text-red-600" role="alert">@_servingTimeError</p>
+            }
         </div>
 
         <button type="button"
@@ -98,6 +105,9 @@
 </div>
 
 @code {
+    private const string WeightRequiredMessage = "Enter the weight of your roast.";
+    private const string ServingTimeInvalidMessage = "Enter a valid serving date and time.";
+
     [Parameter] public IReadOnlyList<MeatTypeDto> Meats { get; set; } = [];
 
     [Parameter] public bool IsLoading { get; set; }
@@ -112,6 +122,8 @@
     private decimal? _weightKg = 2.0m;
     private string? _selectedDoneness = "Medium";
     private string? _servingTimeLocal;
+    private string? _localWeightError;
+    private string? _servingTimeError;
 
     private MeatTypeDto? SelectedMeat =>
         Meats.FirstOrDefault(m => m.Id == _selectedMeatId);
@@ -120,27 +132,49 @@
 
     private decimal MaxWeight => SelectedMeat?.MaxWeightKg ?? 15m;
 
+    private string? EffectiveWeightError => WeightError ?? _localWeightError;
+
     protected override void OnParametersSet()
     {
         _selectedMeatId ??= Meats.FirstOrDefault()?.Id;
     }
 
+    private void ClearLocalWeightError()
+    {
+        _localWeightError = null;
+    }
+
     private void OnServingTimeChanged(ChangeEventArgs e)
     {
         _servingTimeLocal = e.Value?.ToString();
+        _servingTimeError = null;
     }
 
     private async Task OnCalculate()
     {
-        if (_selectedMeatId is null || _weightKg is null)
+        _localWeightError = null;
+        _servingTimeError = null;
+
+        if (_selectedMeatId is null)
         {
             return;
         }
 
-        DateTimeOffset? servingTime = null;
-        if (!string.IsNullOrEmpty(_servingTimeLocal)
-            && DateTime.TryParse(_servingTimeLocal, out var localDateTime))
+        if (_weightKg is null)
         {
+            _localWeightError = WeightRequiredMessage;
+            return;
+        }
+
+        DateTimeOffset? servingTime = null;
+        if (!string.IsNullOrEmpty(_servingTimeLocal))
+        {
+            if (!DateTime.TryParse(_servingTimeLocal, out var localDateTime))
+            {
+                _servingTimeError = ServingTimeInvalidMessage;
+                return;
+            }
+
             servingTime = new DateTimeOffset(localDateTime, TimeZoneInfo.Local.GetUtcOffset(localDateTime));
         }
 

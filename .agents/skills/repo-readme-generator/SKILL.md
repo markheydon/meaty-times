@@ -70,7 +70,7 @@ Ground each section in the sources above (and broader repository files where rel
 
 #### Technology Stack
 
-- List primary technologies: .NET 10, C# / ASP.NET Core, Blazor Server, MudBlazor, .NET Aspire, xUnit v3.
+- List primary technologies: .NET 10, C# / ASP.NET Core, Blazor Server, Tailwind CSS v4, Lucide icons, .NET Aspire, xUnit v3.
 - Include SDK and key package versions from `global.json`, `Directory.Packages.props`, and feature `plan.md` files.
 - Note central package management via `Directory.Packages.props`.
 
@@ -80,7 +80,7 @@ High-level Aspire app layout:
 
 - `MeatyTimes.AppHost` — Aspire orchestration
 - `MeatyTimes.Core` — domain logic, cooking rules, calculation engine
-- `MeatyTimes.Web` — MudBlazor Blazor UI (calls Core in-process)
+- `MeatyTimes.Web` — Blazor Server + Tailwind CSS UI (calls Core in-process)
 - `MeatyTimes.ServiceDefaults` — OpenTelemetry and health checks
 
 Source from feature `plan.md`, `data-model.md`, and `contracts/*` under `specs/`.
@@ -116,7 +116,7 @@ Brief overview of repository layout:
 - Roast instruction calculator (beef, lamb, pork, chicken, gammon).
 - Doneness selection where applicable; food-safe defaults for poultry and pork.
 - Serve-at backwards scheduling.
-- Responsive MudBlazor UI for mobile, tablet, and desktop.
+- Responsive Tailwind CSS UI for mobile, tablet, and desktop.
 - Source from feature `spec.md` and `contracts/*` files.
 
 #### Development Workflow

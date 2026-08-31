@@ -54,4 +54,28 @@ public class RoastInputFormTests : BunitContext
         Assert.Equal(2, selectElements.Count);
         Assert.Contains("Doneness", cut.Markup);
     }
+
+    [Fact]
+    public void Shows_weight_required_error_when_weight_is_cleared()
+    {
+        var cut = Render<RoastInputForm>(parameters => parameters
+            .Add(p => p.Meats, Meats));
+
+        cut.Find("#weight-kg").Change(string.Empty);
+        cut.Find("button").Click();
+
+        Assert.Contains("Enter the weight of your roast.", cut.Markup);
+    }
+
+    [Fact]
+    public void Shows_serving_time_error_when_datetime_is_unparseable()
+    {
+        var cut = Render<RoastInputForm>(parameters => parameters
+            .Add(p => p.Meats, Meats));
+
+        cut.Find("#serve-at").Change("not-a-datetime");
+        cut.Find("button").Click();
+
+        Assert.Contains("Enter a valid serving date and time.", cut.Markup);
+    }
 }

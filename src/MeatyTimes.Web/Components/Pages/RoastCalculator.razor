@@ -96,6 +96,7 @@ else
                 }
                 catch (RoastServiceException ex)
                 {
+                    _schedule = null;
                     _scheduleError = ex.FirstError;
                 }
             }
@@ -108,7 +109,9 @@ else
         {
             _weightError = ex.Errors.GetValueOrDefault("weightKg")?.FirstOrDefault();
             _donenessError = ex.Errors.GetValueOrDefault("doneness")?.FirstOrDefault();
-            _generalError = ex.FirstError;
+            _generalError = _weightError is null && _donenessError is null
+                ? ex.FirstError
+                : null;
         }
         finally
         {

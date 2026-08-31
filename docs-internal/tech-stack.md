@@ -39,9 +39,10 @@ Design and contracts for the roast calculator live under
 - HTTPS dev-cert trust is required for AppHost health checks; see `AGENTS.md`.
 - Linting/formatting: CI runs `dotnet format --verify-no-changes`.
 - Tailwind CSS is built via MSBuild `BeforeBuild` and the standalone CLI at
-  `tools/tailwind/tailwindcss` (linux-x64). The binary is not committed; run
-  `tools/tailwind/download.sh` or `dotnet build` on `MeatyTimes.Web` to fetch it.
-  Replace the download script asset name for other OS targets as needed.
+  `tools/tailwind/tailwindcss` (or `tailwindcss.exe` on Windows). The binary is
+  not committed; run `tools/tailwind/download.sh`, `tools/tailwind/download.ps1`,
+  or `dotnet build` on `MeatyTimes.Web` to fetch it. Downloads are verified with
+  pinned SHA-256 checksums in those scripts.
 
 Cooking rules that must stay documented and traceable are stored in
 `src/MeatyTimes.Core/Rules/cooking-rules.json`.

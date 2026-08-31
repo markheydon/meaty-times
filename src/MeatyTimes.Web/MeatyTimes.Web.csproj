@@ -4,7 +4,8 @@
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <TailwindCliPath>$(MSBuildThisFileDirectory)../../tools/tailwind/tailwindcss</TailwindCliPath>
+    <TailwindCliPath Condition="'$(OS)' == 'Windows_NT'">$(MSBuildThisFileDirectory)../../tools/tailwind/tailwindcss.exe</TailwindCliPath>
+    <TailwindCliPath Condition="'$(OS)' != 'Windows_NT'">$(MSBuildThisFileDirectory)../../tools/tailwind/tailwindcss</TailwindCliPath>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,7 +14,8 @@
   </ItemGroup>
 
   <Target Name="EnsureTailwindCli" BeforeTargets="BuildTailwindCss">
-    <Exec Command="bash &quot;$(MSBuildThisFileDirectory)../../tools/tailwind/download.sh&quot;" />
+    <Exec Condition="'$(OS)' == 'Windows_NT'" Command="powershell -NoProfile -ExecutionPolicy Bypass -File &quot;$(MSBuildThisFileDirectory)../../tools/tailwind/download.ps1&quot;" />
+    <Exec Condition="'$(OS)' != 'Windows_NT'" Command="bash &quot;$(MSBuildThisFileDirectory)../../tools/tailwind/download.sh&quot;" />
   </Target>
 
   <Target Name="BuildTailwindCss" BeforeTargets="BeforeBuild" DependsOnTargets="EnsureTailwindCli">
