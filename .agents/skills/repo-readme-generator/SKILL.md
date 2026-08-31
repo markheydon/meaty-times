@@ -56,7 +56,9 @@ Read and extract relevant facts from:
 - `docs-internal/README.md` and relevant files under `docs-internal/` for contributor/developer context when present
 - The current `README.md` (preserve useful badges, links, or wording where still accurate)
 
-Also inspect `global.json`, `Directory.Packages.props`, and `src/MeatyTimes.AppHost/` for versions and run commands.
+Also inspect `global.json`, `Directory.Packages.props`, `src/MeatyTimes.AppHost/`,
+`.github/workflows/`, `.github/dependabot.yml`, and `docs/CNAME` (or `docs/index.md`)
+for versions, CI/CD workflow filenames, deployment URLs, and docs site URLs.
 
 ### Step 3: Draft README sections
 
@@ -123,7 +125,7 @@ Brief overview of repository layout:
 
 - Feature work uses Spec Kit (`/speckit-specify`, `/speckit-plan`, `/speckit-tasks`, `/speckit-implement`).
 - Feature branches follow `NNN-short-name` numbering (see `.specify/extensions/git/`).
-- Constitution gates in `.specify/memory/constitution.md` govern code quality, testing, UX, security, cooking accuracy, and simplicity.
+- Constitution gates in `.specify/memory/constitution.md` govern separation of concerns, testing, UX, security, traceability, and code quality (v2.0.0, eight principles).
 - Source from `CONTRIBUTING.md` (if present), feature `tasks.md`, and the constitution.
 
 #### Coding Standards
@@ -137,7 +139,7 @@ Brief overview of repository layout:
 
 - Unit tests: `dotnet test tests/MeatyTimes.Core.Tests`
 - Full suite: `dotnet test`
-- Cooking-critical behaviour must be covered by outcome-named tests per constitution Principle II.
+- Cooking-critical behaviour must be covered by outcome-named tests per constitution Principle III.
 - Source from feature `quickstart.md`, `tests/`, and the constitution.
 
 #### Contributing
@@ -150,6 +152,50 @@ Brief overview of repository layout:
 
 - MIT Licence — see `LICENSE` (Copyright Mark Heydon).
 
+#### Badges and quick stats
+
+Place badges immediately under the `# MeatyTimes` title, grouped in up to three rows.
+Derive URLs from repository facts — do not invent badge services the project does not use.
+
+**Row 1 — build health** (always include when workflows exist):
+
+| Badge | Source |
+|-------|--------|
+| CI | `.github/workflows/ci.yml` → `actions/workflows/ci.yml/badge.svg?branch=main` |
+| CD / deploy | `cd.yml` or equivalent deploy workflow, same pattern |
+| .NET SDK | `global.json` `sdk.version` |
+| Licence | `LICENSE` file (MIT) |
+
+**Row 2 — discoverability** (include for public GitHub repos):
+
+| Badge | shields.io pattern |
+|-------|-------------------|
+| Live demo | Static badge linking to production URL from `docs/index.md` or `docs-internal/deployment.md` |
+| Docs | Static badge linking to `docs/CNAME` custom domain, or GitHub Pages `/docs` path |
+| GitHub stars | `github/stars/{owner}/{repo}?style=flat-square` |
+| Open issues | `github/issues/{owner}/{repo}?style=flat-square` |
+| Last commit | `github/last-commit/{owner}/{repo}/main?style=flat-square` |
+
+**Row 3 — tech stack** (pick badges that match `Directory.Packages.props` and `docs-internal/tech-stack.md`):
+
+- Blazor Server, .NET Aspire (include major version from packages), Tailwind CSS, xUnit
+- Dependabot enabled when `.github/dependabot.yml` exists
+
+**Do not add** unless the repo actually publishes them:
+
+- Code coverage / Codecov / Coveralls (no coverage upload in CI today)
+- SonarCloud / Code Climate quality gates
+- Docker Hub pulls (unless images are published to a registry)
+- Static “tests passing” counts that will go stale — prefer the CI badge; optional compact stats table is fine if refreshed from `dotnet test` at generation time
+
+**Quick stats table** (optional, directly under badges):
+
+A two-column markdown table with durable facts: live app URL, docs URL, test count
+(from `dotnet test MeatyTimes.slnx`), and hosting target (e.g. Azure Container Apps).
+Replace redundant prose “Live app:” lines when this table is present.
+
+Preserve existing badges from the current `README.md` when still accurate.
+
 ### Step 4: Write README.md
 
 Update the repository root `README.md` with:
@@ -158,7 +204,7 @@ Update the repository root `README.md` with:
 - Code blocks for commands
 - Lists for readability
 - Links to `specs/` documentation and the constitution
-- Optional badges (build status, .NET version, licence) when CI workflow name and branch are known from `.github/workflows/`
+- Badges and optional quick-stats table per **Badges and quick stats** above
 
 Keep the README concise yet informative, focusing on what new developers or users need to know about MeatyTimes.
 
