@@ -4,7 +4,7 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- Aspire -->
-    <PackageVersion Include="Aspire.Hosting.Azure.AppContainers" Version="13.5.3" />
+    <PackageVersion Include="Aspire.Hosting.Azure.AppContainers" Version="13.5.4" />
     <!-- Testing -->
     <PackageVersion Include="bunit" Version="2.11.3" />
     <PackageVersion Include="coverlet.collector" Version="10.0.1" />
