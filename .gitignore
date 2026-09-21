@@ -444,3 +444,5 @@ src/MeatyTimes.Web/wwwroot/css/app.css
 # Tailwind standalone CLI binary (downloaded via tools/tailwind/download.sh or download.ps1)
 tools/tailwind/tailwindcss
 tools/tailwind/tailwindcss.exe
+# Playwright CLI output (may contain credentials)
+.playwright-cli/
