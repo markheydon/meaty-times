@@ -4,7 +4,8 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- Aspire -->
-    <PackageVersion Include="Aspire.Hosting.Azure.AppContainers" Version="13.5.4" />
+    <PackageVersion Include="Aspire.Hosting.Azure.AppContainers" Version="13.6.0" />
+    <PackageVersion Include="Aspire.Hosting.Dotnet" Version="13.6.0-preview.1.26479.8" />
     <!-- Testing -->
     <PackageVersion Include="bunit" Version="2.11.3" />
     <PackageVersion Include="coverlet.collector" Version="10.0.1" />
@@ -24,6 +25,6 @@
     <PackageVersion Include="OpenTelemetry.Instrumentation.Runtime" Version="1.19.0" />
   </ItemGroup>
   <ItemGroup>
-    <PackageVersion Include="AngleSharp" Version="1.8.2" />
+    <PackageVersion Include="AngleSharp" Version="1.8.3" />
   </ItemGroup>
 </Project>

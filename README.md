@@ -45,7 +45,7 @@ MeatyTimes is built with a modern .NET web stack:
 
 Key package versions currently in use include:
 
-- Aspire Hosting Azure App Containers: 13.5.3
+- Aspire Hosting Azure App Containers: 13.6.0
 - Tailwind CSS v4 standalone CLI (no Node/npm) at `tools/tailwind/tailwindcss`
 - xUnit v3: 4.0.0
 - bunit: 2.9.0
