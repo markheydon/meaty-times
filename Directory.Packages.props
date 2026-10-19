@@ -1,30 +1,48 @@
 <Project>
   <PropertyGroup>
+    <!--
+      Central Package Management: declare versions here; projects use version-less PackageReference.
+      Transitive pinning lets us override vulnerable or mismatched transitive versions below.
+    -->
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
   </PropertyGroup>
+
   <ItemGroup>
-    <!-- Aspire -->
+    <!-- MeatyTimes.AppHost -->
     <PackageVersion Include="Aspire.Hosting.Azure.AppContainers" Version="13.6.1" />
     <PackageVersion Include="Aspire.Hosting.Dotnet" Version="13.6.0-preview.1.26479.8" />
-    <!-- Testing -->
-    <PackageVersion Include="bunit" Version="2.11.3" />
-    <PackageVersion Include="coverlet.collector" Version="10.0.1" />
-    <PackageVersion Include="NSubstitute" Version="5.3.0" />
-    <PackageVersion Include="xunit.runner.visualstudio" Version="4.0.1" />
-    <PackageVersion Include="xunit.v3" Version="4.0.2" />
-    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.11.0" />
-    <!-- ASP.NET Core -->
+
+    <!-- MeatyTimes.Core, MeatyTimes.AppHost -->
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.13" />
+
+    <!-- MeatyTimes.ServiceDefaults (Aspire shared defaults) -->
     <PackageVersion Include="Microsoft.Extensions.Http.Resilience" Version="10.11.0" />
     <PackageVersion Include="Microsoft.Extensions.ServiceDiscovery" Version="10.11.0" />
-    <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.13" />
-    <!-- OpenTelemetry -->
+    <!-- Keep OpenTelemetry.* versions aligned when upgrading -->
     <PackageVersion Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.20.0" />
     <PackageVersion Include="OpenTelemetry.Extensions.Hosting" Version="1.20.0" />
     <PackageVersion Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.20.0" />
     <PackageVersion Include="OpenTelemetry.Instrumentation.Http" Version="1.20.0" />
     <PackageVersion Include="OpenTelemetry.Instrumentation.Runtime" Version="1.20.0" />
-  </ItemGroup>
-  <ItemGroup>
+
+    <!-- MeatyTimes.*.Tests -->
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.11.0" />
+    <PackageVersion Include="xunit.runner.visualstudio" Version="4.0.1" />
+    <PackageVersion Include="xunit.v3" Version="4.0.2" />
+    <PackageVersion Include="coverlet.collector" Version="10.0.1" />
+
+    <!-- MeatyTimes.Web.Tests -->
     <PackageVersion Include="AngleSharp" Version="1.8.5" />
+    <PackageVersion Include="bunit" Version="2.12.5" />
+    <!-- Pin only; add PackageReference to a test project when isolation is needed -->
+    <PackageVersion Include="NSubstitute" Version="5.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Transitive overrides (NU1902/NU1903); not referenced directly from projects -->
+    <PackageVersion Include="MessagePack" Version="2.5.307" />
+    <PackageVersion Include="System.Security.Cryptography.Pkcs" Version="10.0.13" />
+    <PackageVersion Include="System.Security.Cryptography.Xml" Version="10.0.13" />
   </ItemGroup>
 </Project>
