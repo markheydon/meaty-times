@@ -10,7 +10,7 @@
 
   <ItemGroup>
     <!-- MeatyTimes.AppHost -->
-    <PackageVersion Include="Aspire.Hosting.Azure.AppContainers" Version="13.6.1" />
+    <PackageVersion Include="Aspire.Hosting.Azure.AppContainers" Version="13.6.4" />
     <PackageVersion Include="Aspire.Hosting.Dotnet" Version="13.6.0-preview.1.26479.8" />
 
     <!-- MeatyTimes.Core, MeatyTimes.AppHost -->
