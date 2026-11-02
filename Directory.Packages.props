@@ -33,7 +33,7 @@
     <PackageVersion Include="coverlet.collector" Version="10.0.1" />
 
     <!-- MeatyTimes.Web.Tests -->
-    <PackageVersion Include="AngleSharp" Version="1.8.6" />
+    <PackageVersion Include="AngleSharp" Version="1.9.0" />
     <PackageVersion Include="bunit" Version="2.13.3" />
     <!-- Pin only; add PackageReference to a test project when isolation is needed -->
     <PackageVersion Include="NSubstitute" Version="5.3.0" />
