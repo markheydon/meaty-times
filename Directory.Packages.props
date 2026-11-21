@@ -11,7 +11,7 @@
   <ItemGroup>
     <PackageVersion Include="Aspire.Hosting" Version="13.6.5" />
     <!-- MeatyTimes.AppHost -->
-    <PackageVersion Include="Aspire.Hosting.Azure.AppContainers" Version="13.6.4" />
+    <PackageVersion Include="Aspire.Hosting.Azure.AppContainers" Version="13.6.5" />
     <PackageVersion Include="Aspire.Hosting.Dotnet" Version="13.6.4-preview.1.26523.11" />
 
     <!-- MeatyTimes.Core, MeatyTimes.AppHost -->
@@ -34,7 +34,7 @@
     <PackageVersion Include="coverlet.collector" Version="10.0.1" />
 
     <!-- MeatyTimes.Web.Tests -->
-    <PackageVersion Include="AngleSharp" Version="1.10.1" />
+    <PackageVersion Include="AngleSharp" Version="1.10.5" />
     <PackageVersion Include="bunit" Version="2.15.2" />
     <!-- Pin only; add PackageReference to a test project when isolation is needed -->
     <PackageVersion Include="NSubstitute" Version="5.3.0" />
